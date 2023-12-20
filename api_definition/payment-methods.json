@@ -1,0 +1,203 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Payment Methods",
+    "version": "2.0"
+  },
+  "paths": {
+    "/payment-methods": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PaymentMethodCollection"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+		  {
+            "description": "The unique numeric ID for identifying the store.",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "languageId",
+            "in": "query",
+            "description": "The ID of the language to be used to retrieve the payment method data.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "description": "Limits search results to only include payment methods that match the specified name.",
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name will order the items based on the name value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Payment Methods"
+        ],
+        "description": "Gets a collection of payment methods for the specified store.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Gets a collection payment methods.",
+        "operationId": "getPaymentMethods"
+      }
+    }
+  },
+  "definitions": {
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "PaymentMethod": {
+      "properties": {
+        "description": {
+          "description": "A description of the payment method.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the payment method.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the payment method.",
+          "type": "string"
+        }
+      }
+    },
+    "PaymentMethodCollection": {
+      "properties": {
+        "offset": {
+          "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "limit": {
+          "description": "The maximum number of records to return.",
+          "format": "int32",
+          "maximum": 500,
+          "type": "integer"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PaymentMethod"
+          }
+        }
+      }
+    }
+  }
+}

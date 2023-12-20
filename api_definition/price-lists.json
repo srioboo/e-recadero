@@ -1,0 +1,1170 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer price lists.",
+    "title": "Price Lists",
+    "version": "9.1.12.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/price-lists": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique generated ID of the price list item.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "The owner organization of the price list.",
+            "in": "query",
+            "name": "organizationId",
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to price lists that are associated with the specified store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "type": "integer",
+            "x-introduced": "9.1.12.0"
+          },
+          {
+            "description": "Limits the results to price lists with the specified usage. Possible values are \n * List - List price list\n * Master - Master offer price list\n * Default - Offer price list other than master offer price list\n * Nominal - Nominal price list",
+            "in": "query",
+            "name": "usage",
+            "type": "string",
+            "x-introduced": "9.1.12.0"
+          },
+          {
+            "description": "Limits search results to only include price lists with a name that matches the value of this parameter.",
+            "in": "query",
+            "name": "searchString",
+            "type": "string",
+            "x-introduced": "9.1.12.0"
+          },
+          {
+            "description": "The product set the specifies the list of products contained in the price list.",
+            "format": "int32",
+            "in": "query",
+            "name": "productSetId",
+            "type": "integer"
+          },
+          {
+            "description": "A brief description of the  price list, suitable for display to an administrator managing a price list.",
+            "in": "query",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "description": "A mnemonic name for the price list, unique for a particular owner.",
+            "in": "query",
+            "name": "identifier",
+            "type": "string"
+          },
+          {
+            "description": "Indicates if this the price list is marked for deletion:\\n0 = No.\\n1 = Yes, the TradingPositionContainer has been marked for deletion and should not be used.",
+            "format": "int32",
+            "in": "query",
+            "name": "markForDelete",
+            "type": "integer"
+          },
+          {
+            "description": "When more than one price lists are qualified at a particular time, the one with the highest precedence is used.",
+            "format": "double",
+            "in": "query",
+            "name": "precedence",
+            "type": "number"
+          },
+          {
+            "description": "The Trading Position Container type:\\nS = standard price list which contains the base prices for the products in the store catalog\\nC = custom price list which specifies the list of products and their customized prices\\nE = external price list imported from an external system. The external price list specifies the list of products and their customized prices.\\nThe difference between external price list and custom price list is that the former allows the user interface to only pass any updates to the server, and does not need to send the entire price list definition.",
+            "in": "query",
+            "name": "type",
+            "type": "string"
+          },
+          {
+            "description": "This column contains the following bit flag indicating special processing to be performed by task commands that find prices for customers- \\n1 = restricted. To use price lists in this price list container, the customer must be in one of the associated MemberGroups. The associated MemberGroups are recognized by the Store as customer groups (see MGPTRDPSCN and STOREMBRGP). Use the TermAndCondition and Participant objects to limit the use of TradingPositionContainers to certain customers.No other bit flags can be stored in this column. This column is deprecated and is provided for backward compatibility only.",
+            "format": "int32",
+            "in": "query",
+            "name": "flags",
+            "type": "integer"
+          },
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of price lists.",
+            "schema": {
+              "$ref": "#/definitions/PriceListCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Price Lists"
+        ],
+        "description": "Get a collection of price lists.",
+        "operationId": "getPriceLists"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          },
+          {
+            "description": "The price list. An offer is part of a trading position container, which is owned by a member. A trading position container contains trading positions. The position container can be made available to all customers, or to only customers in certain groups. To make the container available to customers use the trading agreements or contracts, and the terms and conditions in the contracts. Under a contract, a trading position container is a price business object that can be referenced by multiple price business policies. The container, as a price business object, can be shared by a store or all stores in a store group. A trading position container is also referred to as a price list. In some business models, you can have multiple standard price lists, which could be based on either cost, or on list prices.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PriceList"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the PriceList.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "DeletePriceListById": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id`value used in the request body can be used as the The `id` parameter in `DELETE /price-lists/{id}`.\n",
+                "operationRef": "#/paths/~1price-lists~1{id}/delete"
+              },
+              "GetPriceListById": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id`value used in the request body can be used as the `id`  parameter in `GET /price-lists/{id}`.\n",
+                "operationRef": "#/paths/~1price-lists~1{id}/get"
+              },
+              "UpdatePriceListById": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id`value used in the request body can be used as the `id` parameter in `PATCH /price-lists/{id}`.\n",
+                "operationRef": "#/paths/~1price-lists~1{id}/patch"
+              }
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Price Lists"
+        ],
+        "description": "Create a price list.",
+        "operationId": "createPriceList",
+        "x-codegen-request-body-name": "PriceList"
+      }
+    },
+    "/price-lists/{id}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique generated ID of the price list item.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Price Lists"
+        ],
+        "description": "Delete a Price list.",
+        "operationId": "deletePriceListById"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique generated ID of the price list item.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The price list. An offer is part of a trading position container, which is owned by a member. A trading position container contains trading positions. The position container can be made available to all customers, or to only customers in certain groups. To make the container available to customers use the trading agreements or contracts, and the terms and conditions in the contracts. Under a contract, a trading position container is a price business object that can be referenced by multiple price business policies. The container, as a price business object, can be shared by a store or all stores in a store group. A trading position container is also referred to as a price list. In some business models, you can have multiple standard price lists, which could be based on either cost, or on list prices.",
+            "schema": {
+              "$ref": "#/definitions/PriceItems"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Price Lists"
+        ],
+        "description": "Get a price list.",
+        "operationId": "getPriceListById"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique generated ID of the price list item.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          },
+          {
+            "description": "The price list. An offer is part of a trading position container, which is owned by a member. A trading position container contains trading positions. The position container can be made available to all customers, or to only customers in certain groups. To make the container available to customers use the trading agreements or contracts, and the terms and conditions in the contracts. Under a contract, a trading position container is a price business object that can be referenced by multiple price business policies. The container, as a price business object, can be shared by a store or all stores in a store group. A trading position container is also referred to as a price list. In some business models, you can have multiple standard price lists, which could be based on either cost, or on list prices.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PriceList"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Price Lists"
+        ],
+        "description": "Update a price list.",
+        "operationId": "updatePriceListById",
+        "x-codegen-request-body-name": "PriceList"
+      }
+    },
+    "/price-lists/{id}/offers": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique generated ID of the price list item.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of offers.",
+            "schema": {
+              "$ref": "#/definitions/OfferCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Price Lists"
+        ],
+        "operationId": "getOffersOfPriceList"
+      }
+    },
+    "/price-lists/{priceListId}/catalog-entries": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique ID of the price list.",
+            "in": "path",
+            "name": "priceListId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name which means, order the items based on the name value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "description": "Limits search results to only include price list catalog entries with a name or part number that matches the value of this parameter.",
+            "in": "query",
+            "name": "searchString",
+            "type": "string"
+          },
+          {
+            "description": "The integer for identifying the language of the catalog entry description. For a list of the integers that map to the supported default languages, refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "query",
+            "name": "languageId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of price list catalog entries.",
+            "schema": {
+              "$ref": "#/definitions/PriceListCatalogEntryCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Price Lists"
+        ],
+        "operationId": "getPriceListCatalogEntries",
+        "x-introduced": "9.1.12.0"
+      }
+    },
+    "/price-lists/{priceListId}/catalog-entries/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique generated ID of the price list item.",
+            "in": "path",
+            "name": "priceListId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique generated ID of the price list item.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The integer for identifying the language of the catalog entry description. For a list of the integers that map to the supported default languages, refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "query",
+            "name": "languageId",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of price list catalog entries.",
+            "schema": {
+              "$ref": "#/definitions/PriceListCatalogEntry"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Price Lists"
+        ],
+        "operationId": "getPriceListCatalogEntryById",
+        "x-introduced": "9.1.12.0"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "properties": {},
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Link": {
+      "description": "Links to related resources.",
+      "properties": {
+        "href": {
+          "description": "The URL of the link.",
+          "format": "uri",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Offer": {
+      "description": "The offer.",
+      "properties": {
+        "catalogEntryId": {
+          "description": "The catalog entry offered for sale. Please see the catalog entry data API for details.",
+          "type": "string"
+        },
+        "endDate": {
+          "description": "The end of the time range during which this Offer is effective. This is a valid ISO 8601 date 2018-05-29T11:00:00Z.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "field1": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "field2": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "flags": {
+          "description": "A field reserved for internal use only.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "id": {
+          "description": "The Offer ID.",
+          "type": "string"
+        },
+        "identifier": {
+          "description": "A number that uniquely identifies this Offer along with its specified catalog entry and price list identifier.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "links": {
+          "description": "Links to related resources.",
+          "properties": {
+            "descriptions": {
+              "description": "",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "prices": {
+              "description": "",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "self": {
+              "description": "",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "maximumQuantity": {
+          "description": "The maximum quantity that can be purchased in a single Order under this Offer.",
+          "format": "double",
+          "type": "number"
+        },
+        "minimumQuantity": {
+          "description": "The minimum quantity that can be purchased in a single Order under this Offer.",
+          "format": "double",
+          "type": "number"
+        },
+        "precedence": {
+          "description": "When more than one Offer is effective at a particular time, the one with the highest precedence is used.",
+          "format": "double",
+          "type": "number"
+        },
+        "priceListId": {
+          "description": "The trading position container or price list this Offer is part of.  Please see the trading position container data API for details.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "published": {
+          "description": "Describes whether or not the offer has been published as follows: \\n0 = not published (temporarily disabled).\\n1 = published.\\n2 = marked for deletion (and not published).",
+          "format": "int32",
+          "type": "integer"
+        },
+        "quantityUnit": {
+          "description": "A unit of measure for minimumQuantity and maximumQuantity. If the value is NULL, then the minimumQuantity and maximumQuantity are multiplied by nominal quantity for a product, used for pricing and the unit of measure of the results.",
+          "type": "string"
+        },
+        "startDate": {
+          "description": "The start of the time range during which this Offer is effective. This is a valid ISO 8601 date 2018-05-29T11:00:00Z.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "updatedDate": {
+          "description": "The last time this Offer was updated.",
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "catalogEntryId"
+      ],
+      "type": "object"
+    },
+    "OfferCollection": {
+      "description": "A collection of offers.",
+      "properties": {
+        "count": {
+          "description": "The total number of items.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/Offer"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count"
+      ],
+      "type": "object"
+    },
+    "PriceItems": {
+      "description": "The price list. An offer is part of a trading position container, which is owned by a member. A trading position container contains trading positions. The position container can be made available to all customers, or to only customers in certain groups. To make the container available to customers use the trading agreements or contracts, and the terms and conditions in the contracts. Under a contract, a trading position container is a price business object that can be referenced by multiple price business policies. The container, as a price business object, can be shared by a store or all stores in a store group. A trading position container is also referred to as a price list. In some business models, you can have multiple standard price lists, which could be based on either cost, or on list prices.",
+      "properties": {
+        "description": {
+          "description": "A brief description of the  price list, suitable for display to an administrator managing a price list.",
+          "type": "string"
+        },
+        "flags": {
+          "description": "This column contains the following bit flag indicating special processing to be performed by task commands that find prices for customers- \\n1 = restricted. To use price lists in this price list container, the customer must be in one of the associated MemberGroups. The associated MemberGroups are recognized by the Store as customer groups (see MGPTRDPSCN and STOREMBRGP). Use the TermAndCondition and Participant objects to limit the use of TradingPositionContainers to certain customers.No other bit flags can be stored in this column. This column is deprecated and is provided for backward compatibility only.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "id": {
+          "description": "The unique generated ID of the price list item.",
+          "type": "string"
+        },
+        "identifier": {
+          "description": "A mnemonic name for the price list, unique for a particular owner.",
+          "type": "string"
+        },
+        "links": {
+          "description": "Links to related resources.",
+          "properties": {
+            "offers": {
+              "description": "",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "self": {
+              "description": "",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "markForDelete": {
+          "description": "Indicates if this the price list is marked for deletion:\\n0 = No.\\n1 = Yes, the TradingPositionContainer has been marked for deletion and should not be used.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "organizationId": {
+          "description": "The owner organization of the price list.",
+          "type": "string"
+        },
+        "precedence": {
+          "description": "When more than one price lists are qualified at a particular time, the one with the highest precedence is used.",
+          "format": "double",
+          "type": "number"
+        },
+        "productSetId": {
+          "description": "The product set the specifies the list of products contained in the price list.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "type": {
+          "description": "The Trading Position Container type:\\nS = standard price list which contains the base prices for the products in the store catalog\\nC = custom price list which specifies the list of products and their customized prices\\nE = external price list imported from an external system. The external price list specifies the list of products and their customized prices.\\nThe difference between external price list and custom price list is that the former allows the user interface to only pass any updates to the server, and does not need to send the entire price list definition.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "organizationId"
+      ],
+      "type": "object"
+    },
+    "PriceList": {
+      "description": "The price list. An offer is part of a trading position container, which is owned by a member. A trading position container contains trading positions. The position container can be made available to all customers, or to only customers in certain groups. To make the container available to customers use the trading agreements or contracts, and the terms and conditions in the contracts. Under a contract, a trading position container is a price business object that can be referenced by multiple price business policies. The container, as a price business object, can be shared by a store or all stores in a store group. A trading position container is also referred to as a price list. In some business models, you can have multiple standard price lists, which could be based on either cost, or on list prices.",
+      "properties": {
+        "description": {
+          "description": "A brief description of the  price list, suitable for display to an administrator managing a price list.",
+          "type": "string"
+        },
+        "flags": {
+          "description": "This column contains the following bit flag indicating special processing to be performed by task commands that find prices for customers- \\n1 = restricted. To use price lists in this price list container, the customer must be in one of the associated MemberGroups. The associated MemberGroups are recognized by the Store as customer groups (see MGPTRDPSCN and STOREMBRGP). Use the TermAndCondition and Participant objects to limit the use of TradingPositionContainers to certain customers.No other bit flags can be stored in this column. This column is deprecated and is provided for backward compatibility only.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "id": {
+          "description": "The unique generated ID of the price list item.",
+          "type": "string"
+        },
+        "identifier": {
+          "description": "A mnemonic name for the price list, unique for a particular owner.",
+          "type": "string"
+        },
+        "markForDelete": {
+          "description": "Indicates if this the price list is marked for deletion:\\n0 = No.\\n1 = Yes, the TradingPositionContainer has been marked for deletion and should not be used.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "organizationId": {
+          "description": "The owner organization of the price list.",
+          "type": "string"
+        },
+        "precedence": {
+          "description": "When more than one price lists are qualified at a particular time, the one with the highest precedence is used.",
+          "format": "double",
+          "type": "number"
+        },
+        "productSetId": {
+          "description": "The product set the specifies the list of products contained in the price list.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "type": {
+          "description": "The Trading Position Container type:\\nS = standard price list which contains the base prices for the products in the store catalog\\nC = custom price list which specifies the list of products and their customized prices\\nE = external price list imported from an external system. The external price list specifies the list of products and their customized prices.\\nThe difference between external price list and custom price list is that the former allows the user interface to only pass any updates to the server, and does not need to send the entire price list definition.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "PriceListCatalogEntry": {
+      "description": "The price list catalog entry.",
+      "properties": {
+        "defaultOffers": {
+          "description": "The default catalog entry offers from the default price list for the store.",
+          "items": {
+            "$ref": "#/definitions/PriceListCatalogEntryOffer"
+          },
+          "type": "array"
+        },
+        "description": {
+          "description": "The short description of the catalog entry.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The catalog entry ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the catalog entry.",
+          "type": "string"
+        },
+        "offers": {
+          "description": "The catalog entry offers in the price list.",
+          "items": {
+            "$ref": "#/definitions/PriceListCatalogEntryOffer"
+          },
+          "type": "array"
+        },
+        "partNumber": {
+          "description": "The catalog entry part number.",
+          "type": "string"
+        },
+        "priceListId": {
+          "description": "The price list ID.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The catalog entry type.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "PriceListCatalogEntryCollection": {
+      "description": "A collection of price list catalog entries.",
+      "properties": {
+        "count": {
+          "description": "The total number of items.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/PriceListCatalogEntry"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PriceListCatalogEntryOffer": {
+      "description": "The price list catalog entry offer.",
+      "properties": {
+        "id": {
+          "description": "The offer ID.",
+          "type": "string"
+        },
+        "identifier": {
+          "description": "A number that uniquely identifies this Offer along with its specified catalog entry and price list identifier.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "maximumQuantity": {
+          "description": "The maximum quantity that can be purchased in a single Order under this Offer.",
+          "format": "double",
+          "type": "number"
+        },
+        "minimumQuantity": {
+          "description": "The minimum quantity that can be purchased in a single Order under this Offer.",
+          "format": "double",
+          "type": "number"
+        },
+        "prices": {
+          "description": "The prices of the catalog entry offers in the price list.",
+          "items": {
+            "$ref": "#/definitions/PriceListCatalogEntryOfferPrice"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PriceListCatalogEntryOfferPrice": {
+      "description": "The price list catalog entry offer.",
+      "properties": {
+        "currency": {
+          "description": "The standard ISO currency code for the offer",
+          "type": "string"
+        },
+        "price": {
+          "description": "The offer price in the currency.",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "PriceListCollection": {
+      "description": "A collection of price lists.",
+      "properties": {
+        "count": {
+          "description": "The total number of items.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "href": {
+          "description": "The URL of the link.",
+          "format": "uri",
+          "type": "string"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/PriceItems"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count"
+      ],
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provide RESTful services to manage price lists.",
+      "name": "Price Lists"
+    }
+  ],
+  "x-components": {}
+}

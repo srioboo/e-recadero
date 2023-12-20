@@ -1,0 +1,496 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "version": "2.0",
+        "title": "store-entity-calculation-usages"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/store-entity-calculation-usages": {
+            "get": {
+                "tags": [
+                    "store-entity-calculation-usages"
+                ],
+                "description": "Get a collection of Store Entity Calculation Usages.",
+                "operationId": "getStoreEntityCalculationUsages",
+                "parameters": [
+                    {
+                        "name": "storeId",
+                        "in": "query",
+                        "description": "The store entity id.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "usageFlags",
+                        "in": "query",
+                        "description": "Bit flags to control how the OrderPrepare command uses this CalculationUsage.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "sequence",
+                        "in": "query",
+                        "description": "The OrderPrepare command uses CalculationUsage in ascending order of this Sequence attribute.",
+                        "required": false,
+                        "type": "number",
+                        "format": "double"
+                    },
+                    {
+                        "name": "calculationCodeId",
+                        "in": "query",
+                        "description": "The default CalculationCode, of the specified CalculationUsage, for the StoreEntity.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "calculationUsageId",
+                        "in": "query",
+                        "description": "The CalculationUsage.",
+                        "required": false,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                          "type": "integer",
+                          "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "activeCalculationCodeCombineMethodId",
+                        "in": "query",
+                        "description": "The CalculationCodeCombineMethod for the StoreEntity and CalculationUsage.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "activeCalculationRuleCombineMethodId",
+                        "in": "query",
+                        "description": "The CalculationRuleCombineMethod for the StoreEntity and CalculationUsage.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "applyCalculationUsageMethodId",
+                        "in": "query",
+                        "description": "The ApplyCalculationUsageMethod for the StoreEntity and CalculationUsage.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "summarizeCalculationUsageMethodId",
+                        "in": "query",
+                        "description": "The SummarizeCalculationUsageMethod for the StoreEntity and CalculationUsage.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "initializeCalculationUsageMethodId",
+                        "in": "query",
+                        "description": "The InitializeCalculationUsageMethod for the StoreEntity and CalculationUsage.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "finalizeCalculationUsageMethodId",
+                        "in": "query",
+                        "description": "The FinalizeCalculationUsageMethod for the StoreEntity and CalculationUsage.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of Store Entity Calculation Usages.",
+                        "schema": {
+                            "$ref": "#/definitions/StoreEntityCalculationUsageCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "store-entity-calculation-usages"
+                ],
+                "description": "Create a Store Entity Calculation Usage.",
+                "operationId": "createStoreEntityCalculationUsage",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "StoreEntityCalculationUsage",
+                        "description": "A Store Entity Calculation Usage.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/StoreEntityCalculationUsage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/store-entity-calculation-usages/storeId:{storeId},calculationUsageId:{calculationUsageId}": {
+            "get": {
+                "tags": [
+                    "store-entity-calculation-usages"
+                ],
+                "description": "Get a Store Entity Calculation Usage.",
+                "operationId": "getStoreEntityCalculationUsageById",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A Store Entity Calculation Usage.",
+                        "schema": {
+                            "$ref": "#/definitions/StoreEntityCalculationUsage"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "store-entity-calculation-usages"
+                ],
+                "description": "Delete a Store Entity Calculation Usage.",
+                "operationId": "deleteStoreEntityCalculationUsageById",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "store-entity-calculation-usages"
+                ],
+                "description": "Update a Store Entity Calculation Usage.",
+                "operationId": "updateStoreEntityCalculationUsageById",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "StoreEntityCalculationUsage",
+                        "description": "A Store Entity Calculation Usage.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/StoreEntityCalculationUsage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "storeId",
+                    "in": "path",
+                    "description": "The store entity id.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "calculationUsageId",
+                    "in": "path",
+                    "description": "The CalculationUsage.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "Link": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The URL of the link."
+                }
+            },
+            "description": "Links to related resources."
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "The error message code."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The error message."
+                },
+                "messageKey": {
+                    "type": "string",
+                    "description": "The error message key."
+                },
+                "messageArguments": {
+                    "type": "array",
+                    "description": "The arguments used to construct the error message.",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The unique identifier for the request."
+                },
+                "locale": {
+                    "type": "string",
+                    "description": "The locale of the error message."
+                }
+            },
+            "description": "The error message item model."
+        },
+        "ErrorResponseContainer": {
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "type": "string",
+                    "description": "The request identifier."
+                },
+                "errors": {
+                    "type": "array",
+                    "description": "The errors.",
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    }
+                }
+            },
+            "description": "The error message model."
+        },
+        "StoreEntityCalculationUsage": {
+            "type": "object",
+            "properties": {
+                "storeId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The store entity id."
+                },
+                "usageFlags": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Bit flags to control how the OrderPrepare command uses this CalculationUsage."
+                },
+                "sequence": {
+                    "type": "number",
+                    "format": "double",
+                    "description": "The OrderPrepare command uses CalculationUsage in ascending order of this Sequence attribute."
+                },
+                "calculationCodeId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The default CalculationCode, of the specified CalculationUsage, for the StoreEntity."
+                },
+                "calculationUsageId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The CalculationUsage."
+                },
+                "activeCalculationCodeCombineMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The CalculationCodeCombineMethod for the StoreEntity and CalculationUsage."
+                },
+                "activeCalculationRuleCombineMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The CalculationRuleCombineMethod for the StoreEntity and CalculationUsage."
+                },
+                "applyCalculationUsageMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The ApplyCalculationUsageMethod for the StoreEntity and CalculationUsage."
+                },
+                "summarizeCalculationUsageMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The SummarizeCalculationUsageMethod for the StoreEntity and CalculationUsage."
+                },
+                "initializeCalculationUsageMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The InitializeCalculationUsageMethod for the StoreEntity and CalculationUsage."
+                },
+                "finalizeCalculationUsageMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The FinalizeCalculationUsageMethod for the StoreEntity and CalculationUsage."
+                }
+            },
+            "description": "A Store Entity Calculation Usage."
+        },
+        "StoreEntityCalculationUsageCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/StoreEntityCalculationUsage"
+                    }
+                }
+            },
+            "description": "A collection of Store Entity Calculation Usages."
+        }
+    }
+}

@@ -1,0 +1,1333 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer marketplace orders and order items.",
+    "title": "Marketplace Order Management",
+    "version": "9.1.12.0",
+    "x-introduced": "9.1.11.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/marketplace-order-items": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the seller organization.",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "type": "integer"
+          },
+          {
+            "description": "The unique numeric ID for identifying the order.",
+            "in": "query",
+            "name": "orderId",
+            "type": "string"
+          },
+          {
+            "collectionFormat": "csv",
+            "description": "Searching order items by status. Available values: <br> M (ON_HOLD) - Order received and ready for processing. <br> C (READY_FOR_PROCESSING) - Payment authorization is complete. All order items are allocated from existing inventory <br> R (CONFIRMED) - Ready for Inventory fulfillment. <br> S (SHIPPED) - Item shipped. <br> X (CANCELLED) - Item cancelled.",
+            "in": "query",
+            "items": {
+              "enum": [
+                "M",
+                "C",
+                "R",
+                "S",
+                "X"
+              ],
+              "type": "string"
+            },
+            "name": "status",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The search string used to search for Order number, product name (case insensitive) and Part number (case insensitive).",
+            "in": "query",
+            "name": "searchString",
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to order items that were created on or after the specified date. The date and time is in ISO 8601 format, e.g 2022-06-01T10:00:00Z.",
+            "format": "date-time",
+            "in": "query",
+            "name": "fromDate",
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to order items that were created on or before the specified date. The date and time is in ISO 8601 format, e.g 2022-06-01T10:00:00Z.",
+            "format": "date-time",
+            "in": "query",
+            "name": "toDate",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=createDate will order the items based on the createDate value in ascending order. <br/>Available values for sort parameter: id, orderId, storeIdentifier, status, partNumber, catalogEntryName, and createDate.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/AllOrderItemsDetails"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Order Items"
+        ],
+        "description": "Get marketplace order items by a seller ID.",
+        "operationId": "getMarketplaceOrderItems",
+        "summary": "Get marketplace order items by Seller ID."
+      }
+    },
+    "/marketplace-order-items/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the order item.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/OrderItem"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Order Items"
+        ],
+        "description": "Get a marketplace order item by ID.",
+        "operationId": "getMarketplaceOrderItem",
+        "summary": "Get a marketplace order item by ID."
+      }
+    },
+    "/marketplace-order-items/{id}/add-shipping-info": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the order item.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddOrderItemShipping"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Marketplace Order Items"
+        ],
+        "description": "Add shipping details for an order item.",
+        "operationId": "addMarketplaceOrderItemShippingDetails",
+        "summary": "Add shipping details.",
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/marketplace-order-items/{id}/cancel": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the order.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The order item has been cancelled."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Marketplace Order Items"
+        ],
+        "description": "Cancel a marketplace order item.",
+        "operationId": "cancelMarketplaceOrderItem",
+        "summary": "Cancel a marketplace order item.",
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/marketplace-order-items/{id}/confirm": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the order item.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Marketplace Order Items"
+        ],
+        "description": "Update an existing order item state to confirm by its ID.",
+        "operationId": "confirmMarketplaceOrderItem",
+        "summary": "Update an existing order item state to confirm.",
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/marketplace-orders": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the seller organization.",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "type": "integer"
+          },
+          {
+            "collectionFormat": "csv",
+            "description": "Searching order items by status. Available values: <br> M (ON_HOLD) - Order received and ready for processing. <br> C (READY_FOR_PROCESSING) - Payment authorization is complete. All order items are allocated from existing inventory <br> R (CONFIRMED) - Ready for Inventory fulfillment. <br> S (SHIPPED) - Item shipped. <br> X (CANCELLED) - Item cancelled.",
+            "in": "query",
+            "items": {
+              "enum": [
+                "M",
+                "C",
+                "R",
+                "S",
+                "X"
+              ],
+              "type": "string"
+            },
+            "name": "itemStatus",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The search string used to search for Order number, product name (case insensitive) and Part number (case insensitive).",
+            "in": "query",
+            "name": "searchString",
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to orders with order items that were created on or after the specified date. The date and time is in ISO 8601 format, e.g 2022-06-01T10:00:00Z.",
+            "format": "date-time",
+            "in": "query",
+            "name": "fromDate",
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to orders with order items that were created on or before the specified date. The date and time is in ISO 8601 format, e.g 2022-06-01T10:00:00Z.",
+            "format": "date-time",
+            "in": "query",
+            "name": "toDate",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=placedDate will order the items based on the placedDate value in ascending order. <br/>Available values for sort parameter: id, storeIdentifier, status, and placedDate",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/AllOrderDetails"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Orders"
+        ],
+        "description": "Get marketplace orders based on provided parameters.",
+        "operationId": "getMarketplaceOrders",
+        "summary": "Get marketplace orders based on provided parameters."
+      }
+    },
+    "/marketplace-orders/{id}/comments": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the order.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the seller organization.",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/GetOrderComments"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Marketplace Orders"
+        ],
+        "description": "Get all the order comments by an order ID.",
+        "operationId": "getMarketplaceOrderComments",
+        "summary": "Get all the order comments by an order ID."
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the order.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrderComment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comment has been added to the order."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Marketplace Orders"
+        ],
+        "description": "Add a comment to an order.",
+        "operationId": "addMarketplaceOrderComment",
+        "summary": "Add a comment to an order.",
+        "x-codegen-request-body-name": "body"
+      }
+    }
+  },
+  "definitions": {
+    "AddOrderItemShipping": {
+      "properties": {
+        "shippedDate": {
+          "description": "The date the package shipped.",
+          "type": "string"
+        },
+        "shippingModeId": {
+          "description": "The shipping mode identifier.",
+          "type": "string"
+        },
+        "trackingNumber": {
+          "description": "The tracking identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Address": {
+      "description": "The order address. An address can used for billing or shipping purposes.",
+      "properties": {
+        "address1": {
+          "description": "The first address line of the street address.",
+          "type": "string"
+        },
+        "address2": {
+          "description": "The second address line of the street address.",
+          "type": "string"
+        },
+        "address3": {
+          "description": "The third address line of the street address.",
+          "type": "string"
+        },
+        "addressType": {
+          "description": "The usage of the address. Available values:<br> * SB - The address is used both as a shipping and a billing address.<br> * S - The address is used as a shipping address.<br> * B - The address is used as a billing address.",
+          "type": "string"
+        },
+        "bestCallingTime": {
+          "description": "Indicates the preferred time of day when the user is to be contacted. Available values:<br> * D - Daytime.<br> * E - Evening.",
+          "type": "string"
+        },
+        "billingCode": {
+          "description": "A code to identify the shipping or billing information.",
+          "type": "string"
+        },
+        "billingCodeType": {
+          "description": "The code for identifying the system or method of code structure that is used for billing.",
+          "type": "string"
+        },
+        "businessTitle": {
+          "description": "The business title for the user, such as a Manager or Chief Executive Officer.",
+          "type": "string"
+        },
+        "city": {
+          "description": "The name of the city where the user or organization resides.",
+          "type": "string"
+        },
+        "country": {
+          "description": "The name of the country or region where the user or organization resides.",
+          "type": "string"
+        },
+        "createDate": {
+          "description": "The date and time that the address was created.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "email1": {
+          "description": "The primary e-mail.",
+          "type": "string"
+        },
+        "email2": {
+          "description": "The secondary e-mail.",
+          "type": "string"
+        },
+        "fax1": {
+          "description": "The primary facsimile number.",
+          "type": "string"
+        },
+        "fax2": {
+          "description": "The secondary facsimile number.",
+          "type": "string"
+        },
+        "field1": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "field2": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "field3": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "firstName": {
+          "description": "The first name of the user.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the address.",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "The last name of the user.",
+          "type": "string"
+        },
+        "memberId": {
+          "description": "The unique numeric ID for identifying the member that this address belongs to. A member can be an organization or a user. If memberId is not specified, then the default is the current user (the user who is logging on). The value cannot be set or updated by users or organizations REST APIs.",
+          "type": "string"
+        },
+        "middleName": {
+          "description": "The middle name or initial of the user.",
+          "type": "string"
+        },
+        "mobilePhone1": {
+          "description": "The primary mobile device number of the user, used for text messaging. The number should be specified without the country code. The country code is specified as the mobilePhone1Country value.",
+          "type": "string"
+        },
+        "mobilePhone1Country": {
+          "description": "The country code of the mobile device phone number. This country is used for country code resolution when sending text messages. This data is required when the mobilePhone1 column is used.",
+          "type": "string"
+        },
+        "nickName": {
+          "description": "The unique name or identifier for the address. A nickname must be unique among the addresses for a specific user or organization. The nickname for a user's address must also be different than the logon ID for a user so that the address does not conflict with the user's self-address. The self-address is created when the account for the user is first created. Multiple users or organizations can each have an address with the same nickname. The value cannot be set or updated by users or organizations REST APIs.",
+          "type": "string"
+        },
+        "officeAddress": {
+          "description": "The internal office address line, such as the internal designation for an employee's desk location.",
+          "type": "string"
+        },
+        "organizationName": {
+          "description": "The name of the organization to which the address information applies, if this is a business address.",
+          "type": "string"
+        },
+        "organizationUnitName": {
+          "description": "The name of the organizational unit to which the address information applies, if this is a business address.",
+          "type": "string"
+        },
+        "packageSuppression": {
+          "description": "Specifies whether or not to include package inserts. Available values:<br> * 1 - Include.<br> * 0 - Do not include.",
+          "type": "integer"
+        },
+        "personTitle": {
+          "description": "The personal title of the user that is associated with the address. For example, Dr., Rev., Mr. or Ms.",
+          "type": "string"
+        },
+        "phone1": {
+          "description": "The primary phone number.",
+          "type": "string"
+        },
+        "phone1Type": {
+          "description": "The type of phone that is used for the primary phone number. For example, TTY for hearing impaired, PCM for pulse-coded modulation, or CEL for mobile.",
+          "type": "string"
+        },
+        "phone2": {
+          "description": "The secondary phone number.",
+          "type": "string"
+        },
+        "phone2Type": {
+          "description": "The type of phone that is used for the secondary phone number. For example, TTY for hearing impaired, PCM for pulse-coded modulation, or CEL for mobile.",
+          "type": "string"
+        },
+        "primary": {
+          "description": "Indicates that the address is the primary address for the user or organization when the user or organization has multiple addresses associated, such as when a user or organization has multiple shipping addresses. The value cannot be set or updated by users or organizations REST APIs. Available values:<br> * 1 - The address is the primary address.<br> * 0 - (Default value) The address is an alternate address.",
+          "type": "integer"
+        },
+        "publishPhone1": {
+          "description": "Whether to list the primary phone number. Available values: <br> * 1 - Yes.<br> * 0 - No.",
+          "type": "integer"
+        },
+        "publishPhone2": {
+          "description": "Whether to list the secondary phone number. Available values: <br> * 1 - Yes.<br> * 0 - No.",
+          "type": "integer"
+        },
+        "selfAddress": {
+          "description": "Indicates whether the address is associated with the registration of the user or organization. This value cannot be edited after address creation. Available values: <br> * 1 - Yes.<br> * 0 - No.",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "shippingGeoCode": {
+          "description": "The geographical code that identifies a region for the shipping purposes.",
+          "type": "string"
+        },
+        "state": {
+          "description": "The name of the state, province, or equivalent where the user or organization resides.",
+          "type": "string"
+        },
+        "status": {
+          "description": "Indicates the status of the address. When an address is created, its status is marked with a \"P\", meaning \"permanent\", and indicates that the address is the current address. When an address is updated, a new record of the address is created with the updates. The new record is marked with a \"P\" and the earlier record is marked with a \"T\", meaning \"temporary\", which indicates that the address is the historical address. This value cannot be edited.",
+          "readOnly": true,
+          "type": "string"
+        },
+        "taxGeoCode": {
+          "description": "The geographical tax code that identifies a region for the tax purposes.",
+          "type": "string"
+        },
+        "zipCode": {
+          "description": "The ZIP or postal code of the user's address.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "AllOrderDetail": {
+      "properties": {
+        "currency": {
+          "description": "The order currency.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The order ID.",
+          "type": "string"
+        },
+        "orderTotal": {
+          "description": "The order total.",
+          "type": "number"
+        },
+        "placedDate": {
+          "description": "The date the order was placed.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store of which the order is part.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeIdentifier": {
+          "description": "The store identifier.",
+          "type": "string"
+        },
+        "updateDate": {
+          "description": "The date of the last update to the order.",
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "AllOrderDetails": {
+      "properties": {
+        "count": {
+          "description": "The count shows total number of items.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/AllOrderDetail"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "AllOrderItemsDetails": {
+      "properties": {
+        "count": {
+          "description": "The count shows total number of items.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/OrderItem"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "properties": {},
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GetOrderComment": {
+      "properties": {
+        "comment": {
+          "description": "The content of the order comment.",
+          "type": "string"
+        },
+        "lastUpdate": {
+          "description": "The date and time this comment is created.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GetOrderComments": {
+      "properties": {
+        "count": {
+          "description": "The count shows total number of items.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/GetOrderComment"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "OrderComment": {
+      "properties": {
+        "comment": {
+          "description": "The content of the order comment.",
+          "type": "string"
+        },
+        "email": {
+          "description": "The email address for notifying order comment.",
+          "type": "string"
+        },
+        "sellerId": {
+          "description": "The seller organization ID.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "OrderComments": {
+      "properties": {
+        "count": {
+          "description": "The count shows total number of items.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/OrderComment"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "OrderItem": {
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/Address"
+        },
+        "addressId": {
+          "description": "The unique numeric ID for identifying the shipping address, if any, for this order item.",
+          "type": "string"
+        },
+        "adjustmentSum": {
+          "description": "The total of the adjustments.",
+          "type": "number"
+        },
+        "allocatedFulfillmentCenterId": {
+          "description": "The fulfillment center from which inventory for this order item is allocated or backordered.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "allocatedQuantity": {
+          "description": "Quantity allocated or backordered for this order item.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "allocationAddressId": {
+          "description": "The unique numeric ID for identifying the shipping address used when inventory for this order item was allocated or backordered.",
+          "type": "string"
+        },
+        "availableQuantity": {
+          "description": "If specified, indicates the quantity available for purchase.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "basePrice": {
+          "description": "If price was converted from a currency different from the order item currency, base price is the price that was converted to determine the price.",
+          "type": "number"
+        },
+        "basePriceCurrency": {
+          "description": "The currency of the base price.",
+          "type": "string"
+        },
+        "catalogEntryId": {
+          "description": "The catalog entry id, if any, of the product being purchased.",
+          "type": "string"
+        },
+        "catalogEntryName": {
+          "description": "The name of the catalog entry associated with this order item.",
+          "type": "string"
+        },
+        "comment": {
+          "description": "Comments from the customer, such as a greeting for a gift.",
+          "type": "string"
+        },
+        "configurationId": {
+          "description": "The identifier that is provided by an external product configurator.",
+          "type": "string"
+        },
+        "contractId": {
+          "description": "The TradingAgreement, if known, that determines the TermAndCondition objects (including how the price is determined) that apply to this order item.",
+          "type": "string"
+        },
+        "correlationGroup": {
+          "description": "Normally this is the same as order item id. except 1. When an order item is split by the AllocateInventory task command, the newly created OrderItem inherits the CORRELATIONGROUP value from the original order item. 2. When the PREPAREFLAGS column indicates \"quotation\", the OrderItem inherits the CORRELATIONGROUP value from the corresponding OrderItem in the parent order.\n",
+          "type": "string"
+        },
+        "createDate": {
+          "description": "The date and time this order item was created.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "currency": {
+          "description": "The currency of order item monetary amounts other than base price. This is the same as the currency of the order. This is a currency code according to ISO 4217 standards.",
+          "type": "string"
+        },
+        "description": {
+          "description": "A mnemonic description of the order Item, suitable for display to the customer.",
+          "type": "string"
+        },
+        "displayAdjustment": {
+          "description": "The order item level display adjustment.",
+          "type": "number"
+        },
+        "estimatedAvailableDate": {
+          "description": "An estimate of when sufficient inventory will be available to fulfill this order item. This estimate does not include the shipping offset.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "field1": {
+          "description": "Customizable field 1.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "field2": {
+          "description": "Customizable field 2.",
+          "type": "string"
+        },
+        "fulfillmentCenterId": {
+          "description": "The unique numeric ID for identifying the fulfillment center, if known, from which the product will ship.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "fulfillmentStatus": {
+          "description": "The fulfillment status of the order item:\n * 'INT' - not yet released for fulfillment.\n * 'OUT' - released for fulfillment.\n * 'SHIP' - shipment confirmed.\n * 'HOLD' - a temporary status between INT and OUT status.\n",
+          "enum": [
+            "HOLD",
+            "HSIP",
+            "INT",
+            "OUT"
+          ],
+          "type": "string"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the order item.",
+          "type": "string"
+        },
+        "inventoryStatus": {
+          "description": "The status for the order item. It may not be the same as the status in the order. The allocation status of inventory for this order item:\n  * 'NALC' - Inventory is not allocated nor on back-order.\n  * 'BO' - Inventory is on back-order.\n  * 'ALLC' - Inventory is allocated.\n  * 'FUL' - Inventory has been released for fulfillment.\n  * 'AVL' - Inventory is available.\n",
+          "enum": [
+            "ALLO",
+            "AVL",
+            "BO",
+            "FUL",
+            "NALC"
+          ],
+          "type": "string"
+        },
+        "isExpedited": {
+          "default": "N",
+          "description": "Indicates that the item should receive expedited handling in fulfillment. \n  * 'Y' - indicates that it should receive expedited handling. \n  * 'N' - indicates that it should not (this is the default).\n",
+          "enum": [
+            "N",
+            "Y"
+          ],
+          "type": "string"
+        },
+        "itemSpecId": {
+          "description": "The specified item to be allocated from available inventory and shipped to the customer.",
+          "type": "string"
+        },
+        "lastAllocatedUpdatedDate": {
+          "description": "The most recent date and time inventory was checked (for unallocated order items), allocated, or backordered, for this order item.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "lineItemType": {
+          "description": "If specified, indicates the type of the order item. ALT = the order item represents an alternative item (might not be exactly what the customer requested).",
+          "type": "string"
+        },
+        "neededQuantity": {
+          "description": "Quantity needed for fulfillment.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "offerId": {
+          "description": "The unique numeric ID for identifying the offer, if any, and if it still exists, from which price was obtained.",
+          "type": "string"
+        },
+        "orderId": {
+          "description": "The unique numeric ID for identifying the order of which the order item is part.",
+          "type": "string"
+        },
+        "orderReleaseNumber": {
+          "description": "The associated order release, if any.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "orderStatus": {
+          "description": "The status of the order of which the order item is part.",
+          "type": "string"
+        },
+        "partNumber": {
+          "description": "The part number of the catalog entry for the product.",
+          "type": "string"
+        },
+        "prepareFlags": {
+          "description": "Contains the following bit flags indicating special processing associated with this order item.\n  * 1 - generated. The order item was generated during a previous execution of the OrderPrepare command. The next time the OrderPrepare command is run, it first removes all generated order items so that they can be regenerated when applicable.\n  * 2 - priceOverride. The price of the order item has been manually entered and will not be changed by customer commands.\n  * 4 - fulfillmentCenterOverride. The fulfillment center has been manually specified and will not be changed by customer commands.\n  * 8 - directCalculationCodeAttachment. CalculationCodes may be directly attached to the order item. The default CalculationCodeCombineMethod will not look for direct attachments unless this flag is true.\n  * 16 - shippingChargeByCarrier. The contract for this order item indicates that no shipping charge will be calculated by WebSphere Commerce. It may be calculated and charged by the carrier on fulfillment.\n  * 32 - quotation. The order item was obtained from a quotation. The price will not be automatically refreshed by customer commands.\n  * 64 - notConfigured. Price lookup and inventory allocation for this order item is not done using the component items found in the OICOMPddST table. This flag does not need to be set for order items whose CONFIGURATIONID column value is null.\n  * 128 - autoAdd. This order item, such as a free gift, was automatically added to the order by the OrderCalculate command. This flag is for information-display purposes only and does not affect price calculations.\n  * 256 - hasPersonalizationAttributes. The order item contains personalization attributes.\n  * 512 - skipRepricing. The order item was marked as not to be repriced. For example, it is set as skipRepricing when a quote is generated into an order if the quote has not expired.\n  * 1024 - shippingAdjusted, The order items shipping charge is manually adjusted.\n  * 2048 - priceRefreshed. The order items price has already been refreshed.\n",
+          "format": "int32",
+          "type": "integer"
+        },
+        "price": {
+          "description": "The price for the nominal quantity of the product",
+          "type": "number"
+        },
+        "promisedAvailableDate": {
+          "description": "When an order is placed, this would be set to estimated available date. After that it would normally not be updated, although a CSR could manually update this to reflect a verbal commitment made to the customer.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "promisedShipDate": {
+          "description": "The promised shipping date.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "quantity": {
+          "description": "The actual quantity being purchased, in the unit of measurement specified by quantity measure.",
+          "format": "double",
+          "type": "number"
+        },
+        "releasedDate": {
+          "description": "The date and time this order item was released for fulfillment.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "requestedShipDate": {
+          "description": "The ship date and time that has been requested for the order item. When no date (null) is specified, the ship date will be whenever the item is available to be shipped. When a date is specified, the ship date will be no sooner than the requested date. This is because a backorder could delay the ship date beyond the requested date.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "shipmentTrackingNumber": {
+          "description": "The shipment tracking number associated with this order item.",
+          "type": "string"
+        },
+        "shippedDate": {
+          "description": "The date and time this order item was manifested for shipment.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "shippingCharge": {
+          "description": "The base shipping charge associated with the order item. It is the shipping charge before any adjustments.",
+          "type": "number"
+        },
+        "shippingModeDescription": {
+          "description": "The description of the shipping mode associated with this order item.",
+          "type": "string"
+        },
+        "shippingModeId": {
+          "description": "The unique numeric ID for identifying the shipping mode, if still known.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "shippingOffset": {
+          "description": "An estimate of how many seconds it will take to ship this item once the order is placed and inventory has been allocated.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "shippingTaxAmount": {
+          "description": "The total shipping taxes associated with this order item.",
+          "type": "number"
+        },
+        "status": {
+          "description": "The status for the order item. It may not be the same as the status in the order.",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store of which the order is part.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeIdentifier": {
+          "description": "The store identifier.",
+          "type": "string"
+        },
+        "supplierData": {
+          "description": "Generated and used by the external system that originates an order. This value can be returned with a quotation, and sent when an order is placed on an external system. For example, this column can be used to contain a supplier distribution center ID.",
+          "type": "string"
+        },
+        "supplierPartNumber": {
+          "description": "The supplier part number, if known. Suitable for display to the customer.",
+          "type": "string"
+        },
+        "taxAmount": {
+          "description": "The total sales taxes associated with this order item, in the currency specified by currency.",
+          "type": "number"
+        },
+        "termConditionId": {
+          "description": "The TermAndCondition, if known, that determined the price for this order item.",
+          "type": "string"
+        },
+        "tieCode": {
+          "description": "Used for items that are shipping at the same time (Ship Together).",
+          "format": "int32",
+          "type": "integer"
+        },
+        "totalAdjustment": {
+          "description": "The total of the monetary amounts of the order item adjustments for this order item. This column also includes all kinds of shipping charge adjustments like discount, coupon, shipping adjustment and surcharge.",
+          "type": "number"
+        },
+        "totalProduct": {
+          "description": "The total prices of the order item (price times quantity)",
+          "type": "number"
+        },
+        "totalShippingCharge": {
+          "description": "The shipping charge total of this order item. The shipping charge total is the sum of the base shipping charge and the total shipping adjustment.",
+          "type": "number"
+        },
+        "updateDate": {
+          "description": "The most recent date and time this order item was updated. Changing inventory allocation related information does not cause this timestamp to be updated",
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provides RESTful service to manage marketplace orders.",
+      "name": "Marketplace Orders"
+    },
+    {
+      "description": "Provides RESTful service to manage marketplace order items.",
+      "name": "Marketplace Order Items"
+    }
+  ],
+  "x-components": {}
+}

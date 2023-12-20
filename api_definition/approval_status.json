@@ -1,0 +1,422 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "title": "Approval Status",
+        "version": "2.0"
+    },
+    "tags": [
+        {
+            "name": "Approval Status",
+            "description": "This API provides RESTful services to manage approval status resources."
+        }
+    ],
+    "paths": {
+        "/approval-statuses": {
+            "get": {
+                "operationId": "getApprovalStatuses",
+                "tags": [
+                    "Approval Status"
+                ],
+                "parameters": [
+                    {
+                        "description": "Query by flow type identifier which must be one of the values listed below.\n * 10001 - RFQ response\n * 10002 - Order approval\n * 10003 - Contract approval\n * 10004 - Buyer approval\n * 10005 - Seller org approval\n * 10006 - Seller approval",
+			            "enum": [
+				            "10001",
+				            "10002",
+				            "10003",
+				            "10004",
+				            "10005",
+				            "10006"
+			            ],
+                        "in": "query",
+                        "name": "flowTypeId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Query by approval request submitter's first name.",
+                        "in": "query",
+                        "name": "submitterFirstName",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Query by approval request submitter's middle name.",
+                        "in": "query",
+                        "name": "submitterMiddleName",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Query by approval request submitter's last name.",
+                        "in": "query",
+                        "name": "submitterLastName",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Query by approval request start time formatted as standard ISO date.",
+                        "format": "date",
+                        "in": "query",
+                        "name": "startSubmitDate",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Query by approval request end time formatted as standard ISO date.",
+                        "format": "date",
+                        "in": "query",
+                        "name": "endSubmitDate",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Query by approval request status.",
+                        "in": "query",
+                        "name": "status",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "description": "Query by approval request entity ID, such as order ID.",
+                        "in": "query",
+                        "name": "entityId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Query by approver ID. Only returns approval requests that can be approved by the current user.",
+                        "in": "query",
+                        "name": "approverId",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name,-id will order the items first based on the name value in ascending order, and then by their ID value in descending order.",
+                         "in": "query",
+                         "name": "sort",
+                         "required": false,
+                         "type": "string"
+                    },
+                    {
+                        "description": "Limits search results to only include users whose first name, last name or logon ID matches the value of this parameter.",
+                        "in": "query",
+                        "name": "searchString",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "default": 0,
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "description": "The maximum number of records to return.",
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requested completed successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApprovalStatusCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session isn't valid.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "403": {
+                        "description": "The user isn't authorized to perform the specified request.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error. Additional details will be contained on the server logs.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                },
+                "summary": "Find all approval status records available to the current user."
+            }
+        },
+        "/approval-statuses/{id}": {
+            "get": {
+                "operationId": "findByApprovalStatusId",
+                "tags": [
+                    "Approval Status"
+                ],
+                "parameters": [
+                    {
+                        "description": "The unique numeric ID for identifying the approval status record.",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requested completed successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/ApprovalStatus"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session isn't valid.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "403": {
+                        "description": "The user isn't authorized to perform the specified request.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The specified resource couldn't be found.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error. Additional details will be contained on the server logs.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                },
+                "summary": "Find an approval status record by its ID."
+            },
+            "patch": {
+                "operationId": "updateApprovalStatus",
+                "tags": [
+                    "Approval Status"
+                ],
+                "parameters": [
+                    {
+                        "description": "The unique numeric ID for identifying the approval status record.",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The request body for updating an approval status record.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ApprovalStatus"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session isn't valid.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "403": {
+                        "description": "The user isn't authorized to perform the specified request.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error. Additional details will be contained on the server logs.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                },
+                "summary": "Update the status to approve (1) or reject (2) and add an optional comment to the approval status record. Note that only an approval record that is pending approval. For example, an approval status record with a status of 0 can be approved or rejected. Only the status and comment property values from the body are used when updating the approval record."
+            }
+        }
+    },
+    "definitions": {
+        "ErrorResponseContainer": {
+            "description": "The error message model.",
+            "properties": {
+                "errors": {
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    },
+                    "type": "array"
+                },
+                "requestId": {
+                    "description": "The request identifier.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Error": {
+            "description": "The error message item model.",
+            "properties": {
+                "code": {
+                    "description": "The error message code.",
+                    "type": "string"
+                },
+                "correlationId": {
+                    "description": "The unique identifier for the request.",
+                    "type": "string"
+                },
+                "locale": {
+                    "description": "The locale of the error message.",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "The error message.",
+                    "type": "string"
+                },
+                "messageArguments": {
+                    "description": "The arguments used to construct the error message.",
+                    "items": {},
+                    "type": "array"
+                },
+                "messageKey": {
+                    "description": "The error message key.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ApprovalStatusCollection": {
+            "properties": {
+                "count": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The number of approval status records in total based on the query parameters specified."
+                },
+                "items": {
+                    "items": {
+                        "$ref": "#/definitions/ApprovalStatus"
+                    },
+                    "type": "array"
+                },
+                "limit": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The number of approval status records returned."
+                },
+                "offset": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The starting position of the first approval status record."
+                }
+            }
+        },
+        "ApprovalStatus": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "The unique identifier of the approval status record."
+                },
+                "approveDate": {
+                    "format": "date",
+                    "type": "string",
+                    "description": "The time when the approval record was acted on; that is, the time it was approved or rejected."
+                },
+                "approverGroupId": {
+                    "type": "string",
+                    "description": "The unique numeric ID for identifying the member group to which the approver belongs, making the approver an approver for this record."
+                },
+                "approverId": {
+                    "type": "string",
+                    "description": "The unique numeric ID for identifying the user eligible to approve or reject the requested action."
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "Comments entered by approver during approval or rejection."
+                },
+                "entityId": {
+                    "type": "string",
+                    "description": "A reference to an approval status object instance within a flow type."
+                },
+                "flowId": {
+                    "type": "string",
+                    "description": "Reference to the flow for the steps in the approval process."
+                },
+                "flowTypeId": {
+                    "type": "string",
+                    "description": "Reference to the type of flow that determines the type of business object included in the approval. There are different IDs for each type of approval, including RFQ, order, user registration, contract, organization registration approvals and so on."
+                },
+                "stateId": {
+                    "type": "string",
+                    "description": "The current state of the approval flow."
+                },
+                "status": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Approval status of this action. Valid values are as follows: \n0=pending\n1=approved\n2=rejected."
+                },
+                "submitDate": {
+                    "format": "date",
+                    "type": "string",
+                    "description": "The time that the action requiring approval was requested."
+                },
+                "submitterId": {
+                    "type": "string",
+                    "description": "ID of the user requesting the action which needs approval."
+                }
+            }
+        }
+    }
+}

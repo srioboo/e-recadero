@@ -1,0 +1,854 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Marketing Spots Admininistrative REST APIs",
+    "version": "2.0"
+  },
+  "paths": {
+    "/marketing-spots": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "search by name",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingSpotCollection"
+            },
+            "x-entity-path": "dataArea/marketingSpot"
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "getMarketingSpots",
+        "summary": "Get the marketing spots in a store.",
+        "x-expression-builder-class": "com.ibm.commerce.rest.admin.v2.marketing.MarketingSpotExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingSpotType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MarketingSpot"
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the content.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "createMarketingSpot",
+        "summary": "Create a marketing spot.",
+        "x-action-code": "Add",
+        "x-expression-template": "/MarketingSpot[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "processMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ProcessMarketingSpotType"
+      }
+    },
+    "/marketing-spots/by-ids": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingSpotCollection"
+            },
+            "x-entity-path": "dataArea/marketingSpot"
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "getMarketingSpotsByIds",
+        "summary": "Get marketing spots by IDs.",
+        "x-expression-template": "{_wcf.ap={accessProfile}}/MarketingSpot[MarketingSpotIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingSpot",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingSpotType"
+      }
+    },
+    "/marketing-spots/by-name-or-description": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The name or description pattern to search.",
+            "in": "query",
+            "name": "searchText",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingSpotCollection"
+            },
+            "x-entity-path": "dataArea/marketingSpot"
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "getMarketingSpotsByNameOrDescription",
+        "summary": "Searche marketing spots by name or description.",
+        "x-expression-builder-class": "com.ibm.commerce.foundation.internal.client.taglib.util.SearchExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingSpot",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details",
+          "template": "/MarketingSpot[Usage='MARKETING' and search(MarketingSpotIdentifier/ExternalIdentifier/Name='$searchText$' or Description='$searchText$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingSpotType"
+      }
+    },
+    "/marketing-spots/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "deleteMarketingSpot",
+        "summary": "Delete a marketing spot.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/MarketingSpot[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "processMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ProcessMarketingSpotType"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingSpot"
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]"
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "getMarketingSpot",
+        "summary": "Get a marketing spot.",
+        "x-expression-template": "{_wcf.ap={accessProfile}}/MarketingSpot[MarketingSpotIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingSpot",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingSpotType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MarketingSpot"
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "updateMarketingSpot",
+        "summary": "Update a marketing spot.",
+        "x-action-code": "Change",
+        "x-expression-template": "/MarketingSpot[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingSpotType"
+      }
+    },
+    "/marketing-spots/{id}/default-content": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultContent/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DefaultContent"
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultContent[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the marketing spot description.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultContent[1]/uniqueID"
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "getMarketingSpotDefaultContent",
+        "summary": "Add a default content to marketing spot.",
+        "x-action-code": "Add",
+        "x-expression-template": "/MarketingSpot[1]/DefaultContent[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingSpotType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      }
+    },
+    "/marketing-spots/{id}/default-content/{defaultContentId}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the relationship between marketing spot and the default content .",
+            "format": "int32",
+            "in": "path",
+            "name": "defaultContentId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultContent[1]/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "deleteMarketingSpotDefaultContent",
+        "summary": "Delete a default content of a marketing spot.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/MarketingSpot[1]/DefaultContent[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingSpotType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the relationship between marketing spot and the default content .",
+            "format": "int32",
+            "in": "path",
+            "name": "defaultContentId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultContent[1]/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultContent/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DefaultContent"
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultContent[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "updateMarketingSpotDefaultContent",
+        "summary": "Update a default content of the marketing spot.",
+        "x-action-code": "Change",
+        "x-expression-template": "/MarketingSpot[1]/DefaultContent[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingSpotType"
+      }
+    },
+    "/marketing-spots/{id}/default-title": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultMarketingSpotTitle/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DefaultTitle"
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultMarketingSpotTitle[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the marketing spot description.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultMarketingSpotTitle[1]/uniqueID"
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "createMarketingSpotDefaultTitle",
+        "summary": "Add a default title content to marketing spot.",
+        "x-action-code": "Add",
+        "x-expression-template": "/MarketingSpot[1]/DefaultMarketingSpotTitle[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingSpotType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      }
+    },
+    "/marketing-spots/{id}/default-title/{defaultTitleId}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the relationship between marketing spot and the default title content .",
+            "format": "int32",
+            "in": "path",
+            "name": "defaultTitleId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultMarketingSpotTitle[1]/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "deleteMarketingSpotDefaultTitle",
+        "summary": "Delete a default title of a marketing spot.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/MarketingSpot[1]/DefaultMarketingSpotTitle[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingSpotType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/marketingSpotIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the relationship between marketing spot and the default title content .",
+            "format": "int32",
+            "in": "path",
+            "name": "defaultTitleId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultMarketingSpotTitle[1]/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultMarketingSpotTitle/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DefaultTitle"
+            },
+            "x-entity-path": "dataArea/marketingSpot[1]/defaultMarketingSpotTitle[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "MarketingSpots"
+        ],
+        "operationId": "updateMarketingSpotDefaultTitle",
+        "summary": "Update a default title content of a marketing spot.",
+        "x-action-code": "Change",
+        "x-expression-template": "/MarketingSpot[1]/DefaultMarketingSpotTitle[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingSpot",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingSpotType"
+      }
+    }
+  },
+  "definitions": {
+    "DefaultContent": {
+      "description": "A default content of a marketing spot.",
+      "properties": {
+        "content": {
+          "description": "The value of the default content.",
+          "type": "string",
+          "x-entity-path": "contentUniqueID"
+        },
+        "contentType": {
+          "description": "The type of the default content.",
+          "type": "string",
+          "x-entity-path": "format"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the relationship between marketing spot and the default content.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "uniqueID"
+        },
+        "sequence": {
+          "description": "The sequence of the default content.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "storeId": {
+          "description": "The ID of the store to which the default content belongs.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "storeIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.marketing.facade.datatypes.DefaultContentType"
+    },
+    "DefaultTitle": {
+      "description": "A default title content of a marketing spot.",
+      "properties": {
+        "contentId": {
+          "description": "The unique numeric ID for identifying the title content.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "contentUniqueID"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the relationship between marketing spot and the default title content.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "uniqueID"
+        },
+        "sequence": {
+          "description": "The sequence of the default title.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "storeId": {
+          "description": "The ID of the store to which the default title content belongs.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "storeIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.marketing.facade.datatypes.DefaultMarketingSpotTitleType"
+    },
+    "MarketingSpot": {
+      "description": "A marketing spot.",
+      "properties": {
+        "defaultContent": {
+          "items": {
+            "$ref": "#/definitions/DefaultContent"
+          },
+          "type": "array"
+        },
+        "defaultTitle": {
+          "items": {
+            "$ref": "#/definitions/DefaultTitle"
+          },
+          "type": "array",
+          "x-entity-path": "defaultMarketingSpotTitle"
+        },
+        "description": {
+          "description": "The description of the marketing spot.",
+          "type": "string"
+        },
+        "displayable": {
+          "description": "Indicates if this element should be displayed in administrative tool. \n * '1/Null' - Yes\n * '0' - No\n",
+          "enum": [
+            1,
+            0
+          ],
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "UIDisplayable"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the marketing spot.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "marketingSpotIdentifier/uniqueID"
+        },
+        "name": {
+          "description": "The name of the marketing spot.",
+          "type": "string",
+          "x-entity-path": "marketingSpotIdentifier/externalIdentifier/name"
+        },
+        "storeId": {
+          "description": "The ID of the store to which the marketing spot belongs.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "marketingSpotIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "supportsCatalogEntry": {
+          "description": "This marketing spot is intend to display a catalog entry recommendation.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "supportsCatalogGroup": {
+          "description": "This marketing spot is intend to display a category recommendation.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "supportsMarketingContent": {
+          "description": "This marketing spot is intend to display content.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "supportsWidget": {
+          "description": "This marketing spot has a widget.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "updatedDateTime": {
+          "description": "The date and time when the marketing spot was created.",
+          "format": "date-time",
+          "type": "string",
+          "x-entity-path": "lastUpdate"
+        },
+        "usage": {
+          "description": "The usage type of the marketing spot. MARKETING - Delivers marketing message. CONTENT - Delivers store content. LAYOUTMARKETINGSPOT - Displays Commerce Composer layouts. SEARCH - Used by search rules. STOREFEATURE - Used by store functions. STOREFILEREF - Used by store style selection.",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.marketing.facade.datatypes.MarketingSpotType"
+    },
+    "MarketingSpotCollection": {
+      "description": "A collection of marketing spots.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/MarketingSpot"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "tags": [
+    {
+      "description": "This class provides RESTful services to manage marketing spots.",
+      "name": "MarketingSpots"
+    }
+  ],
+  "x-components": {}
+}

@@ -1,0 +1,2750 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "<p>Create and administer marketplace catalog management resources.</p> <p>Please note that these APIs are introduced in HCL Commerce V9.1.11.</p> ",
+    "title": "Marketplace Catalog Management",
+    "version": "9.1.12.0",
+    "x-introduced": "9.1.11.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/marketplace-catalog-downloads": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Specify sellerId and objectType in request body. One can also filter by langId and parentGroupIdentifier.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request succeeded, and a new resource was created.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the download request.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/IDResponseBase"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Download"
+        ],
+        "description": "Initiate catalog download process. Supports download of products and attributes for a store and seller organization.",
+        "operationId": "createCatalogDownloadRequest",
+        "summary": "Initiate catalog download process."
+      }
+    },
+    "/marketplace-catalog-downloads/{id}": {
+      "get": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog download request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "format": "binary",
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Download"
+        ],
+        "description": "Get downloaded catalog.",
+        "operationId": "getCatalogDownloadRequest",
+        "summary": "Get the downloaded catalog."
+      }
+    },
+    "/marketplace-catalog-downloads/{id}/status": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog download request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/catalogDownloadStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Download"
+        ],
+        "description": "Get the status of a catalog download request.",
+        "operationId": "getCatalogDownloadRequestStatus",
+        "summary": "Get the status of a catalog download request."
+      }
+    },
+    "/marketplace-catalog-upload-users": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The seller organization ID",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The store ID",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Limits the results to those that match the specified search string.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name will order the items based on the name value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/userCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Get catalog upload request users for a store and seller organization.",
+        "operationId": "getCatalogUploadRequestUsers",
+        "summary": "Get catalog upload request users."
+      }
+    },
+    "/marketplace-catalog-uploads": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/xhtml+xml"
+        ],
+        "parameters": [
+          {
+            "description": "The seller organization ID",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The store ID",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "collectionFormat": "csv",
+            "description": "The upload status",
+            "in": "query",
+            "items": {
+              "enum": [
+                "WORKING",
+                "READY_FOR_APPROVAL",
+                "APPROVED",
+                "READY_TO_COMMIT",
+                "COMPLETE",
+                "COMMIT_FAILED",
+                "COMMIT_IN_PROGRESS",
+                "COMMITTED",
+                "CANCELED",
+                "REJECTED",
+                "CANCELED_BY_SELLER"
+              ],
+              "type": "string"
+            },
+            "name": "status",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "Limits the results to those that match the specified search string.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to those that match the specified user ID.",
+            "in": "query",
+            "name": "userId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=commitDate will order the items based on the commitDate value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/catalogUploadCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Get catalog upload requests for a store and seller organization.",
+        "operationId": "getCatalogUploadRequests",
+        "summary": "Get catalog upload requests."
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/catalogUploadCreateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The request succeeded, and a new resource was created.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the upload request.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/IDResponseBase"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Initiate catalog upload request.",
+        "operationId": "createCatalogUploadRequest",
+        "summary": "Initiate catalog upload request."
+      }
+    },
+    "/marketplace-catalog-uploads/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Cancels catalog upload request.",
+        "operationId": "cancelCatalogUploadRequest",
+        "summary": "Cancels catalog upload request."
+      },
+      "get": {
+        "produces": [
+          "application/json",
+          "application/xhtml+xml"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/catalogUpload"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Get existing catalog upload request.",
+        "operationId": "getCatalogUploadRequestById",
+        "summary": "Get catalog upload request information."
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/catalogUploadUpdateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The request is successful."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Update existing catalog upload request.",
+        "operationId": "updateCatalogUploadRequest",
+        "summary": "Update existing catalog upload request."
+      }
+    },
+    "/marketplace-catalog-uploads/{id}/approve": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is accepted.",
+            "schema": {
+              "$ref": "#/definitions/approveResponseCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Approve catalog upload request.",
+        "operationId": "approveCatalogUploadRequest",
+        "summary": "Approve catalog upload request",
+        "x-introduced": "9.1.12.0"
+      }
+    },
+    "/marketplace-catalog-uploads/{id}/comments": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/xhtml+xml"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "Limits the results to those that match the specified user ID.",
+            "in": "query",
+            "name": "userId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=createDate will order the items based on the createDate value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/commentCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Get comments for the catalog upload request.",
+        "operationId": "getCatalogUploadRequestComments",
+        "summary": "Get comments for the catalog upload request."
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The request succeeded, and a new resource was created.",
+            "schema": {
+              "$ref": "#/definitions/commentResponseCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Add comment for the catalog upload request.",
+        "operationId": "createCatalogUploadCommentsRequest",
+        "summary": "Add comment for the catalog upload request."
+      }
+    },
+    "/marketplace-catalog-uploads/{id}/files": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "csv",
+            "description": "The upload status",
+            "in": "query",
+            "items": {
+              "enum": [
+                "NEW",
+                "PROCESSING",
+                "COMPLETE",
+                "FAILED",
+                "CANCELED"
+              ],
+              "type": "string"
+            },
+            "name": "status",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "Limits the results to those that match the specified user ID.",
+            "in": "query",
+            "name": "userId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=status will order the items based on the status value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/catalogFileCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Get list of files associated with catalog upload request.",
+        "operationId": "getFilesInCatalogUploadRequest",
+        "summary": "Get list of files associated with catalog upload request."
+      },
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "default": "UTF-8",
+            "description": "The encoding of the file to be uploaded.",
+            "in": "query",
+            "name": "characterSet",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The currency.",
+            "in": "query",
+            "name": "currency",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The language ID.",
+            "in": "query",
+            "name": "languageId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "format": "binary",
+            "in": "formData",
+            "name": "UpLoadedFile",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The request is accepted.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the file uploaded.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/FileIDResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Upload file in catalog upload request.",
+        "operationId": "uploadFileInCatalogUploadRequest",
+        "summary": "Upload file in catalog upload request."
+      }
+    },
+    "/marketplace-catalog-uploads/{id}/files/{fileId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The file ID",
+            "in": "path",
+            "name": "fileId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/catalogFile"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Get a file associated with catalog upload request.",
+        "operationId": "getFileInCatalogUploadRequest",
+        "summary": "Get a file associated with catalog upload request."
+      }
+    },
+    "/marketplace-catalog-uploads/{id}/preview-token": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The store ID to be previewed.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/previewTokenRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The preview token is created.",
+            "examples": {
+              "application/json": {
+                "previewToken": "Kp6qpaoxqqOqmqq50Xq81g"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/previewTokenResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Create a token for previewing the catalog changes.",
+        "operationId": "createPreviewToken",
+        "summary": "Create a preview token."
+      }
+    },
+    "/marketplace-catalog-uploads/{id}/reject": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is accepted.",
+            "schema": {
+              "$ref": "#/definitions/rejectResponseCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Reject catalog upload request.",
+        "operationId": "rejectCatalogUploadRequest",
+        "summary": "Reject catalog upload request",
+        "x-introduced": "9.1.12.0"
+      }
+    },
+    "/marketplace-catalog-uploads/{id}/submit": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request is accepted.",
+            "schema": {
+              "$ref": "#/definitions/submitResponseCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Catalog Upload"
+        ],
+        "description": "Submit catalog upload request.",
+        "operationId": "submitCatalogUploadRequest",
+        "summary": "Submit catalog upload request"
+      }
+    },
+    "/marketplace-inventory-downloads": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The seller organization ID",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The marketplace store Id",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request succeeded, and a new resource was created.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the download request.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/IDResponseBase"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Inventory Download"
+        ],
+        "description": "Initiate inventory download process for a marketplace store.",
+        "operationId": "createInventoryDownloadRequest",
+        "summary": "Initiate inventory download."
+      }
+    },
+    "/marketplace-inventory-downloads/{id}": {
+      "get": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "description": "The inventory download request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "format": "binary",
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Inventory Download"
+        ],
+        "description": "Get downloaded inventory.",
+        "operationId": "getInventoryDownloadRequest",
+        "summary": "Get downloaded inventory."
+      }
+    },
+    "/marketplace-inventory-downloads/{id}/status": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The inventory download request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/inventoryDownloadStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Inventory Download"
+        ],
+        "description": "Get inventory download request status.",
+        "operationId": "getInventoryDownloadRequestStatus",
+        "summary": "Get the status of an inventory download request."
+      }
+    },
+    "/marketplace-inventory-upload-users": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The seller organization ID",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to those that match the specified search string.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name will order the items based on the name value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/userCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Inventory Upload"
+        ],
+        "description": "Get inventory upload request users for a seller organization.",
+        "operationId": "getInventoryUploadRequestUsers",
+        "summary": "Get inventory upload request users."
+      }
+    },
+    "/marketplace-inventory-uploads": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/xhtml+xml"
+        ],
+        "parameters": [
+          {
+            "description": "The seller organization ID",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The store ID",
+            "in": "query",
+            "name": "storeId",
+            "type": "string"
+          },
+          {
+            "collectionFormat": "csv",
+            "description": "The upload status",
+            "in": "query",
+            "items": {
+              "enum": [
+                "NEW",
+                "PROCESSING",
+                "COMPLETE",
+                "FAILED",
+                "CANCELED"
+              ],
+              "type": "string"
+            },
+            "name": "status",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "Limits the results to those that match the specified search string.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to those that match the specified user ID.",
+            "in": "query",
+            "name": "userId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=status will order the items based on the status value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/inventoryUploadCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Inventory Upload"
+        ],
+        "description": "Get inventory upload requests for a store and seller organization",
+        "operationId": "getInventoryUploadRequests",
+        "summary": "Get inventory upload requests."
+      },
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The seller organization ID",
+            "in": "query",
+            "name": "sellerId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The store ID",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "format": "binary",
+            "in": "formData",
+            "name": "UpLoadedFile",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The request succeeded, and a new resource was created.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the upload request.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/IDResponseBase"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Inventory Upload"
+        ],
+        "description": "Initiate inventory upload request.",
+        "operationId": "createInventoryUploadRequest",
+        "summary": "Initiate inventory upload request."
+      }
+    },
+    "/marketplace-inventory-uploads/{id}": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/xhtml+xml"
+        ],
+        "parameters": [
+          {
+            "description": "The inventory request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/inventoryUpload"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Inventory Upload"
+        ],
+        "description": "Get existing inventory upload request.",
+        "operationId": "getInventoryUploadRequestById",
+        "summary": "Get inventory upload request information."
+      }
+    },
+    "/marketplace-offerprice-downloads": {
+      "description": "Download offer price data associated with a price list.",
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The catalog assets store ID",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/OfferPriceDownloadRequest"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request succeeded, and a status resource was created.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the status request.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/IDResponseBase"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Offer Price Download"
+        ],
+        "description": "Initiate offer prices download process.",
+        "operationId": "createOfferPriceDownloadRequest",
+        "summary": "Initiate offer prices download process."
+      },
+      "summary": "Download offer price data associated with a price list."
+    },
+    "/marketplace-offerprice-downloads/{id}": {
+      "get": {
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "description": "The offer price download request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "format": "binary",
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Offer Price Download"
+        ],
+        "description": "Download the list of offer prices.",
+        "operationId": "getOfferPriceDownloadRequest",
+        "summary": "Download the list of offer prices."
+      }
+    },
+    "/marketplace-offerprice-downloads/{id}/status": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The offer prices download request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the offer prices download.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/priceListDownloadStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Offer Price Download"
+        ],
+        "description": "Get status of offer price download request.",
+        "operationId": "getOfferPriceDownloadRequestStatus",
+        "summary": "Get status of offer prices download request."
+      }
+    },
+    "/marketplace-offerprice-uploads": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The price list ID",
+            "in": "query",
+            "name": "priceListId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The store ID",
+            "in": "query",
+            "name": "storeId",
+            "type": "string"
+          },
+          {
+            "collectionFormat": "csv",
+            "description": "The upload status",
+            "in": "query",
+            "items": {
+              "enum": [
+                "NEW",
+                "PROCESSING",
+                "COMPLETE",
+                "FAILED",
+                "CANCELED"
+              ],
+              "type": "string"
+            },
+            "name": "status",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "Limits the results to those that match the specified search string.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to those that match the specified user ID.",
+            "in": "query",
+            "name": "userId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=status will order the items based on the status value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request succeeded, and a status resource was created.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the status endpoint.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/offerPriceUploadCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Offer Price Upload"
+        ],
+        "description": "Get a list of offer price upload requests.",
+        "operationId": "getAllOfferPriceUploadRequests",
+        "summary": "Get a list of offer price upload requests.",
+        "x-introduced": "9.1.12.0"
+      },
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The price list ID",
+            "in": "query",
+            "name": "priceListId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The catalog assets store ID",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The prices character set",
+            "in": "query",
+            "name": "characterSet",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "default": "USD",
+            "description": "The price currency",
+            "in": "query",
+            "name": "currency",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The language Id",
+            "in": "query",
+            "name": "languageId",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "format": "binary",
+            "in": "formData",
+            "name": "UpLoadedFile",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request succeeded, and a status resource was created.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the status endpoint.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/IDResponseBase"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Offer Price Upload"
+        ],
+        "description": "Initiate an offer price upload request.",
+        "operationId": "createOfferPriceUploadRequest",
+        "summary": "Initiate an offer price upload request."
+      }
+    },
+    "/marketplace-offerprice-uploads/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The price list upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/offerPriceUpload"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Offer Price Upload"
+        ],
+        "description": "Get the details of an offer price upload request.",
+        "operationId": "getOfferPriceUploadRequestById",
+        "summary": "Get the details of an offer price upload request.",
+        "x-introduced": "9.1.12.0"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The price list upload request ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/OfferPriceUploadRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The request is successful."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Offer Price Upload"
+        ],
+        "description": "Update an offer price upload request.",
+        "operationId": "updateOfferPriceUploadRequestById",
+        "summary": "Update an offer price upload request.",
+        "x-introduced": "9.1.12.0"
+      }
+    }
+  },
+  "definitions": {
+    "FileIDResponse": {
+      "properties": {
+        "fileId": {
+          "description": "The file id",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "IDResponseBase": {
+      "properties": {
+        "id": {
+          "description": "The resource id",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "OfferPriceDownloadRequest": {
+      "properties": {
+        "currency": {
+          "description": "The currency. Defaults to USD.",
+          "type": "string"
+        },
+        "priceListId": {
+          "description": "The price list Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "priceListId"
+      ],
+      "type": "object"
+    },
+    "OfferPriceUploadRequest": {
+      "properties": {
+        "description": {
+          "description": "The offer price upload request description",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "approveResponseCollection": {
+      "properties": {
+        "message": {
+          "description": "The user message",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "catalogAttributesDownload": {
+      "properties": {
+        "langId": {
+          "description": "The ID of the language for the values to be exported. The default is the store default language if it is not specified.",
+          "type": "string"
+        },
+        "objectType": {
+          "description": "The business object type to download.",
+          "enum": [
+            "Product",
+            "Attribute"
+          ],
+          "type": "string"
+        },
+        "sellerId": {
+          "description": "The seller organization ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sellerId",
+        "objectType"
+      ],
+      "type": "object"
+    },
+    "catalogDownloadStatusResponse": {
+      "properties": {
+        "status": {
+          "description": "The download status",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "catalogFile": {
+      "properties": {
+        "catalogUploadId": {
+          "example": "10001",
+          "type": "string"
+        },
+        "characterSet": {
+          "default": "UTF-8",
+          "description": "the file encoding",
+          "type": "string"
+        },
+        "currency": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "id": {
+          "description": "the file ID",
+          "type": "integer"
+        },
+        "languageId": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "name": {
+          "description": "the file name",
+          "type": "string",
+          "x-nullable": true
+        },
+        "size": {
+          "description": "the file size",
+          "type": "integer"
+        },
+        "status": {
+          "description": "the file status",
+          "type": "string"
+        },
+        "summaryReport": {
+          "type": "string"
+        },
+        "uploadDate": {
+          "description": "The date and time the file was uploaded.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "userFirstName": {
+          "description": "The first name of the user that uploaded the file.",
+          "type": "string"
+        },
+        "userId": {
+          "description": "The unique numeric ID of the user that uploaded the file.",
+          "type": "string"
+        },
+        "userLastName": {
+          "description": "The last name of the user that uploaded the file.",
+          "type": "string"
+        },
+        "userLogonId": {
+          "description": "The logon ID of the user that uploaded the file.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "catalogFileCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "href": {
+          "type": "string"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/catalogFile"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "catalogProductsDownload": {
+      "properties": {
+        "currency": {
+          "description": "The currency to use for the export.",
+          "type": "string"
+        },
+        "langId": {
+          "description": "The ID of the language for the descriptions to be exported. The default is the store default language if it is not specified.",
+          "type": "string"
+        },
+        "objectType": {
+          "description": "The business object type to download.",
+          "enum": [
+            "Product",
+            "Attribute"
+          ],
+          "type": "string"
+        },
+        "parentGroupIdentifier": {
+          "description": "The categories to be exported. It can be a single category identifier, or a list of category identifiers separated by comma. The default is all categories associated with that seller if it is not specified.",
+          "type": "string"
+        },
+        "sellerId": {
+          "description": "The seller organization ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sellerId",
+        "objectType"
+      ],
+      "type": "object"
+    },
+    "catalogUpload": {
+      "properties": {
+        "commitDate": {
+          "format": "date-time",
+          "type": "string",
+          "x-nullable": true
+        },
+        "createDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "id": {
+          "description": "The unique numeric ID of the catalog upload.",
+          "type": "string"
+        },
+        "links": {
+          "properties": {
+            "comments": {
+              "description": "The comment relationships of a upload request.",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link to comments associated with this request.",
+                  "type": "string",
+                  "x-nullable": true
+                }
+              },
+              "type": "object"
+            },
+            "files": {
+              "description": "The file relationships of a upload request.",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link to files associated with this request.",
+                  "type": "string",
+                  "x-nullable": true
+                }
+              },
+              "type": "object"
+            },
+            "self": {
+              "description": "The self link.",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "scheduledCommit": {
+          "description": "The schedule commit. Possible values [onApproval, onSpecificDate]",
+          "type": "string"
+        },
+        "sellerId": {
+          "description": "The unique numeric ID of the seller organization.",
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID of the store.",
+          "format": "int32",
+          "type": "number"
+        },
+        "userFirstName": {
+          "description": "The first name of the user that created the catalog upload.",
+          "type": "string"
+        },
+        "userId": {
+          "description": "The unique numeric ID of the user that created the catalog upload.",
+          "type": "string"
+        },
+        "userLastName": {
+          "description": "The last name of the user that created the catalog upload.",
+          "type": "string"
+        },
+        "userLogonId": {
+          "description": "The logon ID of the user that created the catalog upload.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "catalogUploadCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "href": {
+          "type": "string"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/catalogUpload"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "catalogUploadCreateRequest": {
+      "properties": {
+        "comment": {
+          "description": "The comment",
+          "type": "string"
+        },
+        "commitDate": {
+          "description": "The commit date is needed when onSpecificDate is used for scheduledCommit.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description label",
+          "type": "string"
+        },
+        "scheduledCommit": {
+          "default": "onApproval",
+          "description": "The schedule commit. Possible values [onApproval, onSpecificDate]",
+          "type": "string"
+        },
+        "sellerId": {
+          "description": "The seller organization ID",
+          "example": "7000000000000007001",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The store ID",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sellerId",
+        "storeId"
+      ],
+      "type": "object"
+    },
+    "catalogUploadUpdateRequest": {
+      "properties": {
+        "comment": {
+          "description": "The comment",
+          "type": "string"
+        },
+        "commitDate": {
+          "description": "The commit date is needed when onSpecificDate is used for scheduledCommit.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description label",
+          "type": "string"
+        },
+        "scheduledCommit": {
+          "default": "onApproval",
+          "description": "The schedule commit. Possible values [onApproval, onSpecificDate]",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "comment": {
+      "properties": {
+        "catalogUploadId": {
+          "example": "10001",
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "createDate": {
+          "format": "date-time",
+          "readOnly": true,
+          "type": "string"
+        },
+        "id": {
+          "readOnly": true,
+          "type": "string"
+        },
+        "userFirstName": {
+          "description": "The first name of the user that created the comment.",
+          "type": "string"
+        },
+        "userId": {
+          "description": "The unique numeric ID of the user that created the comment.",
+          "type": "string"
+        },
+        "userLastName": {
+          "description": "The last name of the user that created the comment.",
+          "type": "string"
+        },
+        "userLogonId": {
+          "description": "The logon ID of the user that created the comment.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "commentCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "href": {
+          "description": "The resource link.",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/comment"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "commentResponseCollection": {
+      "properties": {
+        "commentId": {
+          "description": "The newly created comment Id.",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "inventoryDownloadStatusResponse": {
+      "properties": {
+        "status": {
+          "description": "The download status",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "inventoryUpload": {
+      "properties": {
+        "createDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "id": {
+          "description": "The unique numeric ID of the inventory upload.",
+          "type": "string"
+        },
+        "links": {
+          "properties": {
+            "self": {
+              "description": "The self link.",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "sellerId": {
+          "description": "The unique numeric ID of the seller organization.",
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID of the store.",
+          "format": "int32",
+          "type": "number"
+        },
+        "storeIdentifier": {
+          "description": "The the store identifier.",
+          "type": "string"
+        },
+        "summaryReport": {
+          "type": "string"
+        },
+        "userFirstName": {
+          "description": "The first name of the user that created the inventory upload.",
+          "type": "string"
+        },
+        "userId": {
+          "description": "The unique numeric ID of the user that created the inventory upload.",
+          "type": "string"
+        },
+        "userLastName": {
+          "description": "The last name of the user that created the inventory upload.",
+          "type": "string"
+        },
+        "userLogonId": {
+          "description": "The logon ID of the user that created the inventory upload.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "inventoryUploadCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "href": {
+          "type": "string"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/inventoryUpload"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "inventoryUploadRequest": {
+      "properties": {
+        "UpLoadedFile": {
+          "format": "binary",
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "offerPriceUpload": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/inventoryUpload"
+        },
+        {
+          "$ref": "#/definitions/offerPriceUploadBase"
+        }
+      ]
+    },
+    "offerPriceUploadBase": {
+      "properties": {
+        "priceListId": {
+          "description": "The unique numeric ID of the store.",
+          "format": "int32",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "offerPriceUploadCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "href": {
+          "type": "string"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/offerPriceUpload"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "previewTokenRequest": {
+      "properties": {
+        "endDate": {
+          "description": "The end date/time of the preview token in the form \"YYYY/MM/DD HH:MM:SS\".",
+          "type": "string"
+        },
+        "includedMemberGroupIds": {
+          "description": "Comma separated list of member groups to simulate. Example : \"8000000000000000007,8000000000000000006\"",
+          "type": "string"
+        },
+        "invstatus": {
+          "description": "The inventory status number. <br> * 0 - use inventory levels in the database <br> * 1 - set all inventory filter results to true <br> * -1 - set all inventory filter results to false.",
+          "type": "string"
+        },
+        "start": {
+          "description": "The start date and time. Example :\"2013/09/11 13:00:00\"",
+          "type": "string"
+        },
+        "startDate": {
+          "description": "The start date/time of the preview token in the form \"YYYY/MM/DD HH:MM:SS\".",
+          "type": "string"
+        },
+        "status": {
+          "description": "Determines if time should be static while in preview mode. Set to either \"true\" or \"false\".",
+          "type": "string"
+        },
+        "timeZoneId": {
+          "description": "The time zone identifier. Example : \"America/New_York\"",
+          "type": "string"
+        },
+        "tokenLife": {
+          "description": "Lifespan of the preview token in minutes. Example : \"60\"",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "previewTokenResponse": {
+      "properties": {
+        "previewToken": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "priceListDownloadStatusResponse": {
+      "properties": {
+        "id": {
+          "description": "The unique numeric ID of the price list upload.",
+          "type": "string"
+        },
+        "status": {
+          "description": "The download status",
+          "type": "string"
+        },
+        "summaryReport": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "rejectResponseCollection": {
+      "properties": {
+        "message": {
+          "description": "The user message",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "submitResponseCollection": {
+      "properties": {
+        "message": {
+          "description": "The user message",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "user": {
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "logonId": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "userCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "href": {
+          "type": "string"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/user"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Download catalog data (products, attributes) used by marketplace sellers.",
+      "name": "Marketplace Catalog Download"
+    },
+    {
+      "description": "Upload catalog data (products) used by marketplace sellers.",
+      "name": "Marketplace Catalog Upload"
+    },
+    {
+      "description": "Download offer prices used by marketplace sellers.",
+      "name": "Marketplace Offer Price Download",
+      "x-introduced": "9.1.12.0"
+    },
+    {
+      "description": "Upload offer prices used by marketplace sellers.",
+      "name": "Marketplace Offer Price Upload",
+      "x-introduced": "9.1.12.0"
+    },
+    {
+      "description": "Download inventory data owned by marketplace sellers.",
+      "name": "Marketplace Inventory Download"
+    },
+    {
+      "description": "Upload inventory data owned by marketplace sellers.",
+      "name": "Marketplace Inventory Upload"
+    }
+  ],
+  "externalDocs": {
+    "description": "Some REST services take languageId as a request parameter. For a list of the integers that map to the supported default languages, please refer to this Help Center page.",
+    "url": "https://help.hcltechsw.com/commerce/9.1.0/database/database/language.html"
+  },
+  "x-components": {}
+}

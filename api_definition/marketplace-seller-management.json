@@ -1,0 +1,1301 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "<p>Create and administer marketplace seller onboarding resources.</p> <p>Please note that these APIs are introduced in HCL Commerce V9.1.11.</p> ",
+    "title": "Marketplace Seller Management",
+    "version": "9.1.12.0",
+    "x-introduced": "9.1.11.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/marketplace-sellers": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The seller organization ID.",
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "description": "The store type.",
+            "enum": [
+              "catalogAssetStore",
+              "eSite",
+              "b2bESite",
+              "b2cESite"
+            ],
+            "in": "query",
+            "name": "storeType",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Limits the results to those that match the specified search string.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=organizationName will order the items based on the organizationName value in ascending order. <br/>Available values for sort parameter: organizationName, storeIdentifier, status, onlineStatus, lastUpdated",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The sellers with store details are retrieved successfully.",
+            "schema": {
+              "$ref": "#/definitions/sellerCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Get marketplace sellers based on store ID or store type. Store ID takes precedence over store type.",
+        "operationId": "getMarketplaceSellers",
+        "summary": "Get marketplace sellers."
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "Marketplace seller store details.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/seller_create_request"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The seller store details are created successfully.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the seller store details.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/seller_create_request"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Create marketplace seller store details.",
+        "operationId": "createMarketplaceSeller",
+        "summary": "Create marketplace seller store details."
+      }
+    },
+    "/marketplace-sellers/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The seller was removed  from the store successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Remove the marketplace seller from a store.",
+        "operationId": "deleteMarketplaceSeller",
+        "summary": "Remove the marketplace seller from a store."
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The seller store details were retrieved successfully.",
+            "schema": {
+              "$ref": "#/definitions/seller_response"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Get the marketplace seller store details by organization ID and store ID.",
+        "operationId": "getMarketplaceSeller",
+        "summary": "Get the marketplace seller store details by ID."
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store. If no store is specified, the updates will be applied to all stores.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/seller_update_request"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The seller store details were updated successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Update the marketplace seller store details.",
+        "operationId": "updateMarketplaceSeller",
+        "summary": "Update the marketplace seller store details."
+      }
+    },
+    "/marketplace-sellers/{id}/attributes": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The seller attributes were retrieved successfully.",
+            "schema": {
+              "$ref": "#/definitions/sellerAttributeCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Get marketplace seller attribute details for the seller organization Id.",
+        "operationId": "getMarketplaceSellerAttributes",
+        "summary": "Get marketplace seller attribute details for the seller organization Id."
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Marketplace Seller description.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sellerAttribute_create_request"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The seller attribute is created successfully.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the seller attribute.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/sellerAttribute_create_response"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Create the marketplace seller attribute.",
+        "operationId": "createMarketplaceSellerAttribute",
+        "summary": "Create the marketplace seller attribute."
+      }
+    },
+    "/marketplace-sellers/{id}/attributes/{name}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The marketplace seller organization attribute name",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The seller attribute with specified name and store was deleted successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Delete a marketplace seller attribute for the store.",
+        "operationId": "deleteMarketplaceSellerAttribute",
+        "summary": "Delete a marketplace seller attribute for the store."
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The marketplace seller attribute name",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/sellerAttribute"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Get a marketplace seller attribute for the store by name.",
+        "operationId": "getMarketplaceSellerAttribute",
+        "summary": "Get a marketplace seller attribute for the store by name."
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The marketplace seller organization attribute name",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Marketplace Seller description.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sellerAttribute_update_request"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The seller attribute is updated successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Update a marketplace seller attribute.",
+        "operationId": "updateMarketplaceSellerAttribute",
+        "summary": "Update a marketplace seller attribute."
+      }
+    },
+    "/marketplace-sellers/{id}/categories": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID of the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The integer for identifying the language of the category description. To get the list of the integer mapping, please refer to the above external doc.",
+            "format": "int32",
+            "in": "query",
+            "name": "languageId",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The seller categories were retrieved successfully.",
+            "schema": {
+              "$ref": "#/definitions/sellerCategoriesCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "This GET rest api returns list of categories for Marketplace Seller to upload their products.",
+        "operationId": "getMarketplaceSellerCategories",
+        "summary": "Get the list of categories allowed for seller to update their products"
+      }
+    },
+    "/marketplace-sellers/{id}/descriptions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The integer(s) for identifying the language of the Marketplace seller descriptions. For a list of the integers that map to the supported default languages, refer to the Knowledge Center. Multiple identifiers should be specified as a comma-separated list.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The seller descriptions were retrieved successfully.",
+            "schema": {
+              "$ref": "#/definitions/sellerDescriptionCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Get the marketplace seller descriptions.",
+        "operationId": "getMarketplaceSellerDescriptions",
+        "summary": "Get the marketplace seller descriptions."
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Marketplace Seller descriptions.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sellerDescription_create_request"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The seller description is created successfully.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the seller description.",
+                "type": "string"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/sellerDescription"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Create a marketplace seller description for a language.",
+        "operationId": "createMarketplaceSellerDescription",
+        "summary": "Create a marketplace seller description for a language."
+      }
+    },
+    "/marketplace-sellers/{id}/descriptions/{languageId}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketplace seller.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The integer for identifying the language of the marketplace seller description. For a list of the integers that map to the supported default languages, refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The seller attribute with specified name and store was deleted successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Delete a marketplace seller description.",
+        "operationId": "deleteMarketplaceSellerDescription",
+        "summary": "Delete a marketplace seller description."
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketplace seller.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The integer for identifying the language of the marketplace seller description. For a list of the integers that map to the supported default languages, refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sellerDescription_update_request"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The seller description for the specified language is updated successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "operationId": "updateMarketplaceSellerDescription",
+        "summary": "Update the description of a marketplace seller."
+      }
+    },
+    "/marketplace-sellers/{id}/online": {
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The marketplace seller organization ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/seller_onlinestatus_request"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The seller online status was updated successfully."
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "404": {
+            "description": "The specified resource could not be found."
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Marketplace Seller"
+        ],
+        "description": "Updates the marketplace seller online status.",
+        "operationId": "updateMarketplaceSellerOnlineStatus",
+        "summary": "Updates the marketplace seller online status."
+      }
+    }
+  },
+  "definitions": {
+    "sellerAttribute": {
+      "description": "Marketplace Seller attribute.",
+      "properties": {
+        "id": {
+          "description": "The unique numeric ID for identifying the organization.",
+          "example": "7000000000000007001",
+          "type": "string"
+        },
+        "name": {
+          "description": "The marketplace seller attribute name.",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID of the store where the attribute applies. This parameter can only be set at attribute creation time.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "value": {
+          "description": "The marketplace seller attribute value.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "sellerAttributeCollection": {
+      "description": "A collection of Marketplace Seller attributes.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/sellerAttribute"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "sellerAttribute_create_request": {
+      "description": "Marketplace Seller attribute.",
+      "properties": {
+        "name": {
+          "description": "The marketplace seller attribute name.",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID of the store where the attribute applies. This parameter can only be set at attribute creation time.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "value": {
+          "description": "The marketplace seller attribute value.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "sellerAttribute_create_response": {
+      "description": "Marketplace Seller attribute.",
+      "properties": {
+        "id": {
+          "description": "The marketplace Seller organization Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "The marketplace seller attribute name.",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID of the store where the attribute applies. This parameter can only be set at attribute creation time.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "sellerAttribute_update_request": {
+      "description": "Marketplace Seller attribute.",
+      "properties": {
+        "value": {
+          "description": "The marketplace seller attribute value.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "sellerCategories": {
+      "properties": {
+        "id": {
+          "description": "The ID of the category.",
+          "type": "integer"
+        },
+        "identifier": {
+          "description": "The identifier of category.",
+          "type": "string"
+        },
+        "languageId": {
+          "description": "The language ID of the category description.",
+          "type": "integer"
+        },
+        "name": {
+          "description": "The name of category.",
+          "type": "string"
+        },
+        "shortDescription": {
+          "description": "The short description of category.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "sellerCategoriesCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "items": {
+          "description": "Seller Categories collection.",
+          "items": {
+            "$ref": "#/definitions/sellerCategories"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "sellerCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/seller_response"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "sellerDescription": {
+      "properties": {
+        "description": {
+          "description": "The translated short description of the marketplace seller.",
+          "type": "string"
+        },
+        "displayName": {
+          "description": "The translated name of the marketplace seller.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the organization.",
+          "example": "7000000000000007001",
+          "type": "string"
+        },
+        "languageId": {
+          "description": "The unique ID for identifying the language for the marketplace seller description.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "sellerDescriptionCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "items": {
+          "description": "Seller description collection.",
+          "items": {
+            "$ref": "#/definitions/sellerDescription"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "sellerDescription_create_request": {
+      "properties": {
+        "description": {
+          "description": "The translated short description of the marketplace seller.",
+          "type": "string"
+        },
+        "displayName": {
+          "description": "The translated name of the marketplace seller.",
+          "type": "string"
+        },
+        "languageId": {
+          "description": "The unique ID for identifying the language for the marketplace seller description.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "sellerDescription_update_request": {
+      "properties": {
+        "description": {
+          "description": "The translated short description of the marketplace seller.",
+          "type": "string"
+        },
+        "displayName": {
+          "description": "The translated name of the marketplace seller.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "seller_create_request": {
+      "properties": {
+        "id": {
+          "description": "The unique numeric ID for identifying the organization.",
+          "type": "string"
+        },
+        "onlineStatus": {
+          "description": "Online Status of the marketplace seller organization. Available values: <br> * 1 - The organization is in Online state.<br> * 0 - The organization is in Offline state.",
+          "enum": [
+            0,
+            1
+          ],
+          "format": "int32",
+          "type": "integer"
+        },
+        "status": {
+          "description": "Status of the marketplace seller organization. Available values: <br> * 0 - The organization is in Deactivated state.<br> * 1 - The organization is in Active state.<br> * 2 - The organization is in Suspended state.<br> * 3 - The organization is in Terminated state.",
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeId": {
+          "description": "The unique numeric ID of the store.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "seller_onlinestatus_request": {
+      "properties": {
+        "onlineStatus": {
+          "description": "Online Status of the marketplace seller organization. Available values: <br> * 1 - The organization is in Online state.<br> * 0 - The organization is in Offline state.",
+          "enum": [
+            0,
+            1
+          ],
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "seller_response": {
+      "properties": {
+        "id": {
+          "description": "The unique numeric ID for identifying the organization.",
+          "type": "string"
+        },
+        "lastUpdated": {
+          "description": "The last updated timestamp",
+          "type": "string"
+        },
+        "onlineStatus": {
+          "description": "Online Status of the marketplace seller organization. Available values: <br> * 1 - The organization is in Online state.<br> * 0 - The organization is in Offline state.",
+          "enum": [
+            0,
+            1
+          ],
+          "format": "int32",
+          "type": "integer"
+        },
+        "organizationName": {
+          "description": "The name of the marketplace seller organization.",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status of the marketplace seller organization. Available values: <br> * 0 - The organization is in Deactivated state.<br> * 1 - The organization is in Active state.<br> * 2 - The organization is in Suspended state.<br> * 3 - The organization is in Terminated state.",
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeId": {
+          "description": "The unique numeric ID of the store.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeIdentifier": {
+          "description": "The unique identifier of the store.",
+          "type": "string"
+        },
+        "storeType": {
+          "description": "The 3-Character code for the store type.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "seller_update_request": {
+      "properties": {
+        "onlineStatus": {
+          "description": "Online Status of the marketplace seller organization. Available values: <br> * 1 - The organization is in Online state.<br> * 0 - The organization is in Offline state.",
+          "enum": [
+            0,
+            1
+          ],
+          "format": "int32",
+          "type": "integer"
+        },
+        "status": {
+          "description": "Status of the marketplace seller organization. Available values: <br> * 0 - The organization is in Deactivated state.<br> * 1 - The organization is in Active state.<br> * 2 - The organization is in Suspended state.<br> * 3 - The organization is in Terminated state.",
+          "enum": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Marketplace seller details and status.",
+      "name": "Marketplace Seller"
+    }
+  ],
+  "externalDocs": {
+    "description": "Some REST services take languageId as a request parameter. For a list of the integers that map to the supported default languages, please refer to this Help Center page.",
+    "url": "https://help.hcltechsw.com/commerce/9.1.0/database/database/language.html"
+  },
+  "x-components": {}
+}

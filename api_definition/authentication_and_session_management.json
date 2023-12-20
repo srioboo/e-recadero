@@ -1,0 +1,1044 @@
+{
+    "x-aes-documentation": {
+        "gettingstarted": [
+            {
+                "content": "Some REST services require authentication. Commerce REST services are authenticated on secure and unsecured channels. This authentication can include the use of the WCToken and WCTrustedToken. To use REST services that require authentication, you must first get authentication data by using a supported identity services.\n\nAfter you obtain the authentication data, you must pass either the WCToken or WCTustedToken parameters, or both, within the HTTP header for every request that requires authentication. If a request is sent over HTTP, pass the WCToken parameter in the HTTP header. Do not pass the WCTrustedToken in HTTP requests, as the parameter value might display. Send both the WCToken and the WCTrustedToken parameters when the request is being sent over HTTPS.\n\nThe Digital Commerce REST APIs can also use session cookies that are created by the Digital Commerce store runtime for authentication. These cookies allow you to mix requests to the Digital Commerce REST APIs and the Digital Commerce store runtime within the same user session.\n\n See more here: <a href=https://www.ibm.com/support/knowledgecenter/SSZLC2_8.0.0/com.ibm.commerce.webservices.doc/concepts/cwvrestauth.html> https://www.ibm.com/support/knowledgecenter/SSZLC2_8.0.0/com.ibm.commerce.webservices.doc/concepts/cwvrestauth.html </a> ",
+                "codeSnippets": [],
+                "name": "Authentication"
+            },
+            {
+                "content": "Commerce REST services support JSON and XML formats for input and output data by default. The default format is JSON. When an XML String is sent to a REST service, you must set Content-Type HTTP header to be \"application/xml\". The REST service converts the XML input data to the JSON format that is accepted by REST services. Therefore, your input XML format must follow a certain structure so that it can be transformed to the JSON object that is accepted by REST services. See more here: <a href=https://www.ibm.com/support/knowledgecenter/SSZLC2_8.0.0/com.ibm.commerce.webservices.doc/refs/rwvrestxmlformat.html> https://www.ibm.com/support/knowledgecenter/SSZLC2_8.0.0/com.ibm.commerce.webservices.doc/refs/rwvrestxmlformat.html </a> ",
+                "codeSnippets": [],
+                "name": "Response formats"
+            },
+            {
+                "content": "Preview tokens are encrypted strings that encapsulates a set of preview options and restrictions on when and where the token can be used. Any user who is authorized to access your server and has a preview token, can complete preview actions in the same store for which that token is generated. See more here: <a href=https://www.ibm.com/support/knowledgecenter/SSZLC2_8.0.0/com.ibm.commerce.developer.doc/concepts/cpvpreviewtoken.html> https://www.ibm.com/support/knowledgecenter/SSZLC2_8.0.0/com.ibm.commerce.developer.doc/concepts/cpvpreviewtoken.html </a>",
+                "codeSnippets": [],
+                "name": "Preview tokens"
+            },
+            {
+                "content": "Some Digital Commerce REST services require a request to be sent over HTTPS. Learn more here: <a href=https://www.ibm.com/support/knowledgecenter/SSZLC2_8.0.0/com.ibm.commerce.webservices.doc/concepts/cwvrestsecurity.html> https://www.ibm.com/support/knowledgecenter/SSZLC2_8.0.0/com.ibm.commerce.webservices.doc/concepts/cwvrestsecurity.html </a> ",
+                "codeSnippets": [],
+                "name": "Secure Sockets Layer"
+            }
+        ]
+    },
+    "host": "hostname.com",
+    "basePath": "/wcs/resources",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "version": "HCL Commerce Services Version 9",
+        "description": "These services provide APIs related to authentication and session management in a B2B or B2C store. Use these classes to: <ul><li> Generate a preview token <li> Get the user context of a shopper (for example, PersonalizationId) <li> Log on or log off a registered shopper using their username and password <li> Create or log off a guest user",
+        "title": "HCL Commerce Services - Authentication and Session Management"
+    },
+    "tags": [
+        {
+            "name": "Preview Token",
+            "description": "This class provides RESTful services to generate the preview token."
+        },
+        {
+            "name": "User Context",
+            "description": "This class provides RESTful services to get the user context of a shopper. For example, PersonalizationId."
+        },
+        {
+            "name": "Login Identity",
+            "description": "This class provides RESTful services to login and logout a registered shopper using their user name and password. It performs the service by delegating to the Person BOD service."
+        },
+        {
+            "name": "Guest Identity",
+            "description": "This class provides RESTful services to create a guest and log the guest out. It performs the service by delegating to the Person BOD service."
+        }
+    ],
+    "paths": {
+        "/store/{storeId}/previewToken/isvalid": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "The requested completed successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.PreviewTokenHandler.ValidIdentifier"
+                        }
+                    },
+                    "403": {
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    },
+                    "400": {
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The store identifier.",
+                        "name": "storeId",
+                        "in": "path"
+                    },
+                    {
+                        "required": true,
+                        "in": "body",
+                        "description": "The request body to validate a preview token password.",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.PreviewTokenHandler.PasswordValidRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Preview Token"
+                ],
+                "description": "Checks if the password is valid.",
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "summary": "Check password validity",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "operationId": "checkIsPasswordValid"
+            }
+        },
+        "/store/{storeId}/usercontext/personalizationId": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.PersonalizationIdentifier"
+                        },
+                        "description": "The requested completed successfully.",
+                        "examples": {
+                            "application/json": {
+                                "personalizationID": "1414184550631-55"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The specified resource could not be found."
+                    },
+                    "403": {
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "400": {
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The store identifier.",
+                        "name": "storeId",
+                        "in": "path"
+                    },
+                    {
+                        "enum": [
+                            "xml",
+                            "json"
+                        ],
+                        "name": "responseFormat",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "description": "The response format. Valid values are json and xml. If the request contains an input body, it must use the format specified in responseFormat. If the responseFormat is not specified, the accept  HTTP header determines the format of the response. If the accept  HTTP header is not specified then default response format is json."
+                    }
+                ],
+                "tags": [
+                    "User Context"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "summary": "Get personalization ID",
+                "operationId": "UserContext-getPersonalizationID",
+                "description": "Gets or generates the Personalization ID of the current session."
+            }
+        },
+        "/store/{storeId}/loginidentity": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "The requested resource has been created."
+                    },
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.LoginIdentityHandler.UserIdentity"
+                        },
+                        "description": "No response was specified.",
+                        "examples": {
+                            "application/json": {
+                                "WCTrustedToken": "-1000%2C9%2FR5rBj%2BoMsriTs8Ind%2BOzwwZko%3D",
+                                "WCToken": "-1000%2CuLnMtv8dikzM6ZKSzeudV2pidm1q9X72Zrn2HYYPsiY0q3iIaGV8hV9iMPUq%2FyJGzlFfXYFTgjxLAQlNprGT3DGAgYUG7NuKqtQeDAc2PqDs7ET5P9saWOhQzwkFarXreWM4iyoU22ePEuo98sO0N1%2FDdwHngNNdDzxPkcpNkgvMM1sGEzB%2BQDQTK2wNd%2BN%2FxEYOS%2Fv0e%2FnyJ4pZwlfZWA%3D%3D",
+                                "userId": "-1000",
+                                "personalizationID": "1414623829608-1",
+                                "privacyNoticeVersion": "1.0",
+                                "marketingTrackingConsent": "1"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The specified resource could not be found."
+                    },
+                    "403": {
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "400": {
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The store identifier.",
+                        "name": "storeId",
+                        "in": "path"
+                    },
+                    {
+                        "enum": [
+                            "xml",
+                            "json"
+                        ],
+                        "name": "responseFormat",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "description": "The response format. Valid values are json and xml. If the request contains an input body, it must use the format specified in responseFormat. If the responseFormat is not specified, the accept  HTTP header determines the format of the response. If the accept  HTTP header is not specified then default response format is json."
+                    },
+                    {
+                        "required": false,
+                        "in": "body",
+                        "description": "Logon body.",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.LoginIdentityHandler.LoginForm"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Login Identity"
+                ],
+                "description": "Logs in a registered user using their user name and password.",
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "summary": "Log in user",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "operationId": "LoginIdentity-login"
+            }
+        },
+        "/store/{storeId}/previewToken": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "The requested resource has been created."
+                    },
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.PreviewTokenHandler.PreviewToken"
+                        },
+                        "description": "No response was specified.",
+                        "examples": {
+                            "application/json": {
+                                "previewToken": "AEAA_QCbAOkADQAnEWiViA"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The specified resource could not be found."
+                    },
+                    "403": {
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "400": {
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The store identifier.",
+                        "name": "storeId",
+                        "in": "path"
+                    },
+                    {
+                        "enum": [
+                            "xml",
+                            "json"
+                        ],
+                        "name": "responseFormat",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "description": "The response format. Valid values are json and xml. If the request contains an input body, it must use the format specified in responseFormat. If the responseFormat is not specified, the accept  HTTP header determines the format of the response. If the accept  HTTP header is not specified then default response format is json."
+                    },
+                    {
+                        "required": false,
+                        "in": "body",
+                        "description": "Request body.",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.PreviewTokenHandler.PreviewParameters"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Preview Token"
+                ],
+                "description": "Requests the preview token.",
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "summary": "Requests the preview token.",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "operationId": "generatePreviewToken"
+            }
+        },
+        "/store/{storeId}/usercontext/@self/contextdata": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext"
+                        },
+                        "description": "The requested completed successfully.",
+                        "examples": {
+                            "application/json": {
+                                "catalog": {
+                                    "masterCatalog": false,
+                                    "catalogId": 10052
+                                },
+                                "basicInfo": {
+                                    "channelId": -1,
+                                    "callerId": 2003,
+                                    "storeId": 10001,
+                                    "runAsId": 2003
+                                },
+                                "globalization": {
+                                    "currency": "USD",
+                                    "preferredCurrency": "USD",
+                                    "languageId": -1,
+                                    "preferredLanguageId": -1
+                                },
+                                "entitlement": {
+                                    "currentTradingAgreementIds": [
+                                        10001
+                                    ],
+                                    "sessionTradingAgreementIds": null,
+                                    "activeOrganizationId": -2000,
+                                    "hostingContractId": -1,
+                                    "eligibleTradingAgreementIds": [
+                                        10001
+                                    ]
+                                },
+                                "isPartiallyAuthenticated": false
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The specified resource could not be found."
+                    },
+                    "403": {
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "400": {
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The store identifier.",
+                        "name": "storeId",
+                        "in": "path"
+                    },
+                    {
+                        "enum": [
+                            "xml",
+                            "json"
+                        ],
+                        "name": "responseFormat",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "description": "The response format. Valid values are json and xml. If the request contains an input body, it must use the format specified in responseFormat. If the responseFormat is not specified, the accept  HTTP header determines the format of the response. If the accept  HTTP header is not specified then default response format is json."
+                    }
+                ],
+                "tags": [
+                    "User Context"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "summary": "Get context data from request",
+                "operationId": "UserContext-getContextData",
+                "description": "Gets the context data by the cookies and tokens sent with the request."
+            }
+        },
+        "/store/{storeId}/guestidentity": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "The requested resource has been created."
+                    },
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.GuestIdentityHandler.UserIdentity"
+                        },
+                        "description": "No response was specified.",
+                        "examples": {
+                            "application/json": {
+                                "WCTrustedToken": "12048%2C2h4%2FBl4sH%2BodrUr586mFxxhbMWM%3D",
+                                "WCToken": "12048%2CYDvAUQeRQWwodcMp2Hmqni%2FfGFasFkn3xxpLjiRRk8osjIKSuCIT3PkXttb02k78OTT1Rh8Z1u%2BLceI%2FmAalGEKO9WKucAEkAcleqB4BG%2BeXth%2Fk0dRU3Jj%2FEIRnOCrX2e31rVOS%2F5YbrAsyQQRkijvsBVY4LAwShshUqzeZgwgqtrhH9hfH%2F%2B254%2FV%2FGegQcGepnyZwsGkkb64F2Ed8cw%3D%3D",
+                                "userId": "12048",
+                                "personalizationID": "1416846174646-19"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The specified resource could not be found."
+                    },
+                    "403": {
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "400": {
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The store identifier.",
+                        "name": "storeId",
+                        "in": "path"
+                    },
+                    {
+                        "enum": [
+                            "xml",
+                            "json"
+                        ],
+                        "name": "responseFormat",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "description": "The response format. Valid values are json and xml. If the request contains an input body, it must use the format specified in responseFormat. If the responseFormat is not specified, the accept  HTTP header determines the format of the response. If the accept  HTTP header is not specified then default response format is json."
+                    },
+                    {
+                        "required": false,
+                        "in": "body",
+                        "description": "Create guest identity body.",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.GuestIdentityHandler.GuestIdentityForm"
+                        }
+                    }
+                    
+                ],
+                "tags": [
+                    "Guest Identity"
+                ],
+                "description": "Creates identity tokens for a guest user.",
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "summary": "Create identity token",
+                "operationId": "GuestIdentity-login"
+            }
+        },
+        "/store/{storeId}/guestidentity/@self": {
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "The requested completed successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "404": {
+                        "description": "The specified resource could not be found."
+                    },
+                    "403": {
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "400": {
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The store identifier.",
+                        "name": "storeId",
+                        "in": "path"
+                    },
+                    {
+                        "enum": [
+                            "xml",
+                            "json"
+                        ],
+                        "name": "responseFormat",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "description": "The response format. Valid values are json and xml. If the request contains an input body, it must use the format specified in responseFormat. If the responseFormat is not specified, the accept  HTTP header determines the format of the response. If the accept  HTTP header is not specified then default response format is json."
+                    }
+                ],
+                "tags": [
+                    "Guest Identity"
+                ],
+                "description": "Logs out a guest user.",
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "summary": "Log off guest user",
+                "operationId": "GuestIdentity-logout"
+            }
+        },
+        "/store/{storeId}/loginidentity/@self": {
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "The requested completed successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/Empty"
+                        }
+                    },
+                    "404": {
+                        "description": "The specified resource could not be found."
+                    },
+                    "403": {
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "401": {
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "400": {
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The store identifier.",
+                        "name": "storeId",
+                        "in": "path"
+                    },
+                    {
+                        "enum": [
+                            "xml",
+                            "json"
+                        ],
+                        "name": "responseFormat",
+                        "required": false,
+                        "in": "query",
+                        "type": "string",
+                        "description": "The response format. Valid values are json and xml. If the request contains an input body, it must use the format specified in responseFormat. If the responseFormat is not specified, the accept  HTTP header determines the format of the response. If the accept  HTTP header is not specified then default response format is json."
+                    }
+                ],
+                "tags": [
+                    "Login Identity"
+                ],
+                "description": "Logs out the registered user.",
+                "produces": [
+                    "application/json",
+                    "application/xml",
+                    "application/xhtml+xml",
+                    "application/atom+xml"
+                ],
+                "summary": "Log out user",
+                "operationId": "LoginIdentity-logout"
+            }
+        }
+    },
+    "definitions": {
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Globalization": {
+            "required": [
+                "currency",
+                "languageId",
+                "preferredCurrency",
+                "preferredLanguageId"
+            ],
+            "description": "User's globalization context.",
+            "properties": {
+                "preferredLanguageId": {
+                    "type": "integer",
+                    "description": "The user preferred language identifier.",
+                    "format": "int64"
+                },
+                "currency": {
+                    "type": "string",
+                    "description": "The user currency."
+                },
+                "preferredCurrency": {
+                    "type": "string",
+                    "description": "The user preferred currency."
+                },
+                "languageId": {
+                    "type": "integer",
+                    "description": "The user language identifier.",
+                    "format": "int64"
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Catalog": {
+            "required": [
+                "catalogId",
+                "masterCatalog"
+            ],
+            "description": "User's catalog.",
+            "properties": {
+                "masterCatalog": {
+                    "type": "boolean",
+                    "description": "The user preferred currency."
+                },
+                "catalogId": {
+                    "type": "integer",
+                    "description": "The user's catalog identifier.",
+                    "format": "int64"
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.PreviewTokenHandler.ValidIdentifier": {
+            "required": [
+                "valid"
+            ],
+            "properties": {
+                "valid": {
+                    "type": "boolean",
+                    "description": "The valid identifier."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Preview": {
+            "description": "User's preview information.",
+            "properties": {
+                "initialtimeDiff": {
+                    "type": "integer",
+                    "description": "The initial time difference when preview started.",
+                    "format": "int64"
+                },
+                "previewProperties": {
+                    "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Preview.PreviewProperties"
+                },
+                "static": {
+                    "type": "boolean",
+                    "description": "Is the preview session time static."
+                },
+                "timestamp": {
+                    "type": "string",
+                    "description": "The preview timestamp."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.LoginIdentityHandler.UserIdentity": {
+            "required": [
+                "WCToken",
+                "WCTrustedToken",
+                "personalizationID",
+                "userId"
+            ],
+            "description": "Information about a guest user identity.",
+            "properties": {
+                "userId": {
+                    "type": "string",
+                    "description": "The user unique identifier."
+                },
+                "WCToken": {
+                    "type": "string",
+                    "description": "The token used for authentication."
+                },
+                "WCTrustedToken": {
+                    "type": "string",
+                    "description": "The trusted token used for authentication. This token should only be used on encrypted channels."
+                },
+                "personalizationID": {
+                    "type": "string",
+                    "description": "The personalization identifier for the current session."
+                },
+                "privacyNoticeVersion": {
+                    "type": "string",
+                    "description": "The version of the privacy notice. For example '1.0'."
+                },
+                "marketingTrackingConsent": {
+                    "type": "string",
+                    "description": "The marketing tracking consent. 0 means opt-out, 1 means opt-in."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.PreviewTokenHandler.PreviewToken": {
+            "description": "Preview token.",
+            "properties": {
+                "previewToken": {
+                    "type": "string",
+                    "description": "The preview token."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.PreviewTokenHandler.PasswordValidRequest": {
+            "description": "Preview token password validation request body",
+            "properties": {
+                "previewToken": {
+                    "type": "string",
+                    "description": "The preview token."
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Preview.PreviewProperties": {
+            "description": "User's preview properties information.",
+            "properties": {
+                "previewInventory": {
+                    "type": "string",
+                    "description": "The inventory preview mode."
+                },
+                "previewHost": {
+                    "type": "string",
+                    "description": "The preview host name and port."
+                },
+                "previewPath": {
+                    "type": "string",
+                    "description": "The store preview URI."
+                },
+                "previewRestURI": {
+                    "type": "string",
+                    "description": "The preview REST URI."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.GuestIdentityHandler.UserIdentity": {
+            "required": [
+                "WCToken",
+                "WCTrustedToken",
+                "personalizationID",
+                "userId"
+            ],
+            "description": "Information about a guest user identity.",
+            "properties": {
+                "userId": {
+                    "type": "string",
+                    "description": "The user unique identifier."
+                },
+                "WCToken": {
+                    "type": "string",
+                    "description": "The token used for authentication."
+                },
+                "WCTrustedToken": {
+                    "type": "string",
+                    "description": "The trusted token used for authentication. This token should only be used on encrypted channels."
+                },
+                "personalizationID": {
+                    "type": "string",
+                    "description": "The personalization identifier for the current session."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.PreviewTokenHandler.PreviewParameters": {
+            "description": "Preview parameters.",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "description": "The status. Set to either \"true\" or \"false\"."
+                },
+                "timeZoneId": {
+                    "type": "string",
+                    "description": "The time zone identifier for example,  \"America/New_York\""
+                },
+                "includedMemberGroupIds": {
+                    "type": "string",
+                    "description": "Comma separated list of member groups to simulate for example,  \"8000000000000000007,8000000000000000006\""
+                },
+                "start": {
+                    "type": "string",
+                    "description": "The start date and time for example, \"2013/09/11 13:00:00\""
+                },
+                "workspaceId": {
+                    "type": "string",
+                    "description": "The workspace identifier to use for example,  \"10001\""
+                },
+                "invstatus": {
+                    "type": "string",
+                    "description": "The inventory status number for example,  \"0\""
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password to access a generated preview URL."
+                },
+                "tokenLife": {
+                    "type": "string",
+                    "description": "Lifespan of the preview token in minutes for example,  \"60\"."
+                },
+                "prodInventoryRuleFilter": {
+                    "type": "string",
+                    "description": "The inventory visibility filter. Example : \"false\""
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.PersonalizationIdentifier": {
+            "required": [
+                "personalizationID"
+            ],
+            "description": "Personalization identifier.",
+            "properties": {
+                "personalizationID": {
+                    "type": "string",
+                    "description": "The personalization identifier."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.BasicInfo": {
+            "required": [
+                "callerId",
+                "channelId",
+                "runAsId",
+                "storeId"
+            ],
+            "description": "User's basic information.",
+            "properties": {
+                "channelId": {
+                    "type": "integer",
+                    "description": "The user's channel identifier.",
+                    "format": "int64"
+                },
+                "storeId": {
+                    "type": "integer",
+                    "description": "The user's store identifier.",
+                    "format": "int64"
+                },
+                "callerId": {
+                    "type": "integer",
+                    "description": "The user's caller identifier.",
+                    "format": "int64"
+                },
+                "runAsId": {
+                    "type": "integer",
+                    "description": "The user identifier this session is acting upon.",
+                    "format": "int64"
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext": {
+            "required": [
+                "basicInfo",
+                "catalog",
+                "entitlement",
+                "globalization",
+                "isPartiallyAuthenticated"
+            ],
+            "description": "User context.",
+            "properties": {
+                "basicInfo": {
+                    "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.BasicInfo"
+                },
+                "entitlement": {
+                    "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Entitlement"
+                },
+                "isPartiallyAuthenticated": {
+                    "type": "boolean",
+                    "description": "Is the user partially authenticated."
+                },
+                "catalog": {
+                    "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Catalog"
+                },
+                "globalization": {
+                    "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Globalization"
+                },
+                "workspace": {
+                    "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Workspace"
+                },
+                "preview": {
+                    "$ref": "#/definitions/com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Preview"
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.LoginIdentityHandler.LoginForm": {
+            "required": [
+                "logonId",
+                "logonPassword"
+            ],
+            "description": "Information required to authenticate a user.",
+            "properties": {
+                "logonPassword": {
+                    "type": "string",
+                    "description": "The logon password."
+                },
+                "logonId": {
+                    "type": "string",
+                    "description": "The logon id."
+                }
+            },
+            "example": {
+                "application/json": {
+                    "logonId": "wcsadmin",
+                    "logonPassword": "wcsadmin"
+                }
+            }
+                
+        },
+        "com.ibm.commerce.rest.member.handler.GuestIdentityHandler.GuestIdentityForm": {
+            "description": "Information needed to creating guest identity.",
+            "properties": {
+                "privacyNoticeVersion": {
+                    "type": "string",
+                    "description": "The version of the privacy notice. For example '1.0'."
+                },
+                "marketingTrackingConsent": {
+                    "type": "string",
+                    "description": "The marketing tracking consent. 0 means opt-out, 1 means opt-in."
+                }
+            },
+            "example": {
+                "application/json": {
+                    "privacyNoticeVersion": "1.0",
+                    "marketingTrackingConsent": "1"
+                }
+            }
+                
+        },
+        
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Entitlement": {
+            "required": [
+                "activeOrganizationId"
+            ],
+            "description": "User's entitlement information.",
+            "properties": {
+                "currentTradingAgreementIds": {
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "type": "array",
+                    "description": "The user's trading agreement identifiers."
+                },
+                "sessionTradingAgreementIds": {
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "type": "array",
+                    "description": "The user's session trading agreement identifiers."
+                },
+                "activeOrganizationId": {
+                    "type": "integer",
+                    "description": "The user's active organization identifier.",
+                    "format": "int64"
+                },
+                "hostingContractId": {
+                    "type": "integer",
+                    "description": "The user's hosting contract identifier.",
+                    "format": "int64"
+                },
+                "eligibleTradingAgreementIds": {
+                    "items": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "type": "array",
+                    "description": "The user's eligible trading agreement identifiers."
+                }
+            }
+        },
+        "com.ibm.commerce.rest.member.handler.UserContextHandler.UserContext.Workspace": {
+            "description": "User's workspace information.",
+            "properties": {
+                "task": {
+                    "type": "string",
+                    "description": "The user's active task name."
+                },
+                "taskGroup": {
+                    "type": "string",
+                    "description": "The user's active task group name."
+                },
+                "workspaceName": {
+                    "type": "string",
+                    "description": "The user's active workspace name."
+                }
+            }
+        },
+        "Empty": {
+            "description": "Empty model. Used as default value when no model is specified."
+        }
+    }
+}

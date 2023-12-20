@@ -1,0 +1,164 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "title": "Job Types",
+        "version": "2.0"
+    },
+    "tags": [
+        {
+            "name": "JobTypes",
+            "description": "This class provides RESTful services to get scheduler job types."
+        }
+    ],
+    "paths": {
+        "/job-types": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/JobTypeCollection"
+                        },
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "This is the content type to be placed in the header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "The maximum number of records to return.",
+                        "format": "int32",
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "format": "int32",
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "tags": [
+                    "JobTypes"
+                ],
+                "description": "Get a collection of scheduler job types.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a collection of scheduler job types.",
+                "operationId": "Job-getJobTypes"
+            }
+        }
+    },
+    "definitions": {
+        "ErrorResponseContainer": {
+            "description": "The error message model.",
+            "properties": {
+                "errors": {
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    },
+                    "type": "array"
+                },
+                "requestId": {
+                    "description": "The request identifier.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Error": {
+            "description": "The error message item model.",
+            "properties": {
+                "code": {
+                    "description": "The error message code.",
+                    "type": "string"
+                },
+                "correlationId": {
+                    "description": "The unique identifier for the request.",
+                    "type": "string"
+                },
+                "locale": {
+                    "description": "The locale of the error message.",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "The error message.",
+                    "type": "string"
+                },
+                "messageArguments": {
+                    "description": "The arguments used to construct the error message.",
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "messageKey": {
+                    "description": "The error message key.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "JobTypeCollection": {
+            "properties": {
+                "count": {
+                    "format": "int64",
+                    "type": "integer",
+                    "description": "The total number of item records that match the query parameters."
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "description": "The items."
+                    }
+                },
+                "limit": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The maximum number of records to return."
+                },
+                "offset": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters."
+                }
+            }
+        }
+    }
+}

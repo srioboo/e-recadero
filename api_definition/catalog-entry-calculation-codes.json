@@ -1,0 +1,410 @@
+{
+  "swagger": "2.0",
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "info": {
+    "version": "2.0",
+    "title": "catalog-entry-calculation-codes"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/catalog-entry-calculation-codes": {
+      "get": {
+        "tags": [
+          "catalog-entry-calculation-codes"
+        ],
+        "description": "Get a collection of relationships between catalog entries and calculation codes.",
+        "operationId": "getCatalogEntryCalculationCodes",
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The store ID that is associated with the relationship between the catalog entry and the calculation code.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "catalogEntryId",
+            "in": "query",
+            "description": "The catalog entry id.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "calculationCodeId",
+            "in": "query",
+            "description": "The calculation code id.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The unique numeric ID for identifying the relationship between the catalog entry and the calculation code.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "contractId",
+            "in": "query",
+            "description": "The contract id.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "calculationFlags",
+            "in": "query",
+            "description": "The flags for the relationship between the catalog entry and the calculation code.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of records to return.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of relationships between catalog entries and calculation codes.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntryCalculationCodeCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "catalog-entry-calculation-codes"
+        ],
+        "description": "Create a relationship between a catalog entry and a calculation code.",
+        "operationId": "createCatalogEntryCalculationCode",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "CatalogEntryCalculationCode",
+            "description": "The relationship between a catalog entry and a calculation code.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogEntryCalculationCode"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      }
+    },
+    "/catalog-entry-calculation-codes/{id}": {
+      "get": {
+        "tags": [
+          "catalog-entry-calculation-codes"
+        ],
+        "description": "Get a relationship between a catalog entry and a calculation code.",
+        "operationId": "getCatalogEntryCalculationCodeById",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The relationship between a catalog entry and a calculation code.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntryCalculationCode"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "catalog-entry-calculation-codes"
+        ],
+        "description": "Delete a relationship between a catalog entry and a calculation code.",
+        "operationId": "deleteCatalogEntryCalculationCodeById",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "catalog-entry-calculation-codes"
+        ],
+        "description": "Update a relationship between a catalog entry and a calculation code.",
+        "operationId": "updateCatalogEntryCalculationCodeById",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "CatalogEntryCalculationCode",
+            "description": "The relationship between a catalog entry and a calculation code.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogEntryCalculationCode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The unique numeric ID for identifying the relationship between the catalog entry and the calculation code.",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the link."
+        }
+      },
+      "description": "Links to related resources."
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The error message code."
+        },
+        "message": {
+          "type": "string",
+          "description": "The error message."
+        },
+        "messageKey": {
+          "type": "string",
+          "description": "The error message key."
+        },
+        "messageArguments": {
+          "type": "array",
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          }
+        },
+        "correlationId": {
+          "type": "string",
+          "description": "The unique identifier for the request."
+        },
+        "locale": {
+          "type": "string",
+          "description": "The locale of the error message."
+        }
+      },
+      "description": "The error message item model."
+    },
+    "ErrorResponseContainer": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "The request identifier."
+        },
+        "errors": {
+          "type": "array",
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      },
+      "description": "The error message model."
+    },
+    "CatalogEntryCalculationCode": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The store ID that is associated with the relationship between the catalog entry and the calculation code."
+        },
+        "catalogEntryId": {
+          "type": "string",
+          "description": "The catalog entry id."
+        },
+        "calculationCodeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The calculation code id."
+        },
+        "id": {
+          "type": "string",
+          "description": "The unique numeric ID for identifying the relationship between the catalog entry and the calculation code."
+        },
+        "contractId": {
+          "type": "string",
+          "description": "The contract id."
+        },
+        "calculationFlags": {
+          "type": "number",
+          "description": "The flags for the relationship between the catalog entry and the calculation code."
+        }
+      },
+      "description": "The relationship between a catalog entry and a calculation code."
+    },
+    "CatalogEntryCalculationCodeCollection": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total number of items."
+        },
+        "items": {
+          "type": "array",
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/CatalogEntryCalculationCode"
+          }
+        }
+      },
+      "description": "A collection of relationships between catalog entries and calculation codes."
+    }
+  }
+}

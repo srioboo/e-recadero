@@ -1,0 +1,812 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer a collection of stores.",
+    "title": "Stores",
+    "version": "9.1"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/stores": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID which is generated unique numeric identifier.",
+            "format": "int32",
+            "in": "query",
+            "name": "id",
+            "type": "integer"
+          },
+          {
+            "description": "A string that, together with organizationId, uniquely identifies the store.",
+            "in": "query",
+            "name": "identifier",
+            "type": "string"
+          },
+          {
+            "description": "The store type, which is used by a user interface to provide appropriate functions.",
+            "in": "query",
+            "name": "storeType",
+            "type": "string"
+          },
+          {
+            "description": "The status of the store. Valid values are, 1 = open. 0 = closed. -1 = suspended.",
+            "format": "int32",
+            "in": "query",
+            "name": "status",
+            "type": "integer"
+          },
+          {
+            "description": "The base name of the directory in which store-specific Web assets, such as JSP files and property files, are found.",
+            "in": "query",
+            "name": "directory",
+            "type": "string"
+          },
+          {
+            "description": "The default currency for a store that will be used by a customer who has not specified a preferred currency.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "The organization ID of the store.",
+            "in": "query",
+            "name": "organizationId",
+            "type": "string"
+          },
+          {
+            "description": "The default language for information displayed to customers shopping in the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "languageId",
+            "type": "integer"
+          },
+          {
+            "description": "The store contract ID.",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The store group ID for this store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeGroupId",
+            "type": "integer"
+          },
+          {
+            "description": "The store category ID, if any, for this store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeCategoryId",
+            "type": "integer"
+          },
+          {
+            "description": "The default fulfillment center for the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "fulfillmentCenterId",
+            "type": "integer"
+          },
+          {
+            "description": "The ID of the fulfillment center that is used as the default for returning merchandise to the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "returnFFMCenterId",
+            "type": "integer"
+          },
+          {
+            "description": "Contains bit flags that specify policy used by the default implementation of GetEligibleFulfillmentCenters.",
+            "format": "int32",
+            "in": "query",
+            "name": "fulfillmentCenterSelectionFlags",
+            "type": "integer"
+          },
+          {
+            "description": "The inventory system is used by the store. Valid values are, -2 = Non-ATP (Default value), -3 = No inventory, -4 = external inventory management system, -5 = DOM inventory system.",
+            "in": "query",
+            "name": "inventorySystem",
+            "type": "number"
+          },
+          {
+            "description": "Contains bit flags indicating how to perform inventory operations. A value of 1 indicates that the RECEIPT table is updated during shipment confirmation.",
+            "format": "int32",
+            "in": "query",
+            "name": "inventoryOpFlags",
+            "type": "integer"
+          },
+          {
+            "description": "If this many seconds have passed since an order was prepared and the customer has not committed to pay, the prices and other monetary amounts in the order may change when OrderProcess is run.",
+            "format": "int32",
+            "in": "query",
+            "name": "quoteGoodFor",
+            "type": "integer"
+          },
+          {
+            "description": "When this many seconds have passed since the allocations were made, the ReleaseExpiredAllocations scheduler job can reverse available to promise (ATP) inventory allocations. If 0, ATP inventory allocation is not used by this store, and the INVENTORY table is used instead.",
+            "format": "int32",
+            "in": "query",
+            "name": "allocationGoodFor",
+            "type": "integer"
+          },
+          {
+            "description": "Orders with payment in declined state longer than this many seconds are candidates for cancellation.",
+            "format": "int32",
+            "in": "query",
+            "name": "rejectedOrderExpiry",
+            "type": "integer"
+          },
+          {
+            "description": "The bopmpadFactor specifies the percentage amount (\"padding factor\") by which the order amount presented to the payments subsystem can be increased, if necessary.",
+            "format": "int32",
+            "in": "query",
+            "name": "bopmpadFactor",
+            "type": "integer"
+          },
+          {
+            "description": "When an estimated availability time cannot be determined for a back-ordered order item, by default, it will be set to this many seconds into the future.",
+            "format": "int32",
+            "in": "query",
+            "name": "defaultBoOffset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum period of time that can be requested for a future ship date after the date the requested ship date is entered.",
+            "format": "int32",
+            "in": "query",
+            "name": "maxBoOffset",
+            "type": "integer"
+          },
+          {
+            "description": "Contains bit flags that control which trading agreements and offers are searched when prices are refreshed by the default implementation of the GetContractunitPrices task command.",
+            "format": "int32",
+            "in": "query",
+            "name": "priceRefFlags",
+            "type": "integer"
+          },
+          {
+            "description": "The payments subsystem AVS result codes.",
+            "in": "query",
+            "name": "avsAcceptCodes",
+            "type": "string"
+          },
+          {
+            "description": "The time period in seconds for which return merchandise authorization (RMA) calculations are valid. If this time period elapses before an RMA is completed, charges or credits and approval will be recalculated.",
+            "format": "int32",
+            "in": "query",
+            "name": "RMAGoodFor",
+            "type": "integer"
+          },
+          {
+            "description": "Specifies whether the order blocking feature is in use. The order blocking feature can be disabled for this particular store by setting this field to 0. The default value is 1.",
+            "in": "query",
+            "name": "blockingActive",
+            "type": "number"
+          },
+          {
+            "description": "Allows the merchant-extensible code for order blocking to be run asynchronously. This column can be used when a merchant wants to test for blocking conditions by connecting to external systems. To enable this feature, this column must be set to 1. By default, it is turned off (that is, set to 0).",
+            "in": "query",
+            "name": "blkExtAsynch",
+            "type": "number"
+          },
+          {
+            "description": "This indicates whether remember me session is enabled or not. The default value is 0 (disabled).",
+            "in": "query",
+            "name": "persistentSession",
+            "type": "number"
+          },
+          {
+            "description": "Amount of time before the requested ship date when inventory allocation should be performed.",
+            "format": "int32",
+            "in": "query",
+            "name": "allocationOffset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum period of time that can be requested for a future ship date after the date the requested ship date is entered.",
+            "format": "int32",
+            "in": "query",
+            "name": "maxFoOffset",
+            "type": "integer"
+          },
+          {
+            "description": "Indicates whether order change history tracking is enabled. The default value is Y (Yes).",
+            "in": "query",
+            "name": "orderHistoryActive",
+            "type": "string"
+          },
+          {
+            "description": "The customizable field.",
+            "in": "query",
+            "name": "field1",
+            "type": "string"
+          },
+          {
+            "description": "The customizable field.",
+            "in": "query",
+            "name": "field2",
+            "type": "string"
+          },
+          {
+            "description": "Indicates the last date and time the status of the store was updated.",
+            "format": "date-time",
+            "in": "query",
+            "name": "lastUpdateStatus",
+            "type": "string"
+          },
+          {
+            "description": "The store level is used as a flag to tell if various features are used in the store. The possible values are MC and MOBILE comma separated, or Null.",
+            "in": "query",
+            "name": "storeLevel",
+            "type": "string"
+          },
+          {
+            "description": "Indicates whether the store has been marked for deletion as follows, 0 = do not delete. 1 = delete if no longer in use. Refer to the Database Cleanup utility.",
+            "format": "int32",
+            "in": "query",
+            "name": "markForDelete",
+            "type": "integer"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of stores.",
+            "schema": {
+              "$ref": "#/definitions/StoreCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "stores"
+        ],
+        "description": "Get a collection of stores.",
+        "operationId": "getStores"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Store"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the stores.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "DeletestoresBystoreId": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `DELETE /stores/{id}`.\n",
+                "operationRef": "#/paths/~1stores~1{id}/delete"
+              },
+              "GetstoreBystoreId": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `GET /stores/{id}`.\n",
+                "operationRef": "#/paths/~1stores~1{id}/get"
+              },
+              "UpdatestoresBystoreId": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `PATCH /stores/{id}`.\n",
+                "operationRef": "#/paths/~1stores~1{id}/patch"
+              }
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "stores"
+        ],
+        "description": "Create a store.",
+        "operationId": "createStore",
+        "x-codegen-request-body-name": "Store"
+      }
+    },
+    "/stores/{id}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID which is generated unique numeric identifier.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "stores"
+        ],
+        "operationId": "deleteStoreById"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID which is generated unique numeric identifier.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The store.",
+            "schema": {
+              "$ref": "#/definitions/Store"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "stores"
+        ],
+        "description": "Get a store by ID.",
+        "operationId": "getStoreById"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID which is generated unique numeric identifier.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The store.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Store"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "stores"
+        ],
+        "description": "Update a store.",
+        "operationId": "updateStoreById",
+        "x-codegen-request-body-name": "Store"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "properties": {},
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Link": {
+      "description": "Links to related resources.",
+      "properties": {
+        "href": {
+          "description": "The URL of the link.",
+          "format": "uri",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Store": {
+      "description": "The store.",
+      "properties": {
+        "RMAGoodFor": {
+          "description": "The time period in seconds for which return merchandise authorization (RMA) calculations are valid. If this time period elapses before an RMA is completed, charges or credits and approval will be recalculated.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "allocationGoodFor": {
+          "description": "When this many seconds have passed since the allocations were made, the ReleaseExpiredAllocations scheduler job can reverse available to promise (ATP) inventory allocations. If 0, ATP inventory allocation is not used by this store, and the INVENTORY table is used instead.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "allocationOffset": {
+          "description": "Amount of time before the requested ship date when inventory allocation should be performed.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "avsAcceptCodes": {
+          "description": "The payments subsystem AVS result codes.",
+          "type": "string"
+        },
+        "blkExtAsynch": {
+          "description": "Allows the merchant-extensible code for order blocking to be run asynchronously. This column can be used when a merchant wants to test for blocking conditions by connecting to external systems. To enable this feature, this column must be set to 1. By default, it is turned off (that is, set to 0).",
+          "type": "number"
+        },
+        "blockingActive": {
+          "description": "Specifies whether the order blocking feature is in use. The order blocking feature can be disabled for this particular store by setting this field to 0. The default value is 1.",
+          "type": "number"
+        },
+        "bopmpadFactor": {
+          "description": "The bopmpadFactor specifies the percentage amount (\"padding factor\") by which the order amount presented to the payments subsystem can be increased, if necessary.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "contractId": {
+          "description": "The store contract ID.",
+          "type": "string"
+        },
+        "currency": {
+          "description": "The default currency for a store that will be used by a customer who has not specified a preferred currency.",
+          "type": "string"
+        },
+        "defaultBoOffset": {
+          "description": "When an estimated availability time cannot be determined for a back-ordered order item, by default, it will be set to this many seconds into the future.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "directory": {
+          "description": "The base name of the directory in which store-specific Web assets, such as JSP files and property files, are found.",
+          "type": "string"
+        },
+        "field1": {
+          "description": "The customizable field.",
+          "type": "string"
+        },
+        "field2": {
+          "description": "The customizable field.",
+          "type": "string"
+        },
+        "fulfillmentCenterId": {
+          "description": "The default fulfillment center for the store.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "fulfillmentCenterSelectionFlags": {
+          "description": "Contains bit flags that specify policy used by the default implementation of GetEligibleFulfillmentCenters.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "id": {
+          "description": "The store ID which is generated unique numeric identifier.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "identifier": {
+          "description": "A string that, together with organizationId, uniquely identifies the store.",
+          "type": "string"
+        },
+        "inventoryOpFlags": {
+          "description": "Contains bit flags indicating how to perform inventory operations. A value of 1 indicates that the RECEIPT table is updated during shipment confirmation.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "inventorySystem": {
+          "description": "The inventory system is used by the store. Valid values are, -2 = Non-ATP (Default value), -3 = No inventory, -4 = external inventory management system, -5 = DOM inventory system.",
+          "type": "number"
+        },
+        "languageId": {
+          "description": "The default language for information displayed to customers shopping in the store.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "lastUpdateStatus": {
+          "description": "Indicates the last date and time the status of the store was updated.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "markForDelete": {
+          "description": "Indicates whether the store has been marked for deletion as follows, 0 = do not delete. 1 = delete if no longer in use. Refer to the Database Cleanup utility.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "maxBoOffset": {
+          "description": "The maximum period of time that can be requested for a future ship date after the date the requested ship date is entered.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "maxFoOffset": {
+          "description": "The maximum period of time that can be requested for a future ship date after the date the requested ship date is entered.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "orderHistoryActive": {
+          "description": "Indicates whether order change history tracking is enabled. The default value is Y (Yes).",
+          "type": "string"
+        },
+        "organizationId": {
+          "description": "The organization ID of the store.",
+          "type": "string"
+        },
+        "persistentSession": {
+          "description": "This indicates whether remember me session is enabled or not. The default value is 0 (disabled).",
+          "type": "number"
+        },
+        "priceRefFlags": {
+          "description": "Contains bit flags that control which trading agreements and offers are searched when prices are refreshed by the default implementation of the GetContractunitPrices task command.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "quoteGoodFor": {
+          "description": "If this many seconds have passed since an order was prepared and the customer has not committed to pay, the prices and other monetary amounts in the order may change when OrderProcess is run.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "rejectedOrderExpiry": {
+          "description": "Orders with payment in declined state longer than this many seconds are candidates for cancellation.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "returnFFMCenterId": {
+          "description": "The ID of the fulfillment center that is used as the default for returning merchandise to the store.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "status": {
+          "description": "The status of the store. Valid values are, 1 = open. 0 = closed. -1 = suspended.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeCategoryId": {
+          "description": "The store category ID, if any, for this store.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeGroupId": {
+          "description": "The store group ID for this store.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeLevel": {
+          "description": "The store level is used as a flag to tell if various features are used in the store. The possible values are MC and MOBILE comma separated, or Null.",
+          "type": "string"
+        },
+        "storeType": {
+          "description": "The store type, which is used by a user interface to provide appropriate functions.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "identifier",
+        "organizationId",
+        "storeGroupId",
+        "storeType"
+      ],
+      "type": "object"
+    },
+    "StoreCollection": {
+      "description": "A collection of stores.",
+      "properties": {
+        "count": {
+          "description": "The total number of items.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/Store"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count",
+        "items"
+      ],
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provide RESTful services to manage store resources.",
+      "name": "stores"
+    }
+  ],
+  "x-components": {}
+}

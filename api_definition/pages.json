@@ -1,0 +1,924 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Page Admin REST APIs",
+    "version": "2.0"
+  },
+  "paths": {
+    "/pages": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "Limits search results to only include pages with a name that matches the value of this parameter.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PageCollection"
+            },
+            "x-entity-path": "dataArea/page"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "getPages",
+        "summary": "Get the pages for a store.",
+        "x-expression-builder-class": "com.ibm.commerce.rest.admin.v2.pagelayout.PageExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getPage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetPageType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Page"
+            },
+            "x-entity-path": "dataArea/page[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the page.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "createPage",
+        "summary": "Create a page.",
+        "x-action-code": "Create",
+        "x-expression-template": "/Page[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "processPage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ProcessPageType"
+      }
+    },
+    "/pages/by-ids": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PageCollection"
+            },
+            "x-entity-path": "dataArea/page"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "getPagesByIds",
+        "summary": "Get a list of pages by page IDs.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_Details'}/Page[PageIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getPage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetPageType"
+      }
+    },
+    "/pages/by-name": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The name pattern to search.",
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PageCollection"
+            },
+            "x-entity-path": "dataArea/page"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "getPagesByName",
+        "summary": "Get a list of pages by page name pattern.",
+        "x-expression-builder-class": "com.ibm.commerce.foundation.internal.client.taglib.util.SearchExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getPage",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary",
+          "template": "/Page[search(PageIdentifier/ExternalIdentifier/Name='$name$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetPageType"
+      }
+    },
+    "/pages/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "deletePage",
+        "summary": "Delete a page.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/Page[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "processPage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ProcessPageType",
+        "x-request-verb": "process"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/Page"
+            },
+            "x-entity-path": "dataArea/page[1]"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "getPage",
+        "summary": "Get a page by page ID.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_Details'}/Page[PageIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getPage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetPageType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Page"
+            },
+            "x-entity-path": "dataArea/page[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/Page"
+            },
+            "x-entity-path": "dataArea/page[1]"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "updatePage",
+        "summary": "Update a page.",
+        "x-action-code": "Change",
+        "x-expression-template": "/Page[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changePage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangePageType",
+        "x-request-verb": "change"
+      }
+    },
+    "/pages/{pageId}/seo-properties": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "pageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string",
+            "x-default-to-supported": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PageSeoPropertyCollection"
+            },
+            "x-entity-path": "dataArea/page[1]/SEOProperties"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "getPageSeoProperties",
+        "summary": "Get the seo properties for a page.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_Details';_wcf.dataLanguageIds='{dataLanguageIds}'}/Page[PageIdentifier[(UniqueID='{pageId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getPage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetPageType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "pageId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PageSeoProperty"
+            },
+            "x-entity-path": "dataArea/page[1]/SEOProperties[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PageSeoProperty"
+            },
+            "x-entity-path": "dataArea/page[1]/SEOProperties[1]"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "updatePageSeoProperty",
+        "summary": "Update a page SEO property.",
+        "x-action-code": "Change",
+        "x-expression-template": "/Page[1]/SEOProperties[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changePage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangePageType",
+        "x-request-verb": "change"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "pageId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PageSeoProperty"
+            },
+            "x-entity-path": "dataArea/page[1]/SEOProperties[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PageSeoProperty"
+            },
+            "x-entity-path": "dataArea/page[1]/SEOProperties[1]"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "createPageSeoProperty",
+        "summary": "Create a page SEO property.",
+        "x-action-code": "Add",
+        "x-expression-template": "/Page[1]/SEOProperties[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changePage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangePageType",
+        "x-request-verb": "change"
+      }
+    },
+    "/pages/{pageId}/seo-urls": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "pageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string",
+            "x-default-to-supported": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PageSeoUrlCollection"
+            },
+            "x-entity-path": "dataArea/page[1]/SEOURL",
+            "x-sub-entity-path": "URLKeyword"
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "getPageSeoUrls",
+        "summary": "Get the SEO URLs for a page.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_Details';_wcf.dataLanguageIds='{dataLanguageIds}'}/Page[PageIdentifier[(UniqueID='{pageId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getPage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetPageType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "pageId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/page[1]/SEOURL[1]/parentStoreIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PageSeoUrl"
+            },
+            "x-entity-path": "dataArea/page[1]/SEOURL[1]/URLKeyword[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PageSeoUrl"
+            }
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "updatePageSeoUrl",
+        "summary": "Update a page SEO URL.",
+        "x-action-code": "Change",
+        "x-expression-template": "/Page[1]/SEOURL[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changePage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangePageType",
+        "x-request-verb": "change"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "format": "int32",
+            "in": "path",
+            "name": "pageId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/page[1]/pageIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/page[1]/SEOURL[1]/parentStoreIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PageSeoUrl"
+            },
+            "x-entity-path": "dataArea/page[1]/SEOURL[1]/URLKeyword[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the SEO URL.",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Pages"
+        ],
+        "operationId": "createPageSeoUrl",
+        "summary": "Create a page SEO URL.",
+        "x-action-code": "Add",
+        "x-expression-template": "/Page[1]/SEOURL[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changePage",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangePageType",
+        "x-request-verb": "change"
+      }
+    }
+  },
+  "definitions": {
+    "Page": {
+      "description": "A Page Object.",
+      "properties": {
+        "deletable": {
+          "description": "Flag that indicates whether the store page is deletable. Essential store pages, such as the Home Page or Privacy Page might need to be marked as non-deletable.",
+          "type": "boolean",
+          "x-entity-path": "deletable"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the page.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "pageIdentifier/uniqueID"
+        },
+        "memberId": {
+          "description": "The unique numeric ID for identifying the user or organization.",
+          "type": "string",
+          "x-entity-path": "pageIdentifier/externalIdentifier/ownerID"
+        },
+        "name": {
+          "description": "The page name.",
+          "type": "string",
+          "x-entity-path": "pageIdentifier/externalIdentifier/name"
+        },
+        "nameEditable": {
+          "description": "Flag that indicates whether the administrative name of the page can be edited.",
+          "type": "boolean",
+          "x-entity-path": "nameEditable"
+        },
+        "pageGroup": {
+          "description": "The page group, also known as page type, that the store page belongs within. For instance content pages such as the About Us and Privacy Policy pages can belong to a \"Content\" page group.",
+          "type": "string",
+          "x-entity-path": "pageGroup"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "pageIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "urlConfigurable": {
+          "description": "Flag that indicates whether the URL of the page is configurable.",
+          "type": "boolean",
+          "x-entity-path": "urlConfigurable"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.pagelayout.facade.datatypes.PageType"
+    },
+    "PageCollection": {
+      "description": "A collection of pages.",
+      "properties": {
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The data objects or resources that that match the query parameters.",
+          "items": {
+            "$ref": "#/definitions/Page"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PageSeoProperty": {
+      "description": "SEO Property",
+      "properties": {
+        "fullImageAltDescription": {
+          "description": "The language-specific image alternate description for the page.",
+          "type": "string",
+          "x-entity-path": "fullImageAltDescription"
+        },
+        "languageId": {
+          "description": "The language ID.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "metaDescription": {
+          "description": "The language-specific meta description for the page.",
+          "type": "string",
+          "x-entity-path": "metaDescription"
+        },
+        "metaKeyword": {
+          "description": "The language-specific meta keyword for the page.",
+          "type": "string",
+          "x-entity-path": "metaKeyword"
+        },
+        "resolved": {
+          "description": "Flag to indicate is resolved or not.",
+          "type": "boolean",
+          "x-entity-path": "resolved"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the parent store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "parentStoreIdentifier/uniqueID"
+        },
+        "title": {
+          "description": "The language specific page title.",
+          "type": "string",
+          "x-entity-path": "title"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.SEOPropertiesType"
+    },
+    "PageSeoPropertyCollection": {
+      "description": "A collection of SEO properties.",
+      "properties": {
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The data objects or resources that that match the query parameters.",
+          "items": {
+            "$ref": "#/definitions/PageSeoProperty"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PageSeoUrl": {
+      "description": "The SEO URL object.",
+      "properties": {
+        "keyword": {
+          "description": "The SEO URL keyword.",
+          "type": "string",
+          "x-entity-path": "keyword"
+        },
+        "languageId": {
+          "description": "The language of the keyword. For a list of integer language identifiers, please refer to the Knowledge Center.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "previewUrl": {
+          "description": "The preview URL.",
+          "type": "string",
+          "x-entity-path": "previewURL"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "container/parentStoreIdentifier/uniqueID"
+        },
+        "urlPrefix": {
+          "description": "The URL prefix which contains store token and seo keyword token. e.g. https://localhost/wcs/shop/en/$SEO:STORETOKEN$/$SEO:PRIMARYTOKEN$",
+          "type": "string",
+          "x-entity-path": "URLPrefix"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.SEOURLKeywordType"
+    },
+    "PageSeoUrlCollection": {
+      "description": "A collection of SEO URLs.",
+      "properties": {
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The data objects or resources that that match the query parameters.",
+          "items": {
+            "$ref": "#/definitions/PageSeoUrl"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "tags": [
+    {
+      "description": "This class provides RESTful services to pages.",
+      "name": "Pages"
+    }
+  ],
+  "x-components": {}
+}

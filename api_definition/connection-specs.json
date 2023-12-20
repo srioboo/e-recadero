@@ -1,0 +1,364 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Connection Specs",
+    "version": "2.0"
+  },
+  "tags": [
+    {
+      "name": "Connection Specs",
+      "description": "This API provides RESTful services to manage connection specifications."
+    }
+  ],
+  "paths": {
+    "/connection-specs/transportId:{transportId},storeId:{storeId}": {
+      "get": {
+        "operationId": "getTransportConnectionSpecs",
+        "tags": [
+          "Connection Specs"
+        ],
+        "parameters": [
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the transport.",
+            "in": "path",
+            "name": "transportId"
+          },
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the store.",
+            "in": "path",
+            "name": "storeId"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ConnectionSpecs"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session isn't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user isn't authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "summary": "Get the connection specifications for the specified transport and store."
+      },
+      "patch": {
+        "operationId": "updateTransportConnectionSpecs",
+        "tags": [
+          "Connection Specs"
+        ],
+        "parameters": [
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the transport.",
+            "in": "path",
+            "name": "transportId"
+          },
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the store.",
+            "in": "path",
+            "name": "storeId"
+          },
+          {
+            "description": "The request body for updating the connection specifications.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConnectionSpecs"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully."
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session isn't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user isn't authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "summary": "Update the connection specifications for the transport and store."
+      }
+    },
+    "/connection-specs/transportId:{transportId},storeId:{storeId},profileId:{profileId}": {
+      "get": {
+        "operationId": "getMessageTransportConnectionSpecs",
+        "tags": [
+          "Connection Specs"
+        ],
+        "parameters": [
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the transport.",
+            "in": "path",
+            "name": "transportId"
+          },
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the store.",
+            "in": "path",
+            "name": "storeId"
+          },
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the profile.",
+            "in": "path",
+            "name": "profileId"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ConnectionSpecs"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session isn't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user isn't authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "summary": "Get the connection specifications for the specified transport, store and profile combination."
+      },
+      "patch": {
+        "operationId": "updateMessageTransportConnectionSpecs",
+        "tags": [
+          "Connection Specs"
+        ],
+        "parameters": [
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the transport.",
+            "in": "path",
+            "name": "transportId"
+          },
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the store.",
+            "in": "path",
+            "name": "storeId"
+          },
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the profile.",
+            "in": "path",
+            "name": "profileId"
+          },
+          {
+            "description": "The request body for updating the connection specifications.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConnectionSpecs"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully."
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session isn't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user isn't authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "summary": "Update the connection specifications for the transport, store and profile combination."
+      }
+    }
+  },
+  "definitions": {
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {},
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ConnectionSpecs": {
+      "properties": {
+        "properties": {
+          "items": {
+            "$ref": "#/definitions/ConnectionSpecProperty"
+          },
+          "type": "array",
+          "description": "The connection specification properties for the transport, store and profile combination."
+        }
+      }
+    },
+    "ConnectionSpecProperty": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The connection specification property name."
+        },
+        "value": {
+          "type": "string",
+          "description": "The connection specification property value."
+        }
+      }
+    }
+  }
+}

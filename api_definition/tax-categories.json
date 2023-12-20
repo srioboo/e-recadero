@@ -1,0 +1,615 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "version": "2.0",
+    "title": "tax-categories"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/tax-categories": {
+      "get": {
+        "tags": [
+          "tax-categories"
+        ],
+        "description": "Get a collection of tax category.",
+        "operationId": "getTaxCategories",
+        "parameters": [
+          {
+            "name": "searchString",
+            "description": "Limits search results to only include tax categories with a name that matches the value of this parameter. Searches are case-insensitive.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The unique numeric ID for identifying the tax category.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "calculationSequence",
+            "in": "query",
+            "description": "Tax amounts are calculated in ascending order of calculationSequence.",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "displaySequence",
+            "in": "query",
+            "description": "A user interface can use this field to control the sequence of tax amounts displayed for an Order.",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "displayUsage",
+            "in": "query",
+            "description": "Specifies that this tax category in relation to the PriceDataBean, 0 is not calculated, 1 is calculated.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "field1",
+            "in": "query",
+            "description": "Customizable.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "field2",
+            "in": "query",
+            "description": "Customizable.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "field3",
+            "in": "query",
+            "description": "Customizable.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "markForDelete",
+            "in": "query",
+            "description": "Reserved for HCL Internal use.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "A name that, along with the StoreEntity, uniquely identifies this Tax Category.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The StoreEntity of which this Tax Category is a part.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "taxTypeId",
+            "in": "query",
+            "description": "The TaxType of this Tax category.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of records to return.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of tax category.",
+            "schema": {
+              "$ref": "#/definitions/TaxCategoryCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tax-categories"
+        ],
+        "description": "Create a tax category.",
+        "operationId": "createTaxCategory",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "TaxCategory",
+            "description": "A tax category.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TaxCategory"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      }
+    },
+    "/tax-categories/{id}": {
+      "get": {
+        "tags": [
+          "tax-categories"
+        ],
+        "description": "Get a tax category.",
+        "operationId": "getTaxCategoryById",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A tax category.",
+            "schema": {
+              "$ref": "#/definitions/TaxCategory"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "tax-categories"
+        ],
+        "description": "Delete a tax category.",
+        "operationId": "deleteTaxCategoryById",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "tax-categories"
+        ],
+        "description": "Update a tax category.",
+        "operationId": "updateTaxCategoryById",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "TaxCategory",
+            "description": "A tax category.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TaxCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The unique numeric ID for identifying the tax category.",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    },
+    "/tax-categories/{id}/descriptions": {
+      "get": {
+        "tags": [
+          "tax-categories"
+        ],
+        "description": "",
+        "operationId": "getDescriptionsOfTaxCategory",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of records to return.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of tax category description.",
+            "schema": {
+              "$ref": "#/definitions/TaxCategoryDescriptionCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The unique numeric ID for identifying the tax category.",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the link."
+        }
+      },
+      "description": "Links to related resources."
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The error message code."
+        },
+        "message": {
+          "type": "string",
+          "description": "The error message."
+        },
+        "messageKey": {
+          "type": "string",
+          "description": "The error message key."
+        },
+        "messageArguments": {
+          "type": "array",
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          }
+        },
+        "correlationId": {
+          "type": "string",
+          "description": "The unique identifier for the request."
+        },
+        "locale": {
+          "type": "string",
+          "description": "The locale of the error message."
+        }
+      },
+      "description": "The error message item model."
+    },
+    "ErrorResponseContainer": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "The request identifier."
+        },
+        "errors": {
+          "type": "array",
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      },
+      "description": "The error message model."
+    },
+    "TaxCategory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The unique numeric ID for identifying the tax category."
+        },
+        "calculationSequence": {
+          "type": "number",
+          "format": "double",
+          "description": "Tax amounts are calculated in ascending order of calculationSequence."
+        },
+        "displaySequence": {
+          "type": "number",
+          "format": "double",
+          "description": "A user interface can use this field to control the sequence of tax amounts displayed for an Order."
+        },
+        "displayUsage": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Specifies that this tax category in relation to the PriceDataBean, 0 is not calculated, 1 is calculated."
+        },
+        "field1": {
+          "type": "number",
+          "description": "Customizable."
+        },
+        "field2": {
+          "type": "number",
+          "description": "Customizable."
+        },
+        "field3": {
+          "type": "string",
+          "description": "Customizable."
+        },
+        "markForDelete": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Reserved for HCL Internal use."
+        },
+        "name": {
+          "type": "string",
+          "description": "A name that, along with the StoreEntity, uniquely identifies this Tax Category."
+        },
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The StoreEntity of which this Tax Category is a part."
+        },
+        "taxTypeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The TaxType of this Tax category."
+        },
+        "links": {
+          "type": "object",
+          "description": "Links to related resources.",
+          "properties": {
+            "descriptions": {
+              "type": "object",
+              "description": "",
+              "properties": {
+                "href": {
+                  "type": "string",
+                  "description": "The URL of the link."
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "A tax category."
+    },
+    "TaxCategoryCollection": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total number of items."
+        },
+        "items": {
+          "type": "array",
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/TaxCategory"
+          }
+        }
+      },
+      "description": "A collection of tax category."
+    },
+    "TaxCategoryDescription": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The unique numeric ID for identifying the tax category."
+        },
+        "languageId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Language ID."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the tax category, suitable for display to a customer for selection. For example, Sales tax, Shipping tax."
+        }
+      },
+      "description": "A tax category description."
+    },
+    "TaxCategoryDescriptionCollection": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total number of items."
+        },
+        "items": {
+          "type": "array",
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/TaxCategoryDescription"
+          }
+        }
+      },
+      "description": "A collection of tax category description."
+    }
+  }
+}

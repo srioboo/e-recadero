@@ -1,0 +1,1263 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer the attributes in an attribute dictionary.",
+    "title": "Attribute Dictionary Attributes",
+    "version": "9.1.12.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/attribute-dictionary-attributes": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary.",
+            "in": "query",
+            "name": "attributeDictionaryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AttributeDictionaryAttributeCollection"
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "getAttributeDictionaryAttributes",
+        "summary": "Get the attribute dictionary attributes in an attribute dictionary.",
+        "x-expression-template": "{_wcf.ap={accessProfile};_wcf.dataLanguageIds='{dataLanguageIds}'}/AttributeDictionaryAttribute[AttributeIdentifier[ExternalIdentifier[AttributeDictionaryIdentifier[(UniqueID='{attributeDictionaryId}')]] and ParentAttributeGroup]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getAttributeDictionaryAttribute",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetAttributeDictionaryAttributeType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AttributeDictionaryAttributes"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the attribute dictionary attributes.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "CreateAllowedValuesByAttributeDictionaryAttributesIdAndStoreId": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id`, `storeId` value used in the request body can be used as the `id`,`storeId` parameter in `POST /attribute-dictionary-attributes/{id}/allowed-values.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}~1allowed-values/post"
+              },
+              "CreateDescriptionsByAttributeDictionaryAttributesIdAndStoreId": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id`, `storeId` value used in the request body can be used as the `id`,`storeId` parameter in `POST /attribute-dictionary-attributes/{id}/descriptions.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}~1descriptions/post"
+              },
+              "DeleteAttributeDictionaryAttributesById": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id`, `storeId` value used in the request body can be used as the `id`,`storeId` parameter in `DELETE /attribute-dictionary-attributes/{id}.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}/delete"
+              },
+              "GetAttributeDictionaryAttributesById": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id`, `storeId` value used in the request body can be used as the `id`,`storeId` parameter in `GET /attribute-dictionary-attributes/{id}.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}/get"
+              },
+              "UpdateAttributeDictionaryAttributesById": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id`, `storeId` value used in the request body can be used as the `id`,`storeId` parameter in `PATCH /attribute-dictionary-attributes/{id}.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "createAttributeDictionaryAttribute",
+        "summary": "Create an attribute dictionary attribute.",
+        "x-action-code": "Create",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/AttributeDictionaryAttribute[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "processAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ProcessAttributeDictionaryAttributeType"
+      }
+    },
+    "/attribute-dictionary-attributes/by-identifier": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The attribute identifier.",
+            "in": "query",
+            "name": "identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AttributeDictionaryAttributeCollection"
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "getAttributeDictionaryAttributesByIdentifier",
+        "summary": "Get attribute dictionary attributes by identifier.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_Details';_wcf.dataLanguageIds='{dataLanguageIds}'}/AttributeDictionaryAttribute[AttributeIdentifier[ExternalIdentifier[(Identifier='{identifier}')]]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getAttributeDictionaryAttribute",
+        "x-introduced": "9.1.12.0",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetAttributeDictionaryAttributeType"
+      }
+    },
+    "/attribute-dictionary-attributes/by-name-or-description": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The name pattern to search.",
+            "in": "query",
+            "name": "searchText",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AttributeDictionaryAttributeCollection"
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "getAttributeDictionaryAttributesByNameOrDescription",
+        "summary": "Search attribute dictionary attributes by name or description.",
+        "x-expression-builder-class": "com.ibm.commerce.catalog.internal.client.taglib.util.CatalogSearchExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getAttributeDictionaryAttribute",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details",
+          "searchType": "attribute-basic",
+          "template": "/AttributeDictionaryAttribute[search(AttributeIdentifier/ExternalIdentifier/Identifier='$searchText$' or AttributeDescription/Name='$searchText$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetAttributeDictionaryAttributeType"
+      }
+    },
+    "/attribute-dictionary-attributes/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "deleteAttributeDictionaryAttribute",
+        "summary": "Delete a attribute dictionary attribute.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/AttributeDictionaryAttribute[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "processAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ProcessAttributeDictionaryAttributeType"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AttributeDictionaryAttribute"
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "getAttributeDictionaryAttributeById",
+        "summary": "Get an attribute dictionary attribute.",
+        "x-expression-template": "{_wcf.ap={accessProfile};_wcf.dataLanguageIds='{dataLanguageIds}'}/AttributeDictionaryAttribute[AttributeIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getAttributeDictionaryAttribute",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetAttributeDictionaryAttributeType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AttributeDictionaryAttributeCollection"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "updateAttributeDictionaryAttribute",
+        "summary": "Update an attribute dictionary attribute.",
+        "x-action-code": "Change",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/AttributeDictionaryAttribute[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeAttributeDictionaryAttributeType"
+      }
+    },
+    "/attribute-dictionary-attributes/{id}/allowed-values": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The attribute dictionary attribute ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "default": 25,
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AllowedValueCollection"
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/allowedValue"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "getAttributeDictionaryAttributeAllowedValues",
+        "summary": "Get the allowed values of an attribute dictionary attribute.",
+        "x-expression-template": "{_wcf.ap={accessProfile};_wcf.dataLanguageIds='{dataLanguageIds}'}/AttributeDictionaryAttribute[AttributeIdentifier[UniqueID='{id}']]/AllowedValue",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getAttributeDictionaryAttribute",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_AttributeDictionaryAttributeAllowedValues_Paging"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetAttributeDictionaryAttributeType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AllowedValues"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the attribute dictionary attributes.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "DeleteAttributeDictionaryAttributesByIdAndValueId": {
+                "parameters": {
+                  "id": "$request.path.id",
+                  "valueId": "$response.header.Location"
+                },
+                "description": "The `id`, `valueId` value used in the request body can be used as the `id`,`valueId` parameter in `DELETE /attribute-dictionary-attributes/{id}/allowed-values/{valueId}.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}~1allowed-values~1{valueId}/delete"
+              },
+              "GetAllowedValuesByAttributeDictionaryAttributesIdAndStoreId": {
+                "parameters": {
+                  "id": "$request.path.id",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id`, `storeId` value used in the request body can be used as the `id`,`storeId` parameter in `GET /attribute-dictionary-attributes/{id}/allowed-values.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}~1allowed-values/get"
+              },
+              "UpdateAttributeDictionaryAttributesByIdAndValueId": {
+                "parameters": {
+                  "id": "$request.path.id",
+                  "valueId": "$response.header.Location"
+                },
+                "description": "The `id`, `valueId` value used in the request body can be used as the `id`,`valueId` parameter in `PATCH /attribute-dictionary-attributes/{id}/allowed-values/{valueId}.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}~1allowed-values~1{valueId}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/allowedValue[1]/identifier"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "createAttributeDictionaryAttributeAllowedValue",
+        "summary": "Add an allowed value to an attribute dictionary attribute.",
+        "x-action-code": "Add",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/AttributeDictionaryAttribute[1]/AllowedValue[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeAttributeDictionaryAttributeType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      }
+    },
+    "/attribute-dictionary-attributes/{id}/allowed-values/by-identifier": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The attribute dictionary attribute ID",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The attribute dictionary attribute allowed value identifier",
+            "in": "query",
+            "name": "identifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AllowedValueCollection"
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/allowedValue"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "getAttributeDictionaryAttributeAllowedValuesByIdentifier",
+        "summary": "Get the allowed values of an attribute dictionary attribute.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_AttributeDictionaryAttributeAllowedValues';_wcf.dataLanguageIds='{dataLanguageIds}'}/AttributeDictionaryAttribute[AttributeIdentifier[UniqueID='{id}']/AllowedValue[(ExtendedValue='{identifier}')]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetAttributeDictionaryAttributeType"
+      }
+    },
+    "/attribute-dictionary-attributes/{id}/allowed-values/{valueId}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the attribute allowed value.",
+            "in": "path",
+            "name": "valueId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/allowedValue[1]/identifier"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "deleteAttributeDictionaryAttributeAllowedValue",
+        "summary": "Delete a attribute dictionary attribute.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/AttributeDictionaryAttribute[1]/AllowedValue[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeAttributeDictionaryAttributeType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the attribute allowed value.",
+            "in": "path",
+            "name": "valueId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/allowedValue/identifier"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AllowedValues"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "updateAttributeDictionaryAttributeAllowedValue",
+        "summary": "Update a attribute dictionary attribute.",
+        "x-action-code": "Change",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/AttributeDictionaryAttribute[1]/AllowedValue[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeAttributeDictionaryAttributeType"
+      }
+    },
+    "/attribute-dictionary-attributes/{id}/descriptions": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AttributeDescription"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the attribute dictionary attributes.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "GetAttributeDictionaryAttributesByIdAndLanguageIdAndStoreId": {
+                "parameters": {
+                  "id": "$request.path.id",
+                  "languageId": "$request.body#/languageId",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id`, `languageId` and `storeId`  value used in the request body can be used as the `id`, `languageId` and `storeId` parameter in `GET /attribute-dictionary-attributes/{id}/descriptions/{languageId}.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}~1descriptions~1{languageId}/get"
+              },
+              "UpdateAttributeDictionaryAttributesByIdAndLanguageIdAndStoreId": {
+                "parameters": {
+                  "id": "$request.path.id",
+                  "languageId": "$request.body#/languageId",
+                  "storeId": "$request.path.storeId"
+                },
+                "description": "The `id`, `languageId` and `storeId` value used in the request body can be used as the `id`, `languageId` and `storeId` parameter in `PATCH /attribute-dictionary-attributes/{id}/descriptions/{languageId}.\n",
+                "operationRef": "#/paths/~1attribute-dictionary-attributes~1{id}~1descriptions~1{languageId}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeDescription[1]/language"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "createAttributeDictionaryAttributeDescription",
+        "summary": "Add a new description to attribute dictoinary attribute.",
+        "x-action-code": "Add",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/AttributeDictionaryAttribute[1]/AttributeDescription[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeAttributeDictionaryAttributeType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      }
+    },
+    "/attribute-dictionary-attributes/{id}/descriptions/{languageId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          },
+          {
+            "description": "The integer for identifying the language of the attribute dictionary attribute description. For a list of the integers that map to the supported default languages, refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AttributeDescription"
+            },
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeDescription[1]"
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "getAttributeDictionaryAttributeDescriptionById",
+        "summary": "Get the descriptions that are part of an attribute dictionary attribute for a specific language.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_Details';_wcf.dataLanguageIds='{languageId}'}/AttributeDictionaryAttribute[AttributeIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetAttributeDictionaryAttributeType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the attribute dictionary attribute.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeIdentifier/uniqueID"
+          },
+          {
+            "description": "The langauge ID of the attribute description.",
+            "format": "int32",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/attributeDictionaryAttribute[1]/attributeDescription[1]/language"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AttributeDescription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Attribute Dictionary Attributes"
+        ],
+        "operationId": "updateAttributeDictionaryAttributeDescription",
+        "summary": "Update the description of an attribute dictionary attribute.",
+        "x-action-code": "Change",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/AttributeDictionaryAttribute[1]/AttributeDescription[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeAttributeDictionaryAttribute",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeAttributeDictionaryAttributeType"
+      }
+    }
+  },
+  "definitions": {
+    "AllowedValue": {
+      "description": "An allowed value of an attribute dictonary attribute.",
+      "properties": {
+        "default": {
+          "description": "Whether or not this is the default value.",
+          "type": "boolean"
+        },
+        "extendedData": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The extended data of the attribute value.",
+          "type": "object",
+          "x-entity-path": "extendedValue"
+        },
+        "id": {
+          "description": "The ID of the attribute value.",
+          "type": "string",
+          "x-entity-path": "identifier"
+        },
+        "languageId": {
+          "description": "The language for this attribute description.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "sequence": {
+          "description": "The display order of attributes in an attribute group or in the root of the attribute dictionary.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "storeId": {
+          "description": "The ID of the store the attribute value belongs.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "storeID"
+        },
+        "value": {
+          "description": "The value of the attribute.",
+          "type": "string",
+          "x-entity-path": "value"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.AttributeAllowedValueType"
+    },
+    "AllowedValueCollection": {
+      "description": "A collection of attribute allowed values.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/AllowedValue"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "AllowedValues": {
+      "description": "An allowed value of an attribute dictonary attribute.",
+      "properties": {
+        "default": {
+          "description": "Whether or not this is the default value.",
+          "type": "boolean"
+        },
+        "extendedData": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The extended data of the attribute value.",
+          "type": "object",
+          "x-entity-path": "extendedValue"
+        },
+        "identifier": {
+          "description": "The identifier of the attribute value.",
+          "type": "string",
+          "x-entity-path": "value"
+        },
+        "languageId": {
+          "description": "The language for this attribute description.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "sequence": {
+          "description": "The display order of attributes in an attribute group or in the root of the attribute dictionary.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "storeId": {
+          "description": "The ID of the store the attribute value belongs.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "storeID"
+        },
+        "value": {
+          "description": "The value of the attribute.",
+          "type": "string",
+          "x-entity-path": "value"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.AttributeAllowedValueType"
+    },
+    "AttributeDescription": {
+      "description": "An description of an attribute dictonary attribute.",
+      "properties": {
+        "description": {
+          "description": "The attribute description.",
+          "type": "string"
+        },
+        "extendedData": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The extended data of the attribute description.",
+          "type": "object"
+        },
+        "languageId": {
+          "description": "The language for this attribute description.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "name": {
+          "description": "The name of the attribute.",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.AttributeDescriptionType"
+    },
+    "AttributeDictionaryAttribute": {
+      "description": "An attribute dictonary attribute.",
+      "properties": {
+        "attributeDictionaryId": {
+          "description": "The attribute dictionary ID.",
+          "type": "string",
+          "x-entity-path": "attributeIdentifier/externalIdentifier/attributeDictionaryIdentifier/uniqueID"
+        },
+        "attributeType": {
+          "description": "Defines the type of the attribute. AllowedValues - Attribute with allowed values. When assign this type of attribute to catalog entry, user need to choose from the predefined allowed values. AssignedValues - Attribute with assigned values.This type of attribute does not have predefined allowed value. When assign this type of attribute to catalog entry, user need to input a value. This value belongs to the catalog entry.",
+          "type": "string"
+        },
+        "comparable": {
+          "description": "Indicates that customers  can use this attribute for comparisions in the store.",
+          "type": "boolean"
+        },
+        "dataType": {
+          "description": "The data type of the attribute. For example, String, Integer, or Float.",
+          "type": "string",
+          "x-entity-path": "attributeDataType"
+        },
+        "descriptions": {
+          "description": "The descriptions of the attribute.",
+          "items": {
+            "$ref": "#/definitions/AttributeDescription"
+          },
+          "type": "array",
+          "x-entity-path": "attributeDescription"
+        },
+        "displayable": {
+          "description": "Indicates if this attribute is displayable on the store front.",
+          "type": "boolean"
+        },
+        "extendedData": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The extended data of the attribute.",
+          "type": "object"
+        },
+        "facetProperties": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The properties related to facet.",
+          "type": "object"
+        },
+        "facetable": {
+          "description": "Specifies that the attribute is used as a facet in the storefront for faceted navigation.",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "The attribute dictionary attribute ID",
+          "type": "string",
+          "x-entity-path": "attributeIdentifier/uniqueID"
+        },
+        "identifier": {
+          "description": "An external identifier for the attribute.",
+          "type": "string",
+          "x-entity-path": "attributeIdentifier/externalIdentifier/identifier"
+        },
+        "merchandisable": {
+          "description": "Specifies that the attribute is used in creating merchandising rules. This indicates that the attribute is for internal business use only and does not display to customers unless it is also set to be displayable, searchable, or facetable.",
+          "type": "boolean"
+        },
+        "searchable": {
+          "description": "Indicates that customers can search this attribute in the store.",
+          "type": "boolean"
+        },
+        "sequence": {
+          "description": "The display order of attributes in an attribute group or in the root of the attribute dictionary.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "storeDisplay": {
+          "description": "Reserved for IBM internal use. 1 - This attribute is used as a ribbon ad (image overlays).",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "attributeIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.AttributeDictionaryAttributeType"
+    },
+    "AttributeDictionaryAttributeCollection": {
+      "description": "A collection of attribute dictonary attributes.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/AttributeDictionaryAttribute"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "AttributeDictionaryAttributes": {
+      "description": "An attribute dictonary attribute.",
+      "properties": {
+        "attributeDictionaryId": {
+          "description": "The attribute dictionary ID.",
+          "type": "string",
+          "x-entity-path": "attributeIdentifier/externalIdentifier/attributeDictionaryIdentifier/uniqueID"
+        },
+        "attributeType": {
+          "description": "Defines the type of the attribute. AllowedValues - Attribute with allowed values. When assign this type of attribute to catalog entry, user need to choose from the predefined allowed values. AssignedValues - Attribute with assigned values.This type of attribute does not have predefined allowed value. When assign this type of attribute to catalog entry, user need to input a value. This value belongs to the catalog entry.",
+          "type": "string"
+        },
+        "comparable": {
+          "description": "Indicates that customers  can use this attribute for comparisions in the store.",
+          "type": "boolean"
+        },
+        "dataType": {
+          "description": "The data type of the attribute. For example, String, Integer, or Float.",
+          "type": "string",
+          "x-entity-path": "attributeDataType"
+        },
+        "descriptions": {
+          "description": "The descriptions of the attribute.",
+          "items": {
+            "$ref": "#/definitions/AttributeDescription"
+          },
+          "type": "array",
+          "x-entity-path": "attributeDescription"
+        },
+        "displayable": {
+          "description": "Indicates if this attribute is displayable on the store front.",
+          "type": "boolean"
+        },
+        "extendedData": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The extended data of the attribute.",
+          "type": "object"
+        },
+        "facetProperties": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The properties related to facet.",
+          "type": "object"
+        },
+        "facetable": {
+          "description": "Specifies that the attribute is used as a facet in the storefront for faceted navigation.",
+          "type": "boolean"
+        },
+        "identifier": {
+          "description": "An external identifier for the attribute.",
+          "type": "string",
+          "x-entity-path": "attributeIdentifier/externalIdentifier/identifier"
+        },
+        "merchandisable": {
+          "description": "Specifies that the attribute is used in creating merchandising rules. This indicates that the attribute is for internal business use only and does not display to customers unless it is also set to be displayable, searchable, or facetable.",
+          "type": "boolean"
+        },
+        "searchable": {
+          "description": "Indicates that customers can search this attribute in the store.",
+          "type": "boolean"
+        },
+        "sequence": {
+          "description": "The display order of attributes in an attribute group or in the root of the attribute dictionary.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "storeDisplay": {
+          "description": "Reserved for IBM internal use. 1 - This attribute is used as a ribbon ad (image overlays).",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "attributeIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.AttributeDictionaryAttributeType"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provide RESTful services to retrieve attribute dictionary attribute resources.",
+      "name": "Attribute Dictionary Attributes"
+    }
+  ],
+  "x-components": {}
+}

@@ -1,0 +1,1191 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Catalog Entry Admin REST APIs",
+    "version": "2.0"
+  },
+  "paths": {
+    "/catalog-entries": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog.",
+            "in": "query",
+            "name": "catalogId",
+            "required": true,
+            "type": "string",
+            "x-context-data": "catalogId"
+          },
+          {
+            "collectionFormat": "multi",
+            "description": "The catalog entry type codes. Available values:\n* CatalogEntryBean \n* ProductBean \n* ItemBean\n* PackageBean\n* BundleBean\n* DynamicKitBean\n* PredDynaKitBean\n",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "catalogEntryType",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The unique numeric ID for identifying the parent catalog group.",
+            "in": "query",
+            "name": "parentCatalogGroupId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the parent catalog entry.",
+            "in": "query",
+            "name": "parentCatalogEntryId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "id",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The search string used to search for catalog entries.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The numeric identifier of the organization that owns the catalog entry.",
+            "in": "query",
+            "name": "ownerId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The integer(s) for identifying the language of the member group description. For a list of the integers that map to the supported default languages, refer to the Knowledge Center. Multiple identifiers should be specified as a comma-separated list.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntryCollection"
+            },
+            "x-entity-path": "dataArea/catalogEntry"
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "getCatalogEntries",
+        "summary": "Get catalog entries by store",
+        "x-expression-builder-class": "com.ibm.commerce.rest.admin.v2.catalog.CatalogEntryExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogEntry",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details",
+          "catalogEntryIdTemplate": "/CatalogEntry[CatalogEntryIdentifier[(UniqueID=)]]",
+          "ownerIdAndParentCatalogGroupIdTemplate": "/CatalogEntry[(@catalogEntryTypeCode='$catEntryTypes$') and CatalogEntryIdentifier[ExternalIdentifier[(@ownerID='$ownerId$')]] and ParentCatalogGroupIdentifier[(UniqueID='$parentCatalogGroupId$')]]",
+          "ownerIdTemplate": "/CatalogEntry[(@catalogEntryTypeCode='$catEntryTypes$') and CatalogEntryIdentifier[ExternalIdentifier[(@ownerID='$ownerId$')]]]",
+          "parentCatalogEntryIdTemplate": "/CatalogEntry[ParentCatalogEntryIdentifier[(UniqueID='$parentCatalogEntryId$')]]",
+          "parentCatalogGroupIdTemplate": "/CatalogEntry[(@catalogEntryTypeCode='$catEntryTypes$') and ParentCatalogGroupIdentifier[(UniqueID='$parentCatalogGroupId$')]]",
+          "searchTemplate": "/CatalogEntry[(@catalogEntryTypeCode='$catEntryTypes$') and search(CatalogEntryIdentifier/ExternalIdentifier/PartNumber='$searchText$' or Description/Name='$searchText$' or Description/ShortDescription='$searchText$' or CatalogEntryAttribute/Attributes/mfPartNumber='$searchText$' or CatalogEntryAttribute/Attributes/mfName='$searchText$')]",
+          "searchWithOwnerIdAndParentCatalogGroupIdTemplate": "/CatalogEntry[(@catalogEntryTypeCode='$catEntryTypes$') and CatalogEntryIdentifier[ExternalIdentifier[(@ownerID='$ownerId$')]] and ParentCatalogGroupIdentifier[(UniqueID='$parentCatalogGroupId$')] and search(CatalogEntryIdentifier/ExternalIdentifier/PartNumber='$searchText$' or Description/Name='$searchText$' or Description/ShortDescription='$searchText$' or CatalogEntryAttribute/Attributes/mfPartNumber='$searchText$' or CatalogEntryAttribute/Attributes/mfName='$searchText$')]",
+          "searchWithOwnerIdTemplate": "/CatalogEntry[(@catalogEntryTypeCode='$catEntryTypes$') and CatalogEntryIdentifier[ExternalIdentifier[(@ownerID='$ownerId$')]] and search(CatalogEntryIdentifier/ExternalIdentifier/PartNumber='$searchText$' or Description/Name='$searchText$' or Description/ShortDescription='$searchText$' or CatalogEntryAttribute/Attributes/mfPartNumber='$searchText$' or CatalogEntryAttribute/Attributes/mfName='$searchText$')]",
+          "searchWithParentCatalogGroupIdTemplate": "/CatalogEntry[(@catalogEntryTypeCode='$catEntryTypes$') and ParentCatalogGroupIdentifier[(UniqueID='$parentCatalogGroupId$')] and search(CatalogEntryIdentifier/ExternalIdentifier/PartNumber='$searchText$' or Description/Name='$searchText$' or Description/ShortDescription='$searchText$' or CatalogEntryAttribute/Attributes/mfPartNumber='$searchText$' or CatalogEntryAttribute/Attributes/mfName='$searchText$')]",
+          "template": "/CatalogEntry[(@catalogEntryTypeCode='$catEntryTypes$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogEntryType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog .",
+            "in": "query",
+            "name": "catalogId",
+            "required": true,
+            "type": "string",
+            "x-context-data": "catalogId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogEntry"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the catalog entry.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "createCatalogEntry",
+        "summary": "Create a catalog entry.",
+        "x-action-code": "Create",
+        "x-expression-template": "/CatalogEntry[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "processCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ProcessCatalogEntryType",
+        "x-request-verb": "process"
+      }
+    },
+    "/catalog-entries/{catalogEntryId}/descriptions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogDescriptionCollection"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/description"
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "getCatalogEntryDescriptions",
+        "summary": "Get a collection of catalog entry description.",
+        "x-expression-template": "{_wcf.ap='{accessProfile}';_wcf.dataLanguageIds='{dataLanguageIds}'}/CatalogEntry[CatalogEntryIdentifier[(UniqueID='{catalogEntryId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogEntry",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_CatalogEntryDescription"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogEntryType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogDescription"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/description[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the catalog entry description.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/description[1]/language"
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "createCatalogEntryDescription",
+        "summary": "Create a description for a catalog entry.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogEntry[1]/Description[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogEntryType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-entries/{catalogEntryId}/descriptions/{id}": {
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog entry description.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/description[1]/language"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogDescription"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/description[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "updateCatalogEntryDescriptionById",
+        "summary": "Update a catalog entry description based on the ID of the language.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogEntry[1]/Description[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogEntryType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-entries/{catalogEntryId}/descriptions/{languageId}/overrides/{id}": {
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog entry description.",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/description[1]/language"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog entry description override.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/description[1]/override[1]/descriptionOverrideIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogDescriptionOverride"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/description[1]/override[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "updateCatalogEntryDescriptionOverrideById",
+        "summary": "Update a catalog entry description override based on the ID of the override.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogEntry[1]/Description[1]/Override[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogEntryType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-entries/{catalogEntryId}/seo-properties": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string",
+            "x-default-to-supported": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntrySeoPropertyCollection"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/SEOProperties"
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "getCatalogEntrySeoProperties",
+        "summary": "Get the seo properties for a catalog entry.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_SEO';_wcf.dataLanguageIds ='{dataLanguageIds}'}/CatalogEntry[CatalogEntryIdentifier[(UniqueID='{catalogEntryId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogEntryType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogEntrySeoProperty"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/SEOProperties[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntrySeoProperty"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/SEOProperties[1]"
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "updateCatalogEntrySeoProperty",
+        "summary": "Update a catalog entry SEO property.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogEntry[1]/SEOProperties[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogEntryType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-entries/{catalogEntryId}/seo-urls": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string",
+            "x-default-to-supported": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntrySeoUrlCollection"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/SEOURL",
+            "x-sub-entity-path": "URLKeyword"
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "getCatalogEntrySeoUrls",
+        "summary": "Get the SEO URLs for a catalog entry.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_SEO';_wcf.dataLanguageIds ='{dataLanguageIds}'}/CatalogEntry[CatalogEntryIdentifier[(UniqueID='{catalogEntryId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogEntryType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogEntry[1]/SEOURL[1]/parentStoreIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogEntrySeoUrl"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]/SEOURL[1]/URLKeyword[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntrySeoUrl"
+            }
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "updateCatalogEntrySeoUrl",
+        "summary": "Update a catalog entry SEO URL.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogEntry[1]/SEOURL[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogEntryType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-entries/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "deleteCatalogEntry",
+        "summary": "Delete a catalog entry based on the ID of the catalog entry.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/CatalogEntry[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "processCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ProcessCatalogEntryType",
+        "x-request-verb": "process"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntry"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]"
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "getCatalogEntryById",
+        "summary": "Get a catalog entry based on the ID of the catalog entry.",
+        "x-expression-template": "{_wcf.ap='{accessProfile}';_wcf.dataLanguageIds='{dataLanguageIds}'}/CatalogEntry[CatalogEntryIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogEntry",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogEntryType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog entry.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog .",
+            "in": "query",
+            "name": "catalogId",
+            "required": true,
+            "type": "string",
+            "x-context-data": "catalogId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogEntry[1]/catalogEntryIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogEntry"
+            },
+            "x-entity-path": "dataArea/catalogEntry[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Entries"
+        ],
+        "operationId": "updateCatalogEntry",
+        "summary": "Update a catalog entry based on the ID of the catalog entry.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogEntry[1]/CatalogEntryIdentifier",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogEntry",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogEntryType",
+        "x-request-verb": "change"
+      }
+    }
+  },
+  "definitions": {
+    "CatalogDescription": {
+      "properties": {
+        "available": {
+          "default": 1,
+          "description": "Indicates the length of time of availability of this catalog entry. This field is for your internal business use and information only. Do not use this column to indicate inventory levels. The default value is 1.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "attributes/available"
+        },
+        "breadcrumbs": {
+          "description": "The breadcrumbs of this catalog.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "x-entity-path": "breadcrumb"
+        },
+        "fullImage": {
+          "description": "The full image path of this catalog.",
+          "type": "string",
+          "x-entity-path": "fullImage"
+        },
+        "keyword": {
+          "description": "Language-specific keywords that are used for searching.",
+          "type": "string",
+          "x-entity-path": "keyword"
+        },
+        "languageId": {
+          "description": "The unique numeric ID for identifying the language.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "longDescription": {
+          "description": "The long description.",
+          "type": "string",
+          "x-entity-path": "longDescription"
+        },
+        "name": {
+          "description": "The name.",
+          "type": "string",
+          "x-entity-path": "name"
+        },
+        "override": {
+          "description": "The override property of this catalog.",
+          "items": {
+            "$ref": "#/definitions/CatalogDescriptionOverride"
+          },
+          "type": "array",
+          "x-entity-path": "override"
+        },
+        "published": {
+          "description": "Indicates whether to display this catalog entry on the storefront:\n* 0 - Do not display this catalog entry.\n* 1 - Display this catalog entry.\n",
+          "enum": [
+            0,
+            1
+          ],
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "attributes/published"
+        },
+        "shortDescription": {
+          "description": "The short description.",
+          "type": "string",
+          "x-entity-path": "shortDescription"
+        },
+        "thumbnail": {
+          "description": "The thumbnail image path of this catalog.",
+          "type": "string",
+          "x-entity-path": "thumbnail"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogDescriptionType"
+    },
+    "CatalogDescriptionCollection": {
+      "description": "A collection of catalog descriptions.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/CatalogDescription"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogDescriptionOverride": {
+      "properties": {
+        "fullImage": {
+          "description": "The full image path of this catalog.",
+          "type": "string",
+          "x-entity-path": "fullImage"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the catalog description override.",
+          "readOnly": true,
+          "type": "string",
+          "x-entity-path": "descriptionOverrideIdentifier/uniqueID"
+        },
+        "keyword": {
+          "description": "Language-specific keywords that are used for searching.",
+          "type": "string",
+          "x-entity-path": "keyword"
+        },
+        "longDescription": {
+          "description": "The language-specific long description of this catalog.",
+          "type": "string",
+          "x-entity-path": "longDescription"
+        },
+        "name": {
+          "description": "The language-specific display name of this catalog.",
+          "type": "string",
+          "x-entity-path": "name"
+        },
+        "shortDescription": {
+          "description": "The language-specific short description of this catalog.",
+          "type": "string",
+          "x-entity-path": "shortDescription"
+        },
+        "thumbnail": {
+          "description": "The thumbnail image path of this catalog.",
+          "type": "string",
+          "x-entity-path": "thumbnail"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogDescriptionOverrideType"
+    },
+    "CatalogEntry": {
+      "description": "A catalog entry.",
+      "properties": {
+        "alternativeCurrencyPrices": {
+          "description": "The alternative currency and price for the catalog entry.",
+          "items": {
+            "$ref": "#/definitions/MonetaryAmount"
+          },
+          "type": "array",
+          "x-entity-path": "listPrice/alternativeCurrencyPrice"
+        },
+        "currency": {
+          "description": "The currency of the catalog entry price. This code is a currency code as per ISO 4217 standards.",
+          "type": "string",
+          "x-entity-path": "listPrice/price/currency"
+        },
+        "descriptions": {
+          "items": {
+            "$ref": "#/definitions/CatalogDescription"
+          },
+          "readOnly": true,
+          "type": "array",
+          "x-entity-path": "description"
+        },
+        "displaySequence": {
+          "description": "The display sequence of the catalog entry.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "hasDefiningAttributes": {
+          "description": "Indicates whether the catalog entry has defining attributes.",
+          "type": "string",
+          "x-entity-path": "userData/userDataField/hasAttributeDictionaryDefiningAttributes"
+        },
+        "id": {
+          "description": "The internal unique reference number of the catalog entry. In Delete, either this field or the PartNumber is required.",
+          "type": "string",
+          "x-entity-path": "catalogEntryIdentifier/uniqueID"
+        },
+        "listPrice": {
+          "description": "The offer price of this catalog entry in the currency specified. The default value is 0.00.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "listPrice/price/value"
+        },
+        "ownerId": {
+          "description": "The numeric identifier of the organization that owns the catalog entry.",
+          "type": "string",
+          "x-entity-path": "catalogEntryIdentifier/externalIdentifier/ownerID"
+        },
+        "owningStoreDirectory": {
+          "description": "The owningStoreDirectory of the catalog entry.",
+          "type": "string",
+          "x-entity-path": "owningStoreDirectory"
+        },
+        "parentCatalogEntryId": {
+          "description": "The internal unique reference number of the parent catalog entry. In Delete, either this field or the PartNumber is required.",
+          "type": "string",
+          "x-entity-path": "parentCatalogEntryIdentifier/uniqueID"
+        },
+        "parentCatalogGroupId": {
+          "description": "The unique numeric ID for identifying the parent catalog group.",
+          "type": "string",
+          "x-entity-path": "parentCatalogGroupIdentifier/uniqueID"
+        },
+        "partNumber": {
+          "description": "The unique part number of the catalog entry. This field cannot be null in Insert or Replace. In Delete, either this field or the CatalogEntryUniqueId is required. The part number for a catalog entry displays in Management Center as the value for the catalog entry Code property.",
+          "type": "string",
+          "x-entity-path": "catalogEntryIdentifier/externalIdentifier/partNumber"
+        },
+        "quantity": {
+          "description": "The quantity value for the catalog entry.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "listPrice/quantity/value"
+        },
+        "quantityUnit": {
+          "description": "The unit of measurement for the quantity.",
+          "type": "string",
+          "x-entity-path": "listPrice/quantity/uom"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "catalogEntryIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "typeCode": {
+          "description": "The type of catalog entry to load in this row. Valid values are:\n* ItemBean - use this type to load SKUs\n* ProductBean - use this type to load products\n* BundleBean - use this type to load bundles\n* PackageBean - use this type to load kits\n* DynamicKitBean - use this type to load dynamic kits\n* PredDynaKitBean - use this type to load predefined dynamic kits\n",
+          "type": "string",
+          "x-entity-path": "catalogEntryTypeCode"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogEntryType"
+    },
+    "CatalogEntryCollection": {
+      "description": "A collection of catalog entries.",
+      "properties": {
+        "count": {
+          "description": "The number of catalog entries found.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/CatalogEntry"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogEntrySeoProperty": {
+      "description": "SEO Property",
+      "properties": {
+        "fullImageAltDescription": {
+          "description": "The language-specific image alternate description for the catalog entry page.",
+          "type": "string",
+          "x-entity-path": "fullImageAltDescription"
+        },
+        "languageId": {
+          "description": "The language ID.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "metaDescription": {
+          "description": "The language-specific meta description for the catalog entry page.",
+          "type": "string",
+          "x-entity-path": "metaDescription"
+        },
+        "metaKeyword": {
+          "description": "The language-specific meta keyword for the catalog entry page.",
+          "type": "string",
+          "x-entity-path": "metaKeyword"
+        },
+        "resolved": {
+          "description": "Flag to indicate is resolved or not.",
+          "type": "boolean",
+          "x-entity-path": "resolved"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the parent store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "parentStoreIdentifier/uniqueID"
+        },
+        "title": {
+          "description": "The language specific catalog entry page title.",
+          "type": "string",
+          "x-entity-path": "title"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.SEOPropertiesType"
+    },
+    "CatalogEntrySeoPropertyCollection": {
+      "description": "A collection of SEO properties.",
+      "properties": {
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The data objects or resources that that match the query parameters.",
+          "items": {
+            "$ref": "#/definitions/CatalogEntrySeoProperty"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogEntrySeoUrl": {
+      "description": "The SEO URL object.",
+      "properties": {
+        "keyword": {
+          "description": "The SEO URL keyword.",
+          "type": "string",
+          "x-entity-path": "keyword"
+        },
+        "languageId": {
+          "description": "The language of the keyword. For a list of integer language identifiers, please refer to the Knowledge Center.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "previewUrl": {
+          "description": "The preview URL.",
+          "type": "string",
+          "x-entity-path": "previewURL"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "container/parentStoreIdentifier/uniqueID"
+        },
+        "urlPrefix": {
+          "description": "The URL prefix which contains store token and seo keyword token. e.g. https://localhost/wcs/shop/en/$SEO:STORETOKEN$/$SEO:PRIMARYTOKEN$",
+          "type": "string",
+          "x-entity-path": "URLPrefix"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.SEOURLKeywordType"
+    },
+    "CatalogEntrySeoUrlCollection": {
+      "description": "A collection of SEO URLs.",
+      "properties": {
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The data objects or resources that that match the query parameters.",
+          "items": {
+            "$ref": "#/definitions/CatalogEntrySeoUrl"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "MonetaryAmount": {
+      "description": "The monetary value of the constant entry.",
+      "properties": {
+        "currency": {
+          "description": "The currency of the monetary amount.",
+          "type": "string",
+          "x-entity-path": "currency"
+        },
+        "value": {
+          "description": "The value of the monetary amount.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "value"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.MonetaryAmountType"
+    }
+  },
+  "x-components": {}
+}

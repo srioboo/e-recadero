@@ -1,0 +1,224 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Activities Admininistrative REST APIs",
+    "version": "2.0"
+  },
+  "paths": {
+    "/activities": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          },
+          {
+            "description": "Limits search results to only include pages with a name that matches the value of this parameter.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/Activity"
+            },
+            "x-entity-path": "dataArea/activity"
+          }
+        },
+        "tags": [
+          "Activities"
+        ],
+        "operationId": "getActivities",
+        "summary": "Get the activities in a store.",
+        "x-expression-builder-class": "com.ibm.commerce.rest.admin.v2.marketing.ActivityExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getActivity",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetActivityType"
+      }
+    },
+    "/activities/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the activity.",
+            "format": "int64",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/Activity"
+            },
+            "x-entity-path": "dataArea/activity[1]"
+          }
+        },
+        "tags": [
+          "Activities"
+        ],
+        "operationId": "getActivity",
+        "summary": "Get an activity.",
+        "x-expression-template": "{_wcf.ap={accessProfile}}/Activity[ActivityIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getActivity",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetActivityType"
+      }
+    }
+  },
+  "definitions": {
+    "Activity": {
+      "description": "A marketing activity.",
+      "properties": {
+        "created": {
+          "description": "The create date of the activity.",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the product.",
+          "type": "string"
+        },
+        "endDate": {
+          "description": "The end date of the activity.",
+          "type": "string"
+        },
+        "experimentType": {
+          "description": "The experiment type of the marketing activity.",
+          "type": "string",
+          "x-entity-path": "experimentFormat"
+        },
+        "familyId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "familyIdentifier/uniqueID"
+        },
+        "id": {
+          "description": "The marketing activity  ID.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "activityIdentifier/uniqueID"
+        },
+        "lastUpdate": {
+          "description": "The last update date of the activity.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the marketing activity.",
+          "type": "string",
+          "x-entity-path": "activityIdentifier/externalIdentifier/name"
+        },
+        "priority": {
+          "description": "The priority of the activity.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "publishedVersion": {
+          "description": "The published version of the activity.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "repeatable": {
+          "description": "Indicates that the activity is repeatable.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "startDate": {
+          "description": "The start date of the activity.",
+          "type": "string"
+        },
+        "state": {
+          "description": "The state of the activity.",
+          "type": "string",
+          "x-entity-path": "state"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "activityIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "templateType": {
+          "description": "The template type of the marketing activity template.",
+          "type": "string",
+          "x-entity-path": "templateFormat"
+        },
+        "type": {
+          "description": "The type of the marketing activity.",
+          "type": "string",
+          "x-entity-path": "format"
+        },
+        "version": {
+          "description": "The version of the activity.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.marketing.facade.datatypes.ActivityType"
+    },
+    "ActivityCollection": {
+      "description": "A collection of activities.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/Activity"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "tags": [
+    {
+      "description": "This class provides RESTful services for marketing activities.",
+      "name": "Activities"
+    }
+  ],
+  "x-components": {}
+}

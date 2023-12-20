@@ -1,0 +1,501 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "title": "Scheduler Jobs",
+        "version": "2.0"
+    },
+    "tags": [{
+        "name": "Jobs",
+        "description": "This class provides RESTful services to manage scheduler job records."
+    }],
+    "paths": {
+        "/jobs": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/JobCollection"
+                        },
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "required": false,
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned."
+                    },
+                    {
+                        "description": "The maximum number of records to return.",
+                        "format": "int32",
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "format": "int32",
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "required": false,
+                        "name": "storeId",
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the store of the scheduler job. This field can only be assigned during job creation time.",
+                        "in": "query"
+                    },
+                    {
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "in": "query",
+                        "name": "expand",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "description": "Get a collection of scheduler jobs.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a collection of scheduler jobs.",
+                "operationId": "Job-get"
+            },
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "The requested resource has been created.",
+                        "headers": {
+                            "Location": {
+                                "description": "Link to the newly created resource.",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [{
+                    "required": true,
+                    "in": "body",
+                    "description": "Request body. The \"id\" field will be generated and it should not be part of the request body. The \"userId\" and \"activeState\" fields are managed and it cannot be specified.",
+                    "name": "body",
+                    "schema": {
+                        "$ref": "#/definitions/Job"
+                    }
+                }],
+                "tags": [
+                    "Jobs"
+                ],
+                "description": "Create a scheduler job.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create a scheduler job.",
+                "consumes": [
+                    "application/json"
+                ],
+                "operationId": "Job-post"
+            }
+        },
+        "/jobs/{id}/new-version": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "The requested resource has been created.",
+                        "headers": {
+                            "Location": {
+                                "description": "Link to the newly created resource.",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [{
+                        "required": true,
+                        "in": "body",
+                        "description": "Request body. The \"userId\" and \"activeState\" fields are managed and it cannot be specified.",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Job"
+                        }
+                    },
+                    {
+                        "required": true,
+                        "type": "string",
+                        "in": "path",
+                        "description": "The unique numeric ID for identifying the scheduler job.",
+                        "name": "id"
+                    }
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "description": "Edit a scheduler job.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Edit a scheduler job.",
+                "consumes": [
+                    "application/json"
+                ],
+                "operationId": "Job-createNewVersionJob"
+            }
+        },
+        "/jobs/{id}": {
+            "delete": {
+                "responses": {
+                    "204": {
+                        "description": "The requested resource has been deleted."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [{
+                    "required": true,
+                    "type": "string",
+                    "in": "path",
+                    "description": "The unique numeric ID for identifying the scheduler job.",
+                    "name": "id"
+                }],
+                "tags": [
+                    "Jobs"
+                ],
+                "description": "Delete a scheduler job by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a job by ID.",
+                "operationId": "Job-delete"
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/Job"
+                        },
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "in": "path",
+                        "description": "The unique numeric ID for identifying the scheduler job.",
+                        "name": "id"
+                    },
+                    {
+                        "name": "fields",
+                        "required": false,
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned."
+                    },
+                    {
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "in": "query",
+                        "name": "expand",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "description": "Get a scheduler job by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a scheduler job by ID.",
+                "operationId": "Job-getById"
+            }
+        }
+    },
+    "definitions": {
+        "ErrorResponseContainer": {
+            "description": "The error message model.",
+            "properties": {
+                "errors": {
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    },
+                    "type": "array"
+                },
+                "requestId": {
+                    "description": "The request identifier.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Error": {
+            "description": "The error message item model.",
+            "properties": {
+                "code": {
+                    "description": "The error message code.",
+                    "type": "string"
+                },
+                "correlationId": {
+                    "description": "The unique identifier for the request.",
+                    "type": "string"
+                },
+                "locale": {
+                    "description": "The locale of the error message.",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "The error message.",
+                    "type": "string"
+                },
+                "messageArguments": {
+                    "description": "The arguments used to construct the error message.",
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "messageKey": {
+                    "description": "The error message key.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "JobCollection": {
+            "properties": {
+                "count": {
+                    "format": "int64",
+                    "type": "integer",
+                    "description": "The total number of item records that match the query parameters."
+                },
+                "items": {
+                    "items": {
+                        "$ref": "#/definitions/Job"
+                    },
+                    "type": "array",
+                    "description": "The items."
+                },
+                "limit": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The maximum number of records to return."
+                },
+                "offset": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters."
+                }
+            }
+        },
+        "Job": {
+            "properties": {
+                "id": {
+                    "description": "The unique numeric ID for identifying the job.",
+                    "type": "string"
+                },
+                "activeState": {
+                    "description": "The flag to indicate whether the scheduled job is active or not. Available values:<br>  A - The job is active and is scheduled to run after the configured interval elapses.<br>  D - The job has been disabled or completed.",
+                    "type": "string"
+                },
+                "command": {
+                    "description": "The path information of the command that is to run for the job.",
+                    "type": "string"
+                },
+                "interfaceName": {
+                    "description": "The interface name of the check command to be run before the command is run.  See SCHCONFIG table, INTERFACENAME column.",
+                    "type": "string"
+                },
+                "host": {
+                    "description": "The name of the host that is allowed to run the job. If the value is null, the job can be run by any host. Use this parameter when you run jobs on multiple hosts and need to restrict a job to run a asingle host. The host name must be in the form \"name.domain\".",
+                    "type": "string"
+                },
+                "interval": {
+                    "description": "The repeating interval (in seconds) between successive runs of this job. If the value is null, the job runs only once.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "jobType": {
+                    "description": "The type of the application thread pool where the scheduled job is included. This type is used to constrain resource-intensive jobs to a limited number of threads. The default application type is null.",
+                    "type": "string"
+                },
+                "preferredStartDateTime": {
+                    "description": "The preferred date and time for when the job should start. The date and time must be entered as a timestamp in the ISO 8601 format \"YYYY-MM-DDThh:mm:ssZ\".",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "priority": {
+                    "description": "The priority of the scheduled job.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "query": {
+                    "description": "The query string containing information used by the scheduled job.",
+                    "type": "string"
+                },
+                "fixedTime": {
+                    "description": "A flag indicating whether the job contained the fixed time parameter or not.  ie. 1 if fixedTime=1 exists, 0 otherwise.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "description": {
+                    "description": "The description of the CustomJob being added.  This is the SCCDESCRIPTION column in the SCHCONFIG table.",
+                    "type": "string"
+                },
+                "retryAttempts": {
+                    "description": "The number of times that the job can be retried when the job fails. Both the retryAttempts and the retryDelay parameters need a value for a job to be retried.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "retryDelay": {
+                    "description": "The delay (in seconds) between each retry attempt. Both the retryDelay and the retryAttempts parameters need a value for a job to be retried.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "sequence": {
+                    "description": "Scheduling policy for the job.<br>  0 - Skip missed repeating job instances.<br>  1 - Run all missed repeating job instances.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "storeId": {
+                    "description": "The unique numeric ID for identifying the store where the job runs. This value cannot be edited after job creation.",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "userId": {
+                    "description": "The unique numeric ID for identifying the user on whose behalf the job is run. By default, the user ID of the current user is used as the value.",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

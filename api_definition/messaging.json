@@ -1,0 +1,885 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "title": "Messaging",
+        "version": "2.0"
+    },
+    "tags": [
+        {
+            "name": "Pending Messages",
+            "description": "This class provides REST APIs to manage pending messages."
+        },
+        {
+            "name": "Archived Messages",
+            "description": "This class provides REST APIs to manage archived messages."
+        }
+    ],
+    "paths": {
+        "/pending-messages": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/PendingMessageCollection"
+                        },
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The specified resource could not be found."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Pending Messages"
+                ],
+                "description": "Get a collection of pending messages.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a collection of pending messages.",
+                "operationId": "getPendingMessages",
+                "parameters": [ 
+                    {
+                        "description": "The store ID for the store from which the messages originated.",
+                        "in": "query",
+                        "name": "storeId",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "format": "int32",
+                        "in": "query",
+                        "name": "transportId",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "description": "Limits the results to only include messages with the specified status. Possible values are \n * pending\n * failed",
+                        "in": "query",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "required": false,
+                        "type": "string",
+                        "description": "Limits search results to only include the message with an id that matches the value of this parameter.",
+                        "name": "searchString",
+                        "in": "query"
+                    },
+                    {
+                        "description": "The maximum number of results to be returned.",
+                        "format": "int32",
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "default": 0,
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "in": "query",
+                        "name": "offset",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name,-id will order the items first based on the name value in ascending order, and then by their ID value in descending order.",
+                        "in": "query",
+                        "name": "sort",
+                        "required": false,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/pending-messages/id:{id},transportId:{transportId}/increment-retries": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Pending Messages"
+                ],
+                "description": "Increment the retry count of a pending message.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Increment the retry count of a pending message.",
+                "operationId": "incrementRetries",
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The unique numeric ID for identifying the pending message.",
+                        "in": "path",
+                        "name": "id"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "name": "transportId",
+                        "in": "path"
+                    }
+                ]
+            }
+        },
+        "/pending-messages/id:{id},transportId:{transportId}/resend": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "The request has been accepted."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Pending Messages"
+                ],
+                "description": "Re-send the specified pending message. A copy of the specified pending message will be created with a positive retry count. The new pending message will be attempted to be sent by a \"SendTransactedMsg\" job, if one is running.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Re-send the specified pending message.",
+                "operationId": "resendPendingMessage",
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The unique numeric ID for identifying the pending message.",
+                        "in": "path",
+                        "name": "id"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "name": "transportId",
+                        "in": "path"
+                    },
+                    {
+                        "required": false,
+                        "in": "body",
+                        "description": "Request body.",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/MessageResendRequest"
+                        }
+                    }
+                ]
+            }
+        },
+        "/pending-messages/id:{id},transportId:{transportId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/PendingMessage"
+                        },
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The specified resource could not be found."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Pending Messages"
+                ],
+                "description": "Get a pending message by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a pending message by ID.",
+                "operationId": "getPendingMessageById",
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The unique numeric ID for identifying the pending message.",
+                        "in": "path",
+                        "name": "id"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "name": "transportId",
+                        "in": "path"
+                    }
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "204": {
+                        "description": "The requested resource has been deleted."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Pending Messages"
+                ],
+                "description": "Delete a pending message.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a pending message.",
+                "operationId": "deletePendingMessage",
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The unique numeric ID for identifying the pending message.",
+                        "in": "path",
+                        "name": "id"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "name": "transportId",
+                        "in": "path"
+                    }
+                ]
+            }
+        },
+        "/archived-messages": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/ArchivedMessageCollection"
+                        },
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The specified resource could not be found."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Archived Messages"
+                ],
+                "description": "Get a collection of archived messages.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a collection of archived messages.",
+                "operationId": "getArchivedMessages",
+                "parameters": [
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The store ID for the store from which the archived messages originated.",
+                        "name": "storeId",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "name": "transportId",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "type": "string",
+                        "description": "Limits search results to only include the message with an id that matches the value of this parameter.",
+                        "name": "searchString",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The maximum number of results to be returned.",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name,-id will order the items first based on the name value in ascending order, and then by their ID value in descending order.",
+                        "in": "query",
+                        "name": "sort",
+                        "required": false,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/archived-messages/id:{id},transportId:{transportId}/resend": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "The request has been accepted."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Archived Messages"
+                ],
+                "description": "Re-send the specified archived message. A copy of the specified archived message will be created as a pending message with a positive retry count. The new pending message will be attempted to be sent by a \"SendTransactedMsg\" job, if one is running.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Re-send the specified archived message.",
+                "operationId": "resendArchivedMessage",
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The unique numeric ID for identifying the archived message.",
+                        "in": "path",
+                        "name": "id"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "name": "transportId",
+                        "in": "path"
+                    },
+                    {
+                        "required": false,
+                        "in": "body",
+                        "description": "Request body.",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/MessageResendRequest"
+                        }
+                    }
+                ]
+            }
+        },
+        "/archived-messages/id:{id},transportId:{transportId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/ArchivedMessage"
+                        },
+                        "description": "The requested completed successfully."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The specified resource could not be found."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Archived Messages"
+                ],
+                "description": "Get an archived message by ID.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get an archived message by ID.",
+                "operationId": "getArchivedMessageById",
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The unique numeric ID for identifying the archived message.",
+                        "in": "path",
+                        "name": "id"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "name": "transportId",
+                        "in": "path"
+                    }
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "204": {
+                        "description": "The requested resource has been deleted."
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Not authenticated. The user session is not valid."
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "The user is not authorized to perform the specified request."
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        },
+                        "description": "Internal server error. For details, see the server log files."
+                    }
+                },
+                "tags": [
+                    "Archived Messages"
+                ],
+                "description": "Delete an archived message.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete an archived message.",
+                "operationId": "deleteArchivedMessage",
+                "parameters": [
+                    {
+                        "required": true,
+                        "type": "string",
+                        "description": "The unique numeric ID for identifying the archived message.",
+                        "in": "path",
+                        "name": "id"
+                    },
+                    {
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The unique numeric ID for identifying the transport.",
+                        "name": "transportId",
+                        "in": "path"
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "ErrorResponseContainer": {
+            "description": "The error message model.",
+            "properties": {
+                "errors": {
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    },
+                    "type": "array"
+                },
+                "requestId": {
+                    "description": "The request identifier.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Error": {
+            "description": "The error message item model.",
+            "properties": {
+                "code": {
+                    "description": "The error message code.",
+                    "type": "string"
+                },
+                "correlationId": {
+                    "description": "The unique identifier for the request.",
+                    "type": "string"
+                },
+                "locale": {
+                    "description": "The locale of the error message.",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "The error message.",
+                    "type": "string"
+                },
+                "messageArguments": {
+                    "description": "The arguments used to construct the error message.",
+                    "items": {},
+                    "type": "array"
+                },
+                "messageKey": {
+                    "description": "The error message key.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "PendingMessageCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The total number of records that match the query parameters."
+                },
+                "limit": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The number of records returned."
+                },
+                "offset": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The starting position of the first record."
+                },
+                "items": {
+                    "items": {
+                        "$ref": "#/definitions/PendingMessage"
+                    },
+                    "type": "array"
+                }
+            }
+        },
+        "PendingMessage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The unique numeric ID for identifying the pending message.",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "The message content.",
+                    "type": "string"
+                },
+                "retries": {
+                    "description": "The number of retries remaining before the message send is abandoned.",
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "storeId": {
+                    "description": "The unique numeric ID for identifying the store from which the message originated.",
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "transportId": {
+                    "description": "The unique numeric ID for identifying the transport over which the message is being sent.",
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "The status of the pending message. Possible values are \n * pending\n * failed",
+                    "type": "string"
+                },
+                "connectionSpecifications": {
+                   "$ref": "#/definitions/ConnectionSpecification"
+                },
+                "interactionSpecifications": {
+                   "$ref": "#/definitions/InteractionSpecification"
+                }
+            }
+        },
+        "ArchivedMessageCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The total number of records that match the query parameters."
+                },
+                "limit": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The number of records returned."
+                },
+                "offset": {
+                    "format": "int32",
+                    "type": "integer",
+                    "description": "The starting position of the first record."
+                },
+                "items": {
+                    "items": {
+                        "$ref": "#/definitions/ArchivedMessage"
+                    },
+                    "type": "array"
+                }
+            }
+        },
+        "ArchivedMessage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "The unique numeric ID for identifying the archived message."
+                },
+                "content": {
+                    "type": "string",
+                    "description": "The archived message content."
+                },
+                "transportId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The unique numeric ID for identifying the transport over which the message is being sent."
+                },
+                "storeId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The unique numeric ID for identifying the store from which the message originated."
+                },
+                "connectionSpecifications": {
+                   "$ref": "#/definitions/ConnectionSpecification"
+                },
+                "interactionSpecifications": {
+                   "$ref": "#/definitions/InteractionSpecification"
+                }
+            }
+        },
+        "MessageResendRequest": {
+            "type": "object",
+            "properties": {
+                "connectionSpecifications": {
+                   "$ref": "#/definitions/ConnectionSpecification"
+                },
+                "interactionSpecifications": {
+                   "$ref": "#/definitions/InteractionSpecification"
+                }
+            },
+            "example": {
+                "connectionSpecifications": {
+                    "host": "mail.store.com",
+                    "password": "password",
+                    "port": "25",
+                    "protocol": "smtp",
+                    "userName": "mailuser"
+                },
+                "interactionSpecifications": {
+                    "BCC": "admin@store.com",
+                    "CC": "csr@store.com",
+                    "contentType": "HTML",
+                    "recipient": "user@email.com",
+                    "replyTo": "no-reply@store.com",
+                    "sender": "no-reply@store.com"
+                }
+            }
+        },
+        "ConnectionSpecification": {
+            "description": "The connection specifications used in the transacted message send.",
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "InteractionSpecification": {
+            "description": "The interaction specifications used in the transacted message send.",
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        }
+    }
+}

@@ -1,0 +1,155 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Retrieve Resource Value Unit (RVU) Order Line Metrics.",
+    "title": "Order Line Metrics",
+    "version": "9.1"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/order-line-metrics": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "Limits the order line metrics calculations to orders placed after the specified date. The date and time is in ISO 8601 format, e.g 2022-06-01T10:00:00Z.",
+            "format": "date-time",
+            "in": "query",
+            "name": "fromDate",
+            "type": "string"
+          },
+          {
+            "description": "Limits the order line metrics calculations to orders placed before the specified date. The date and time is in ISO 8601 format, e.g 2022-06-01T10:00:00Z",
+            "format": "date-time",
+            "in": "query",
+            "name": "toDate",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/OrderLineMetrics"
+            }
+          },
+          "400": {
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Order Line Metrics"
+        ],
+        "description": "Get the order line metrics.",
+        "operationId": "getOrderLineMetrics"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "OrderLineMetrics": {
+      "properties": {
+        "postEnablementOrderLineCount": {
+          "description": "The number of order lines using the post-enablement of HCL Commerce RVU Order Line Metrics calculation.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "preEnablementOrderLineCount": {
+          "description": "The number order lines using the pre-enablement of HCL Commerce RVU Order Line Metrics calculation.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provide RESTful services to retrive Resource Value Unit Order Line Metrics.",
+      "name": "Order Line Metrics"
+    }
+  ],
+  "x-components": {}
+}

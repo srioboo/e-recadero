@@ -1,0 +1,212 @@
+{
+  "host": "content.googleapis.com",
+  "basePath": "/analytics/v3/data",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Google Analytics APIs",
+    "version": "2.0"
+  },
+  "tags": [
+    {
+      "name": "Google Analytics Data APIs",
+      "description": "This API provides RESTful services to Google Analytics Data APIs."
+    }
+  ],
+  "paths": {
+    "/ga": {
+      "get": {
+      "parameters": [
+          {
+            "in": "query",
+            "name": "ids",
+            "description": "The unique ID used to retrieve the Analytics data.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "start-date",
+            "description": "The start date.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "end-date",
+            "description": "The end date",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "metrics",
+            "description": "The list of metrics for this query.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "dimensions",
+            "description": "The list of dimensions for this query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "filters",
+            "description": "The filters that restrict the data returned for this query.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "A list of metrics and dimensions indicating the sorting order and sorting direction for the returned data.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "max-results",
+            "description": "The maximum number of results to return.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "This is the bearer token to be placed in the header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/GoogleDataResponse"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/GoogleErrorResponse"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/GoogleErrorResponse"
+            },
+            "description": "Not authenticated."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/GoogleErrorResponse"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          }
+        },
+        "tags": [
+          "GoogleAPIs Data"
+        ],
+        "description": "Get google analytics data.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get google analytics data.",
+        "operationId": "getGoogleAnalyticsData"
+      }
+    }
+  },
+  "definitions": {
+    "GoogleErrorResponse": {
+      "description": "The error response.",
+      "properties": {
+        "error": {
+          "properties": {
+            "code": {
+              "description": "The response code",
+              "type": "integer"
+            },
+            "message": {
+              "description": "The error message.",
+              "type": "string"
+            },
+            "errors": {
+              "description": "The errors.",
+              "items": {
+                "$ref": "#/definitions/Error"
+              },
+              "type": "array"
+            },
+            "status": {
+              "description": "The error status",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error.",
+      "properties": {
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "domain": {
+          "description": "The domain.",
+          "type": "string"
+        },
+        "reason": {
+          "description": "The reason.",
+          "type": "string"
+        },
+        "location": {
+          "description": "The location.",
+          "type": "string"
+        },
+        "locationType": {
+          "description": "The location type.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GoogleDataResponse": {
+      "description": "Google Analytics data response",
+      "properties": {
+        "itemsPerPage": {
+          "description": "The number of items per page.",
+          "type": "integer"
+        },
+        "totalResults": {
+          "description": "The total number of results.",
+          "type": "integer"
+        },
+        "rows": {
+          "description": "The analytics data rows",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "type": "array"          
+        },
+        "totalsForAllResults": {
+          "type": "object",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "type": "object"
+    }
+  }
+}

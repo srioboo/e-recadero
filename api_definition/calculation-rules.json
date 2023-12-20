@@ -1,0 +1,743 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "version": "2.0",
+        "title": "calculation-rules"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/calculation-rules": {
+            "get": {
+                "tags": [
+                    "calculation-rules"
+                ],
+                "description": "Get a collection of Calculation Rule.",
+                "operationId": "getCalculationRules",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "The calculation rule ID.",
+                        "required": false,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "combination",
+                        "in": "query",
+                        "description": "Specify the bit flag to determine how this calculation rule can be combined with other calculation rules, 0 = The rule can be combined with any other rule. 1 = The rule can only be combined with rules that have the combination type 0 rules. 2 = The rule cannot be combined with rules that have the combination type 1.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "query",
+                        "description": "The time this calculation rule stops being effective. This is a SQL TIMESTAMP value. You can specify a null value. If you do not specify a value, the default value is 9999-12-31 23 59 59.0, which means that the calculation code never expires.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    {
+                        "name": "sequence",
+                        "in": "query",
+                        "description": "Calculation rules for the same calculation code are processed in sequence from lowest to highest value.",
+                        "required": false,
+                        "type": "number",
+                        "format": "double"
+                    },
+                    {
+                        "name": "startDate",
+                        "in": "query",
+                        "description": "The time this calculation rule begins being effective. This is a SQL TIMESTAMP value formatted as, YYYY-MM-DD HH MM SS.ff.",
+                        "required": false,
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    {
+                        "name": "taxCategoryId",
+                        "in": "query",
+                        "description": "For TaxType CalculationUsages, the TaxCategory for which this CalculationRule is effective.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "field1",
+                        "in": "query",
+                        "description": "Customizable.",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "name": "field2",
+                        "in": "query",
+                        "description": "Customizable.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "flags",
+                        "in": "query",
+                        "description": "Use to determine how this calculation rule may be combined with other calculation rules. Contains the following bit flag indicating special processing to be performed by the defaulti implementation, 1 = restricted - certain conditions must be met before the calculation rule qualifies. If this flag is not 1, then the calculation rule always qualifies. Example 1, For discount calculation rules, the customer must be in one of the associated member groups recognized by the Store as customer groups. Example 2, For shipping calculation rules, the shipping address, shipping mode and fulfillment center must match one of the shipping jurisdiction group calculation rules. Example 3, For tax calculation rules the shipping address and fulfillment center must match one of the tax jurisdiction group calculation rules.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "identifier",
+                        "in": "query",
+                        "description": "Uniquely identifies this Calculation Rule, along with its Calculation Code.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "calculationCodeId",
+                        "in": "query",
+                        "description": "The calculationCodeId of which this calculation rule is a part. You can get all the calculation codes by calling, /store/{storeId}/calculation-codes",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "calculationMethodId",
+                        "in": "query",
+                        "description": "The calculationMethodId calculates a monetary result for a set of order items.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "calculationRuleQualifyMethodId",
+                        "in": "query",
+                        "description": "The CalculationRuleQualifyMethod that determines which of a set of OrderItems should be sent to the CalculationRuleCalculateMethod.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of Calculation Rules.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRuleCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "calculation-rules"
+                ],
+                "description": "Create a calculation rule.",
+                "operationId": "createCalculationRule",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "CalculationRule",
+                        "description": "A calculation rule defines how to arrive at a monetary amount for a set of order items.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRule"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/calculation-rules/{id}": {
+            "get": {
+                "tags": [
+                    "calculation-rules"
+                ],
+                "description": "Get a calculation rule.",
+                "operationId": "getCalculationRuleById",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A calculation rule defines how to arrive at a monetary amount for a set of order items.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRule"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "calculation-rules"
+                ],
+                "description": "Delete a calculation rule.",
+                "operationId": "deleteCalculationRuleById",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "calculation-rules"
+                ],
+                "description": "Update a calculation rule.",
+                "operationId": "updateCalculationRuleById",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "CalculationRule",
+                        "description": "A calculation rule defines how to arrive at a monetary amount for a set of order items.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRule"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "The calculation rule ID.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        },
+        "/calculation-rules/{id}/calculation-scales": {
+            "get": {
+                "tags": [
+                    "calculation-rules"
+                ],
+                "description": "",
+                "operationId": "getCalculationScalesOfCalculationRule",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of calculation-rule-scale.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRuleScaleCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "The calculation rule ID.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        },
+        "/calculation-rules/{id}/shipping-jurisdiction-calculation-rules": {
+            "get": {
+                "tags": [
+                    "calculation-rules"
+                ],
+                "description": "",
+                "operationId": "getShippingJurisdictionCalculationRulesOfCalculationRule",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of shipping jurisdiction calculation rule.",
+                        "schema": {
+                            "$ref": "#/definitions/ShippingJurisdictionCalculationRuleCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "The calculation rule ID.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "The error message code."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The error message."
+                },
+                "messageKey": {
+                    "type": "string",
+                    "description": "The error message key."
+                },
+                "messageArguments": {
+                    "type": "array",
+                    "description": "The arguments used to construct the error message.",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The unique identifier for the request."
+                },
+                "locale": {
+                    "type": "string",
+                    "description": "The locale of the error message."
+                }
+            },
+            "description": "The error message item model."
+        },
+        "ErrorResponseContainer": {
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "type": "string",
+                    "description": "The request identifier."
+                },
+                "errors": {
+                    "type": "array",
+                    "description": "The errors.",
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    }
+                }
+            },
+            "description": "The error message model."
+        },
+        "CalculationRule": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation rule ID."
+                },
+                "combination": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Specify the bit flag to determine how this calculation rule can be combined with other calculation rules, 0 = The rule can be combined with any other rule. 1 = The rule can only be combined with rules that have the combination type 0 rules. 2 = The rule cannot be combined with rules that have the combination type 1."
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time this calculation rule stops being effective. This is a SQL TIMESTAMP value. You can specify a null value. If you do not specify a value, the default value is 9999-12-31 23 59 59.0, which means that the calculation code never expires."
+                },
+                "sequence": {
+                    "type": "number",
+                    "format": "double",
+                    "description": "Calculation rules for the same calculation code are processed in sequence from lowest to highest value."
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time this calculation rule begins being effective. This is a SQL TIMESTAMP value formatted as, YYYY-MM-DD HH MM SS.ff."
+                },
+                "taxCategoryId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "For TaxType CalculationUsages, the TaxCategory for which this CalculationRule is effective."
+                },
+                "field1": {
+                    "type": "number",
+                    "description": "Customizable."
+                },
+                "field2": {
+                    "type": "string",
+                    "description": "Customizable."
+                },
+                "flags": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Use to determine how this calculation rule may be combined with other calculation rules. Contains the following bit flag indicating special processing to be performed by the defaulti implementation, 1 = restricted - certain conditions must be met before the calculation rule qualifies. If this flag is not 1, then the calculation rule always qualifies. Example 1, For discount calculation rules, the customer must be in one of the associated member groups recognized by the Store as customer groups. Example 2, For shipping calculation rules, the shipping address, shipping mode and fulfillment center must match one of the shipping jurisdiction group calculation rules. Example 3, For tax calculation rules the shipping address and fulfillment center must match one of the tax jurisdiction group calculation rules."
+                },
+                "identifier": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Uniquely identifies this Calculation Rule, along with its Calculation Code."
+                },
+                "calculationCodeId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculationCodeId of which this calculation rule is a part. You can get all the calculation codes by calling, /store/{storeId}/calculation-codes"
+                },
+                "calculationMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculationMethodId calculates a monetary result for a set of order items."
+                },
+                "calculationRuleQualifyMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The CalculationRuleQualifyMethod that determines which of a set of OrderItems should be sent to the CalculationRuleCalculateMethod."
+                }
+            },
+            "description": "A calculation rule defines how to arrive at a monetary amount for a set of order items."
+        },
+        "CalculationRuleCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/CalculationRule"
+                    }
+                }
+            },
+            "description": "A collection of Calculation Rules."
+        },
+        "CalculationRuleScale": {
+            "type": "object",
+            "properties": {
+                "calculationScaleId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation scale ID."
+                },
+                "calculationRuleId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation rule ID."
+                }
+            },
+            "description": "A calculation-rule-scale."
+        },
+        "CalculationRuleScaleCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/CalculationRuleScale"
+                    }
+                }
+            },
+            "description": "A collection of calculation-rule-scale."
+        },
+        "ShippingJurisdictionCalculationRule": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The shipping jurisdiction calculation rule ID."
+                },
+                "precedence": {
+                    "type": "number",
+                    "format": "double",
+                    "description": "When a shipping address falls within more than one of the specified ShippingJurisdictionGroups, for the same FulfillmentCenter and ShippingMode, only the CalculationRule with the highest SHPJCRULE.PRECEDENCE value qualifies."
+                },
+                "calculationRuleId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation rule ID."
+                },
+                "jurisdictionGroupId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The jurisdiction group ID."
+                },
+                "fulfillmentCenterId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The fulfillment center ID."
+                },
+                "shippingModeId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The shipping mode ID."
+                }
+            },
+            "description": "A Shipping jurisdiction calculation rule."
+        },
+        "ShippingJurisdictionCalculationRuleCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/ShippingJurisdictionCalculationRule"
+                    }
+                }
+            },
+            "description": "A collection of shipping jurisdiction calculation rule."
+        }
+    }
+}

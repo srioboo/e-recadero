@@ -1,0 +1,372 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "version": "2.0",
+        "title": "quantity-unit-descriptions"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/quantity-unit-descriptions": {
+            "get": {
+                "tags": [
+                    "quantity-unit-descriptions"
+                ],
+                "description": "Get a collection of Quantity Unit descriptions.",
+                "operationId": "getQuantityUnitDescriptions",
+                "parameters": [
+                    {
+                        "name": "quantityUnitId",
+                        "in": "query",
+                        "description": "The Quantity Unit ID.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "languageId",
+                        "in": "query",
+                        "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "The Quantity Unit description in the language.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of Quantity Unit descriptions.",
+                        "schema": {
+                            "$ref": "#/definitions/QuantityUnitDescriptionCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "quantity-unit-descriptions"
+                ],
+                "description": "Create a Quantity Unit description.",
+                "operationId": "createQuantityUnitDescription",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "QuantityUnitDescription",
+                        "description": "A Quantity Unit description.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/QuantityUnitDescription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/quantity-unit-descriptions/quantityUnitId:{quantityUnitId},languageId:{languageId}": {
+            "get": {
+                "tags": [
+                    "quantity-unit-descriptions"
+                ],
+                "description": "Get a Quantity Unit description.",
+                "operationId": "getQuantityUnitDescriptionById",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A Quantity Unit description.",
+                        "schema": {
+                            "$ref": "#/definitions/QuantityUnitDescription"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "quantity-unit-descriptions"
+                ],
+                "description": "Delete a Quantity Unit description.",
+                "operationId": "deleteQuantityUnitDescriptionById",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "quantity-unit-descriptions"
+                ],
+                "description": "Update a Quantity Unit description.",
+                "operationId": "updateQuantityUnitDescriptionById",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "QuantityUnitDescription",
+                        "description": "A Quantity Unit description.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/QuantityUnitDescription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "quantityUnitId",
+                    "in": "path",
+                    "description": "The Quantity Unit ID.",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "languageId",
+                    "in": "path",
+                    "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "The error message code."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The error message."
+                },
+                "messageKey": {
+                    "type": "string",
+                    "description": "The error message key."
+                },
+                "messageArguments": {
+                    "type": "array",
+                    "description": "The arguments used to construct the error message.",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The unique identifier for the request."
+                },
+                "locale": {
+                    "type": "string",
+                    "description": "The locale of the error message."
+                }
+            },
+            "description": "The error message item model."
+        },
+        "ErrorResponseContainer": {
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "type": "string",
+                    "description": "The request identifier."
+                },
+                "errors": {
+                    "type": "array",
+                    "description": "The errors.",
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    }
+                }
+            },
+            "description": "The error message model."
+        },
+        "QuantityUnitDescription": {
+            "type": "object",
+            "properties": {
+                "quantityUnitId": {
+                    "type": "string",
+                    "description": "The Quantity Unit ID."
+                },
+                "languageId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The Quantity Unit description in the language."
+                }
+            },
+            "description": "A Quantity Unit description."
+        },
+        "QuantityUnitDescriptionCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/QuantityUnitDescription"
+                    }
+                }
+            },
+            "description": "A collection of Quantity Unit descriptions."
+        }
+    }
+}

@@ -1,0 +1,812 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "version": "2.0",
+        "title": "calculation-scales"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/calculation-scales": {
+            "get": {
+                "tags": [
+                    "calculation-scales"
+                ],
+                "description": "Get a collection of Calculation Scales.",
+                "operationId": "getCalculationScales",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "The calculation scale ID.",
+                        "required": false,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "scaleCode",
+                        "in": "query",
+                        "description": "A character string that uniquely identifies this Calculation Scale.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "unitOfMeasure",
+                        "in": "query",
+                        "description": "The Unit of measure for the range start values of the Calculation Range for this Calculation Scale.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "currency",
+                        "in": "query",
+                        "description": "The currency for the range start values of the Calculation Range for this Calculation Scale.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "storeId",
+                        "in": "query",
+                        "description": "The reference number of the store this Calculation Scale associated with.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "scaleDescription",
+                        "in": "query",
+                        "description": "The detailed description of the Calculation Scale.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "field1",
+                        "in": "query",
+                        "description": "Customizable.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "scaleLookupMethod",
+                        "in": "query",
+                        "description": "The Calculation Scale lookup method can be used by the Calculation Scale to calculate a monetary amount. -28 for a shipping scale based on quantity. -29 for a shipping scale based on weight. -33 for a shipping range returning a fixed shipping.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "calculationUsageId",
+                        "in": "query",
+                        "description": "Indicates the kind of calculation this Calculation Scale is used for. For example, the Calculation Scale may be used to calculate one of the monetary amounts, discounts, shipping charges, sales tax, or shipping tax.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of Calculation Scales.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationScaleCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "calculation-scales"
+                ],
+                "description": "Create a calculation scale.",
+                "operationId": "createCalculationScale",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "CalculationScale",
+                        "description": "A calculation scale defines what the charge is based on when calculating different kinds of charges. For example, the shipping charge can be charged by total price, weight, quantity, etc.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CalculationScale"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/calculation-scales/{id}": {
+            "get": {
+                "tags": [
+                    "calculation-scales"
+                ],
+                "description": "Get a calculation scale.",
+                "operationId": "getCalculationScaleById",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A calculation scale defines what the charge is based on when calculating different kinds of charges. For example, the shipping charge can be charged by total price, weight, quantity, etc.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationScale"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "calculation-scales"
+                ],
+                "description": "Delete a calculation Scale.",
+                "operationId": "deleteCalculationScaleById",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "calculation-scales"
+                ],
+                "description": "Update a calculation scale.",
+                "operationId": "updateCalculationScaleById",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "CalculationScale",
+                        "description": "A calculation scale defines what the charge is based on when calculating different kinds of charges. For example, the shipping charge can be charged by total price, weight, quantity, etc.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CalculationScale"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "The calculation scale ID.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        },
+        "/calculation-scales/{id}/descriptions": {
+            "get": {
+                "tags": [
+                    "calculation-scales"
+                ],
+                "description": "",
+                "operationId": "getDescriptionsOfCalculationScale",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of language-dependent Calculation Scale Description.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationScaleDescriptionCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "The calculation scale ID.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        },
+        "/calculation-scales/{id}/calculation-rules": {
+            "get": {
+                "tags": [
+                    "calculation-scales"
+                ],
+                "description": "",
+                "operationId": "getCalculationRulesOfCalculationScale",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of calculation-rule-scale.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRuleScaleCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "The calculation scale ID.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        },
+        "/calculation-scales/{id}/calculation-ranges": {
+            "get": {
+                "tags": [
+                    "calculation-scales"
+                ],
+                "description": "",
+                "operationId": "getCalculationRangesOfCalculationScale",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of calculation range.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRangeCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "The calculation scale ID.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "The error message code."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The error message."
+                },
+                "messageKey": {
+                    "type": "string",
+                    "description": "The error message key."
+                },
+                "messageArguments": {
+                    "type": "array",
+                    "description": "The arguments used to construct the error message.",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The unique identifier for the request."
+                },
+                "locale": {
+                    "type": "string",
+                    "description": "The locale of the error message."
+                }
+            },
+            "description": "The error message item model."
+        },
+        "ErrorResponseContainer": {
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "type": "string",
+                    "description": "The request identifier."
+                },
+                "errors": {
+                    "type": "array",
+                    "description": "The errors.",
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    }
+                }
+            },
+            "description": "The error message model."
+        },
+        "CalculationScale": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation scale ID."
+                },
+                "scaleCode": {
+                    "type": "string",
+                    "description": "A character string that uniquely identifies this Calculation Scale."
+                },
+                "unitOfMeasure": {
+                    "type": "string",
+                    "description": "The Unit of measure for the range start values of the Calculation Range for this Calculation Scale."
+                },
+                "currency": {
+                    "type": "string",
+                    "description": "The currency for the range start values of the Calculation Range for this Calculation Scale."
+                },
+                "storeId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The reference number of the store this Calculation Scale associated with."
+                },
+                "scaleDescription": {
+                    "type": "string",
+                    "description": "The detailed description of the Calculation Scale."
+                },
+                "field1": {
+                    "type": "string",
+                    "description": "Customizable."
+                },
+                "scaleLookupMethod": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The Calculation Scale lookup method can be used by the Calculation Scale to calculate a monetary amount. -28 for a shipping scale based on quantity. -29 for a shipping scale based on weight. -33 for a shipping range returning a fixed shipping."
+                },
+                "calculationUsageId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Indicates the kind of calculation this Calculation Scale is used for. For example, the Calculation Scale may be used to calculate one of the monetary amounts, discounts, shipping charges, sales tax, or shipping tax."
+                }
+            },
+            "description": "A calculation scale defines what the charge is based on when calculating different kinds of charges. For example, the shipping charge can be charged by total price, weight, quantity, etc."
+        },
+        "CalculationScaleCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/CalculationScale"
+                    }
+                }
+            },
+            "description": "A collection of Calculation Scales."
+        },
+        "CalculationScaleDescription": {
+            "type": "object",
+            "properties": {
+                "calculationScaleId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The Calculation Scale ID."
+                },
+                "languageId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The Language ID, The language for which this information applies."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The description of the Calculation Scale."
+                }
+            },
+            "description": "A Language-dependent information for a Calculation Scale."
+        },
+        "CalculationScaleDescriptionCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/CalculationScaleDescription"
+                    }
+                }
+            },
+            "description": "A collection of language-dependent Calculation Scale Description."
+        },
+        "CalculationRuleScale": {
+            "type": "object",
+            "properties": {
+                "calculationScaleId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation scale ID."
+                },
+                "calculationRuleId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation rule ID."
+                }
+            },
+            "description": "A calculation-rule-scale."
+        },
+        "CalculationRuleScaleCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/CalculationRuleScale"
+                    }
+                }
+            },
+            "description": "A collection of calculation-rule-scale."
+        },
+        "CalculationRange": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation range ID."
+                },
+                "cumulative": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Valid values, 0 = only the matching Calculation Range with the highest RANGE START value is used. 1 = all matching Calculation Ranges are used. The calculated monetary amounts are summed to arrive at the final result."
+                },
+                "rangeStart": {
+                    "type": "number",
+                    "description": "If a lookup number is greater than or equal to RANGE START, or if RANGE START is NULL, this row matches the lookup number."
+                },
+                "field1": {
+                    "type": "number",
+                    "description": "Customizable."
+                },
+                "field2": {
+                    "type": "number",
+                    "description": "Customizable."
+                },
+                "field3": {
+                    "type": "string",
+                    "description": "Customizable."
+                },
+                "markForDelete": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Reserved for HCL Internal use."
+                },
+                "calculationMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The Calculation Range Method that determines a monetary amount from the Calculation Range Lookup Result."
+                },
+                "calculationScaleId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The Calculation Scale of which this Calculation Range is a part."
+                }
+            },
+            "description": "A calculation ranges."
+        },
+        "CalculationRangeCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/CalculationRange"
+                    }
+                }
+            },
+            "description": "A collection of calculation range."
+        }
+    }
+}

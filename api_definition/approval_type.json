@@ -1,0 +1,552 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Approval Type Management",
+    "version": "2.0"
+  },
+  "tags": [
+    {
+      "name": "Approval Types",
+      "description": "This API provides RESTful services to manage approval type resources."
+    }
+  ],
+  "paths": {
+    "/approval-types": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ApprovalTypeCollection"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name,-description will order the items first based on the name value in ascending order, and then by their description value in descending order.",
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Limits search results to only include approval types with a description that matches the value of this parameter.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Approval Types"
+        ],
+        "description": "Get a collection of approval types.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a collection approval types.",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "getApprovalTypes"
+      }
+    },
+    "/approval-types/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ApprovalType"
+            },
+            "description": "The requested completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "type": "string",
+            "description": "The unique numeric ID for identifying the approval type.",
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "tags": [
+          "Approval Types"
+        ],
+        "description": "Get an approval type by ID.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get an approval type by ID.",
+        "operationId": "getApprovalTypeById"
+      }
+    },
+    "/approval-type-assignments": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ApprovalTypeAssignmentCollection"
+            },
+            "description": "The requested completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "description": "Limits results to only include approval type assignments with the specified organization ID",
+            "in": "query",
+            "name": "organizationId"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "description": "Limits results to only include approval type assignments with the specified approval type ID.",
+            "in": "query",
+            "name": "approvalTypeId"
+          }
+        ],
+        "tags": [
+          "Approval Types"
+        ],
+        "description": "Gets a collection of approval type assignments.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Gets a collection of approval type assignments.",
+        "operationId": "getApprovalTypeAssignments"
+      },
+      "post": {
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "headers": {
+              "Location": {
+                "description": "Link to the newly created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "in": "body",
+            "description": "Request body.",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/ApprovalTypeAssignment"
+            }
+          }
+        ],
+        "tags": [
+          "Approval Types"
+        ],
+        "description": "Create an approval type assignment.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create an approval type assignment.",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createApprovalTypeAssignment"
+      }
+    },
+    "/approval-type-assignments/organizationId:{organizationId},approvalTypeId:{approvalTypeId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ApprovalTypeAssignment"
+            },
+            "description": "The requested completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "type": "string",
+            "description": "The unique numeric ID of the organization to which the approval type is assigned.",
+            "in": "path",
+            "name": "organizationId"
+          },
+          {
+            "required": true,
+            "type": "string",
+            "description": "The unique numeric ID of the approval type that is assigned to the organization.",
+            "in": "path",
+            "name": "approvalTypeId"
+          }
+        ],
+        "tags": [
+          "Approval Types"
+        ],
+        "description": "Get an approval type assignment by ID.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get an approval type assignment by ID.",
+        "operationId": "getApprovalTypeAssignmentsById"
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "The requested resource has been deleted."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "type": "string",
+            "description": "The unique numeric ID of the organization to which the approval type is assigned.",
+            "in": "path",
+            "name": "organizationId"
+          },
+          {
+            "required": true,
+            "type": "string",
+            "description": "The unique numeric ID of the approval type that is assigned to the organization.",
+            "in": "path",
+            "name": "approvalTypeId"
+          }
+        ],
+        "tags": [
+          "Approval Types"
+        ],
+        "description": "Delete an approval type assignment.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete an approval type assignment.",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteApprovalTypeAssignment"
+      }
+    }
+  },
+  "definitions": {
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ApprovalType": {
+      "properties": {
+        "role": {
+          "description": "A comma separated list of role names that are associated with this approval type.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the approval type",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the approval type.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the approval type.",
+          "type": "string"
+        }
+      }
+    },
+    "ApprovalTypeCollection": {
+      "properties": {
+        "offset": {
+          "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "limit": {
+          "description": "The maximum number of records to return.",
+          "format": "int32",
+          "maximum": 500,
+          "type": "integer"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApprovalType"
+          }
+        }
+      }
+    },
+    "ApprovalTypeAssignment": {
+      "properties": {
+        "organizationId": {
+          "description": "The unique numeric ID of the organization to which the approval type is assigned.",
+          "type": "string"
+        },
+        "approvalTypeId": {
+          "description": "The unique numeric ID of the approval type that is assigned to the organization.",
+          "type": "string"
+        }
+      }
+    },
+    "ApprovalTypeAssignmentCollection": {
+      "properties": {
+        "offset": {
+          "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "limit": {
+          "description": "The maximum number of records to return.",
+          "format": "int32",
+          "maximum": 500,
+          "type": "integer"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApprovalTypeAssignment"
+          }
+        }
+      }
+    }
+  }
+}

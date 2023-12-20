@@ -1,0 +1,897 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer price rules.",
+    "title": "Price Rules",
+    "version": "9.1.12.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/price-rules": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is 5, the records that returned begin with the sixth record that matches the query parameters. If the offset is 0, the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PriceRuleCollection"
+            },
+            "x-entity-path": "dataArea/priceRule"
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "getPriceRules",
+        "summary": "Get a collection of price rules in a store.",
+        "x-expression-template": "{_wcf.ap=IBM_Admin_Summary}/PriceRule",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "getPriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.GetPriceRuleType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PriceRule"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the price rule.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "CreatePriceRuleElements": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id`value used in the request body can be used as the `id`  parameter in `POST /price-rules/{id}/elements`.\n",
+                "operationRef": "#/paths/~1price-rules~1{id}~1elements/post"
+              },
+              "DeletePriceRule": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id`value used in the request body can be used as the The `id` parameter in `DELETE /price-rules/{id}`.\n",
+                "operationRef": "#/paths/~1price-rules{id}/delete"
+              },
+              "GetPriceRuleById": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id`value used in the request body can be used as the `id`  parameter in `GET /price-rules/{id}`.\n",
+                "operationRef": "#/paths/~1price-rules{id}/get"
+              },
+              "GetPriceRuleByNameOrDescription": {
+                "parameters": {
+                  "searchText": "$request.body#/name",
+                  "storeId ": "$request.query.storeId "
+                },
+                "description": "The `storeId`,`searchText`value used in the request body can be used as the `storeId`,`searchText` parameter in `GET /price-rules/by-name-or-description`.\n",
+                "operationRef": "#/paths/~1price-rules~1by-name-or-description/get"
+              },
+              "UpdatePriceRule": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id`value used in the request body can be used as the `id` parameter in `PATCH /price-rules/{id}`.\n",
+                "operationRef": "#/paths/~1price-rules{id}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "createPriceRule",
+        "summary": "Create a price rule.",
+        "x-action-code": "Create",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/PriceRule[1]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "processPriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.ProcessPriceRuleType"
+      }
+    },
+    "/price-rules/by-name-or-description": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The name pattern to search.",
+            "in": "query",
+            "name": "searchText",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is 5, the records that returned begin with the sixth record that matches the query parameters. If the offset is 0, the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PriceRuleCollection"
+            },
+            "x-entity-path": "dataArea/priceRule"
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "getPriceRuleByNameOrDescription",
+        "summary": "Search price rules by name or description.",
+        "x-expression-builder-class": "com.ibm.commerce.foundation.internal.client.taglib.util.SearchExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "getPriceRule",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary",
+          "template": "/PriceRule[search(PriceRuleIdentifier/ExternalIdentifier/Name='$searchText$' or Description='$searchText$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.GetPriceRuleType"
+      }
+    },
+    "/price-rules/by-price-constant-id/{priceConstantId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The price constant ID.",
+            "in": "path",
+            "name": "priceConstantId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is 5, the records that returned begin with the sixth record that matches the query parameters. If the offset is 0, the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PriceRuleCollection"
+            },
+            "x-entity-path": "dataArea/priceRule",
+            "x-support-paging": false
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "getPriceRulesByPriceConstant",
+        "summary": "Get all price rules which reference the price constant.",
+        "x-expression-template": "{_wcf.ap=IBM_Admin_Details}/PriceRule[PriceRuleElement[ElementTemplateIdentifier[UniqueID='8'] and ElementAttribute[(Name='inputOperandReferenceId' or Name='comparisonOperandReferenceId') and Value='{priceConstantId}']]]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "getPriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.GetPriceRuleType"
+      }
+    },
+    "/price-rules/by-price-equation-id/{priceEquationId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The price equation ID.",
+            "in": "path",
+            "name": "priceEquationId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is 5, the records that returned begin with the sixth record that matches the query parameters. If the offset is 0, the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PriceRuleCollection"
+            },
+            "x-entity-path": "dataArea/priceRule",
+            "x-support-paging": false
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "getPriceRulesByPriceEquation",
+        "summary": "Get all price rules which reference the price equation.",
+        "x-expression-template": "{_wcf.ap=IBM_Admin_Details}/PriceRule[PriceRuleElement[ElementTemplateIdentifier[UniqueID='4'] and ElementAttribute[(Name='priceEquationId') and Value='10001'] or ElementTemplateIdentifier[UniqueID='8'] and ElementAttribute[(Name='inputOperandReferenceId' or Name='comparisonOperandReferenceId') and Value='{priceEquationId}']]]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "getPriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.GetPriceRuleType"
+      }
+    },
+    "/price-rules/by-price-list-id/{priceListId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The price list ID.",
+            "in": "path",
+            "name": "priceListId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is 5, the records that returned begin with the sixth record that matches the query parameters. If the offset is 0, the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PriceRuleCollection"
+            },
+            "x-entity-path": "dataArea/priceRule",
+            "x-support-paging": false
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "getPriceRulesByPriceList",
+        "summary": "Get all price rules which reference the price list.",
+        "x-expression-template": "{_wcf.ap=IBM_Admin_Details}/PriceRule[PriceRuleElement[ElementTemplateIdentifier[UniqueID='2'] and ElementAttribute[(Name='priceListId') and Value='{priceListId}'] or ElementTemplateIdentifier[UniqueID='11'] and ElementAttribute[(Name='priceListId') and Value='{priceListId}'] or ElementTemplateIdentifier[UniqueID='8'] and ElementAttribute[(Name='inputOperandReferenceId' or Name='comparisonOperandReferenceId') and Value='{priceListId}']]]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "getPriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.GetPriceRuleType"
+      }
+    },
+    "/price-rules/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the price rule.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "deletePriceRule",
+        "summary": "Deletes a price rule.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/PriceRule[1]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "processPriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.ProcessPriceRuleType"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the price rule.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/PriceRule"
+            },
+            "x-entity-path": "dataArea/priceRule[1]"
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "getPriceRuleById",
+        "summary": "Get a price rule.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_Details'}/PriceRule/PriceRuleIdentifier[(UniqueID='{id}')]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "getPriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.GetPriceRuleType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the price rule.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PriceRule"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "updatePriceRule",
+        "summary": "Update a price rule.",
+        "x-action-code": "Change",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/PriceRule[1]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "changePriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.ChangePriceRuleType"
+      }
+    },
+    "/price-rules/{id}/elements": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the price rule.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "string",
+            "schema": {
+              "$ref": "#/definitions/PriceRuleElementCollection"
+            },
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleElement",
+            "x-support-paging": false
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "getPriceRuleElements",
+        "summary": "Get a price rule with price rule elements.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_PriceRuleElementsDetails'}/PriceRule/PriceRuleIdentifier[(UniqueID='{id}')]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "getPriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.GetPriceRuleType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the price rule.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PriceRuleElement"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the price rule element.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "DeletePriceRuleElement": {
+                "parameters": {
+                  "id": "$request.path.id",
+                  "name": "$request.body#/name"
+                },
+                "description": "The `id`,`name` value used in the request body can be used as the The `id`,`name` parameter in `DELETE /price-rules/{id}/elements/{name}`.\n",
+                "operationRef": "#/paths/~1price-rules~1{id}~1elements~1{name}/delete"
+              },
+              "GetPriceRuleElements": {
+                "parameters": {
+                  "id": "$request.path.id"
+                },
+                "description": "The `id`value used in the request body can be used as the `id`  parameter in `GET /price-rules/{id}/elements`.\n",
+                "operationRef": "#/paths/~1price-rules~1{id}~1elements/get"
+              },
+              "UpdatePriceRuleElement": {
+                "parameters": {
+                  "id": "$request.path.id",
+                  "name": "$request.body#/name"
+                },
+                "description": "The `id`,`name` value used in the request body can be used as the `id`,`name` parameter in `PATCH /price-rules/{id}/elements/{name}`.\n",
+                "operationRef": "#/paths/~1price-rules~1{id}~1elements~1{name}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleElement[1]/elementIdentifier/name"
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "createPriceRuleElement",
+        "summary": "Add a price rule element to a price rule.",
+        "x-action-code": "Add",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/PriceRule[1]/PriceRuleElement[1]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "changePriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.ChangePriceRuleType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      }
+    },
+    "/price-rules/{id}/elements/{name}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the price rule.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleIdentifier/uniqueID"
+          },
+          {
+            "description": "The name of the price rule element.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleElement[1]/elementIdentifier/name"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "deletePriceRuleElement",
+        "summary": "Deletes a price rule element.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/PriceRule[1]/PriceRuleElement[1]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "changePriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.ChangePriceRuleType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the price rule.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleIdentifier/uniqueID"
+          },
+          {
+            "description": "The name of the price rule element.",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/priceRule[1]/priceRuleElement/elementIdentifier/name"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PriceRuleElement"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Price Rules"
+        ],
+        "operationId": "updatePriceRuleElement",
+        "summary": "Update a price rule element.",
+        "x-action-code": "Change",
+        "x-codegen-request-body-name": "body",
+        "x-expression-template": "/PriceRule[1]/PriceRuleElement[1]",
+        "x-facade-client-class": "com.ibm.commerce.price.facade.client.PriceFacadeClient",
+        "x-facade-client-method": "changePriceRule",
+        "x-request-bod-class": "com.ibm.commerce.price.facade.datatypes.ChangePriceRuleType"
+      }
+    }
+  },
+  "definitions": {
+    "ElementAttribute": {
+      "description": "A element attribute.",
+      "properties": {
+        "name": {
+          "description": "The name of the element attribute",
+          "type": "string",
+          "x-entity-path": "name"
+        },
+        "value": {
+          "description": "The value of the element attribute",
+          "type": "string",
+          "x-entity-path": "value"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.FlowElementAttributeType"
+    },
+    "PriceRule": {
+      "description": "A price rule.",
+      "properties": {
+        "createdDate": {
+          "description": "Created time.",
+          "format": "date-time",
+          "type": "string",
+          "x-entity-path": "CreatedTime",
+          "x-nullable": true
+        },
+        "dependent": {
+          "description": "Indicate if the price rule is independent or not.",
+          "type": "boolean",
+          "x-entity-path": "dependent"
+        },
+        "description": {
+          "description": "A description of the price rule, suitable for display to business users.",
+          "type": "string",
+          "x-entity-path": "description"
+        },
+        "elements": {
+          "items": {
+            "$ref": "#/definitions/PriceRuleElement"
+          },
+          "type": "array",
+          "x-entity-path": "priceRuleElement"
+        },
+        "format": {
+          "description": "A description of the price rule, suitable for display to business users.",
+          "type": "string",
+          "x-entity-path": "format"
+        },
+        "id": {
+          "description": "The price rule ID",
+          "type": "string",
+          "x-entity-path": "priceRuleIdentifier/uniqueID"
+        },
+        "name": {
+          "description": "The name of the price rule",
+          "type": "string",
+          "x-entity-path": "priceRuleIdentifier/externalIdentifier/name"
+        },
+        "state": {
+          "description": "The state of the price rule.",
+          "type": "string",
+          "x-entity-path": "state"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "priceRuleIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "updatedDate": {
+          "description": "Last updated time.",
+          "format": "date-time",
+          "type": "string",
+          "x-entity-path": "lastUpdateTime",
+          "x-nullable": true
+        },
+        "version": {
+          "description": "The version of the price rule.",
+          "format": "float",
+          "type": "number",
+          "x-entity-path": "version"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.price.facade.datatypes.PriceRuleType"
+    },
+    "PriceRuleCollection": {
+      "description": "A collection of price rules.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/PriceRule"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count"
+      ],
+      "type": "object"
+    },
+    "PriceRuleElement": {
+      "description": "A price rule element.",
+      "properties": {
+        "attributes": {
+          "description": "The attributes of the price rule element",
+          "items": {
+            "$ref": "#/definitions/ElementAttribute"
+          },
+          "type": "array",
+          "x-entity-path": "elementAttribute"
+        },
+        "name": {
+          "description": "The name of the price rule element",
+          "type": "string",
+          "x-entity-path": "elementIdentifier/name"
+        },
+        "parentElementName": {
+          "description": "The name of the price rule element",
+          "type": "string",
+          "x-entity-path": "parentElementIdentifier/name",
+          "x-nullable": true
+        },
+        "sequence": {
+          "description": "The sequence of this element under its parent element.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "elementSequence"
+        },
+        "templateGroup": {
+          "description": "The name of the element template",
+          "type": "string",
+          "x-entity-path": "elementTemplateIdentifier/externalIdentifier/priceRuleElementTemplateGroup"
+        },
+        "templateId": {
+          "description": "The element template ID",
+          "type": "string",
+          "x-entity-path": "elementTemplateIdentifier/uniqueID"
+        },
+        "templateName": {
+          "description": "The name of the element template",
+          "type": "string",
+          "x-entity-path": "elementTemplateIdentifier/externalIdentifier/name"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.price.facade.datatypes.PriceRuleElementType"
+    },
+    "PriceRuleElementCollection": {
+      "description": "A collection of price rule elements.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/PriceRuleElement"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "count"
+      ],
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provides RESTful services to manage price rules.",
+      "name": "Price Rules"
+    }
+  ],
+  "x-components": {}
+}

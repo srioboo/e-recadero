@@ -1,0 +1,469 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "version": "2.0",
+    "title": "shipping-arrangements"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/shipping-arrangements": {
+      "get": {
+        "tags": [
+          "shipping-arrangements"
+        ],
+        "description": "Get a collection of shipping arrangements.",
+        "operationId": "getShippingArrangements",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The shipping arrangement ID.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The store ID.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fulfillmentCenterId",
+            "in": "query",
+            "description": "The FulfillmentCenter ID.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "shippingModeId",
+            "in": "query",
+            "description": "The ShippingMode. NULL indicates this shipping arrangement can be used regardless of shipping mode.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The time this shipping arrangement starts being effective. If STARTDATE is NULL, it means it begin effective from the beginning.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The time this shipping arrangement stops being effective. If ENDDATE is NULL, it means it will effective forever once it has been started. If the EndDate expires, this shipping arrangement turns invalid and then shoppers could not add items to the cart with this shipping arrangement.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "trackingNumber",
+            "in": "query",
+            "description": "The tracking number.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "field1",
+            "in": "query",
+            "description": "Customizable.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "precedence",
+            "in": "query",
+            "description": "When more than one shipping arrangement (for the same Store and shipping mode) is effective at a particular time, the one with the highest precedence is used.",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "field2",
+            "in": "query",
+            "description": "Customizable.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "flags",
+            "in": "query",
+            "description": "The low order bit contains a flag as follows, 1 - restricted = If this flag is 1, then this shipping arrangement applies only to order items whose shipping Addresses match one of the shipping jurisdiction associated with this shipping arrangement. Otherwise, it applies to all order items.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of records to return.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of shipping arrangements.",
+            "schema": {
+              "$ref": "#/definitions/ShippingArrangementCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "shipping-arrangements"
+        ],
+        "description": "Create a shipping arrangement.",
+        "operationId": "createShippingArrangement",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "ShippingArrangement",
+            "description": "Shipping arrangements.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShippingArrangement"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      }
+    },
+    "/shipping-arrangements/{id}": {
+      "get": {
+        "tags": [
+          "shipping-arrangements"
+        ],
+        "description": "Get a shipping arrangement.",
+        "operationId": "getShippingArrangementById",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shipping arrangements.",
+            "schema": {
+              "$ref": "#/definitions/ShippingArrangement"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "shipping-arrangements"
+        ],
+        "description": "Delete a shipping arrangement.",
+        "operationId": "deleteShippingArrangementById",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "shipping-arrangements"
+        ],
+        "description": "Update a shipping arrangement.",
+        "operationId": "updateShippingArrangementById",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "ShippingArrangement",
+            "description": "Shipping arrangements.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShippingArrangement"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The shipping arrangement ID.",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The error message code."
+        },
+        "message": {
+          "type": "string",
+          "description": "The error message."
+        },
+        "messageKey": {
+          "type": "string",
+          "description": "The error message key."
+        },
+        "messageArguments": {
+          "type": "array",
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          }
+        },
+        "correlationId": {
+          "type": "string",
+          "description": "The unique identifier for the request."
+        },
+        "locale": {
+          "type": "string",
+          "description": "The locale of the error message."
+        }
+      },
+      "description": "The error message item model."
+    },
+    "ErrorResponseContainer": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "The request identifier."
+        },
+        "errors": {
+          "type": "array",
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      },
+      "description": "The error message model."
+    },
+    "ShippingArrangement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The shipping arrangement ID."
+        },
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The store ID."
+        },
+        "fulfillmentCenterId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The FulfillmentCenter ID."
+        },
+        "shippingModeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The ShippingMode. NULL indicates this shipping arrangement can be used regardless of shipping mode."
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time this shipping arrangement starts being effective. If STARTDATE is NULL, it means it begin effective from the beginning."
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time this shipping arrangement stops being effective. If ENDDATE is NULL, it means it will effective forever once it has been started. If the EndDate expires, this shipping arrangement turns invalid and then shoppers could not add items to the cart with this shipping arrangement."
+        },
+        "trackingNumber": {
+          "type": "string",
+          "description": "The tracking number."
+        },
+        "field1": {
+          "type": "string",
+          "description": "Customizable."
+        },
+        "precedence": {
+          "type": "number",
+          "format": "double",
+          "description": "When more than one shipping arrangement (for the same Store and shipping mode) is effective at a particular time, the one with the highest precedence is used."
+        },
+        "field2": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Customizable."
+        },
+        "flags": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The low order bit contains a flag as follows, 1 - restricted = If this flag is 1, then this shipping arrangement applies only to order items whose shipping Addresses match one of the shipping jurisdiction associated with this shipping arrangement. Otherwise, it applies to all order items."
+        }
+      },
+      "description": "Shipping arrangements."
+    },
+    "ShippingArrangementCollection": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total number of items."
+        },
+        "items": {
+          "type": "array",
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/ShippingArrangement"
+          }
+        }
+      },
+      "description": "A collection of shipping arrangements."
+    }
+  }
+}

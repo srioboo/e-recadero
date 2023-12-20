@@ -1,0 +1,639 @@
+{
+  "swagger": "2.0",
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "info": {
+    "version": "2.0",
+    "title": "profiles"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/profiles": {
+      "get": {
+        "tags": [
+          "profiles"
+        ],
+        "description": "Get a collection of profiles.",
+        "operationId": "getProfiles",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The profile id",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The Store ID.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "deviceFormatId",
+            "in": "query",
+            "description": "Indicates what default format to use for this profile element.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "usersView",
+            "in": "query",
+            "description": "Specifying whether USER view preferences are available and should be accessed for this profile.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lowPriority",
+            "in": "query",
+            "description": "The lowest priority for which this profile entry is valid (default is 0).",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "highPriority",
+            "in": "query",
+            "description": "The highest priority for which this profile entry is valid (default is 0).",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "archive",
+            "in": "query",
+            "description": "If set to 1, messages of this message type will be archived after being successfully sent.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "transportId",
+            "in": "query",
+            "description": "The transport.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "messageTypeId",
+            "in": "query",
+            "description": "The message type",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of records to return.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of profiles.",
+            "schema": {
+              "$ref": "#/definitions/ProfileCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "profiles"
+        ],
+        "description": "Create a profile.",
+        "operationId": "createProfile",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Profile",
+            "description": "A profile.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      }
+    },
+    "/profiles/{id}": {
+      "get": {
+        "tags": [
+          "profiles"
+        ],
+        "description": "Get a profile.",
+        "operationId": "getProfileById",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A profile.",
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "profiles"
+        ],
+        "description": "Delete a profile.",
+        "operationId": "deleteProfileById",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "profiles"
+        ],
+        "description": "Update a profile.",
+        "operationId": "updateProfileById",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Profile",
+            "description": "A profile.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The profile id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    },
+    "/profiles/{id}/transports": {
+      "get": {
+        "tags": [
+          "profiles"
+        ],
+        "description": "Finds the transport in a profile.",
+        "operationId": "getTransportsOfProfile",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An store transport.",
+            "schema": {
+              "$ref": "#/definitions/Transport"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The profile id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    },
+    "/profiles/{id}/message-types": {
+      "get": {
+        "tags": [
+          "profiles"
+        ],
+        "description": "Finds the message type in a profile.",
+        "operationId": "getMessageTypesOfProfile",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A message type",
+            "schema": {
+              "$ref": "#/definitions/MessageType"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The profile id",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The error message code."
+        },
+        "message": {
+          "type": "string",
+          "description": "The error message."
+        },
+        "messageKey": {
+          "type": "string",
+          "description": "The error message key."
+        },
+        "messageArguments": {
+          "type": "array",
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          }
+        },
+        "correlationId": {
+          "type": "string",
+          "description": "The unique identifier for the request."
+        },
+        "locale": {
+          "type": "string",
+          "description": "The locale of the error message."
+        }
+      },
+      "description": "The error message item model."
+    },
+    "ErrorResponseContainer": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "The request identifier."
+        },
+        "errors": {
+          "type": "array",
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      },
+      "description": "The error message model."
+    },
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The profile id"
+        },
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Store ID."
+        },
+        "deviceFormatId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Indicates what default format to use for this profile element."
+        },
+        "usersView": {
+          "type": "string",
+          "description": "Specifying whether USER view preferences are available and should be accessed for this profile."
+        },
+        "lowPriority": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The lowest priority for which this profile entry is valid (default is 0)."
+        },
+        "highPriority": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The highest priority for which this profile entry is valid (default is 0)."
+        },
+        "archive": {
+          "type": "integer",
+          "format": "int32",
+          "description": "If set to 1, messages of this message type will be archived after being successfully sent."
+        },
+        "transportId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The transport."
+        },
+        "messageTypeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The message type"
+        }
+      },
+      "description": "A profile."
+    },
+    "ProfileCollection": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total number of items."
+        },
+        "items": {
+          "type": "array",
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/Profile"
+          }
+        }
+      },
+      "description": "A collection of profiles."
+    },
+    "Transport": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The transport ID."
+        },
+        "code": {
+          "type": "string",
+          "description": "The code of the transport."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the transport."
+        },
+        "description": {
+          "type": "string",
+          "description": "The description."
+        },
+        "timeout": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The timeout."
+        },
+        "implemented": {
+          "type": "string",
+          "description": "If it is implemented."
+        },
+        "addressable": {
+          "type": "string",
+          "description": "If it is addressable."
+        }
+      },
+      "description": "An store transport."
+    },
+    "MessageType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The message type id."
+        },
+        "direction": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The direction of transmission this message is valid for, 1=outgoing, 2=incoming, or 3=send-receive."
+        },
+        "name": {
+          "type": "string",
+          "description": "Short name for message type."
+        },
+        "viewName": {
+          "type": "string",
+          "description": "Name of view associated with this message type. This view must be registered to be usable in message transmission. This is a mandatory field."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the message type."
+        }
+      },
+      "description": "A message type"
+    }
+  }
+}

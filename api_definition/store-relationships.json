@@ -1,0 +1,704 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer a collection of store relationships.",
+    "title": "Store Relationships",
+    "version": "9.1.12.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/store-relationships": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store relationship type ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeRelationshipTypeId",
+            "type": "integer"
+          },
+          {
+            "description": "The related store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "relatedStoreId",
+            "type": "integer"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "type": "integer"
+          },
+          {
+            "description": "The selection sequence number. Used when the store has multiple related stores for the same relationship type.",
+            "format": "double",
+            "in": "query",
+            "name": "sequence",
+            "type": "number"
+          },
+          {
+            "description": "The state of the relationship. Valid values are as follows, 0 = inactive. 1 = active.",
+            "format": "int32",
+            "in": "query",
+            "name": "state",
+            "type": "integer"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of store relationships.",
+            "examples": {
+              "application/json": {
+                "count": 55,
+                "href": "https://10.190.66.10:8000/rest/admin/v2/store-relationships?storeId=2",
+                "items": [
+                  {
+                    "links": {
+                      "self": {
+                        "href": "https://10.190.66.10:8000/rest/admin/v2/store-relationships/storeRelationshipTypeId:-34,relatedStoreId:2,storeId:2"
+                      },
+                      "store-relationship-type": {
+                        "href": "https://10.190.66.10:8000/rest/admin/v2/store-relationship-types/-34"
+                      }
+                    },
+                    "relatedStoreId": 2,
+                    "sequence": 0,
+                    "state": 1,
+                    "storeId": 2,
+                    "storeRelationshipTypeId": -34
+                  }
+                ]
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/StoreRelationshipCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "store-relationships"
+        ],
+        "description": "Get a collection of store relationships.",
+        "operationId": "getStoreRelationships"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store relationship.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StoreRelationships"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the Store Relationships.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "DeleteStoreRelationshipsByStoreRelationshipTypeIdAndRelatedStoreIdAndStoreId": {
+                "parameters": {
+                  "relatedStoreId": "$request.body#/relatedStoreId",
+                  "storeId": "$request.body#/storeId",
+                  "storeRelationshipTypeId": "$request.body#/storeRelationshipTypeId"
+                },
+                "description": "The `storeId` value used in the request body can be used as the `storeId` parameter in `DELETE /store-relationships/storeRelationshipTypeId:{storeRelationshipTypeId},relatedStoreId:{relatedStoreId},storeId:{storeId}`.\n",
+                "operationRef": "#/paths/~1store-entity-calculation-usages~1storeId:{storeId},calculationUsageId:{calculationUsageId}/delete"
+              },
+              "GetStoreRelationshipsByStoreRelationshipTypeIdAndRelatedStoreIdAndStoreId": {
+                "parameters": {
+                  "relatedStoreId": "$request.body#/relatedStoreId",
+                  "storeId": "$request.body#/storeId",
+                  "storeRelationshipTypeId": "$request.body#/storeRelationshipTypeId"
+                },
+                "description": "The `storeId` value used in the request body can be used as the `storeId` parameter in `GET /store-relationships/storeRelationshipTypeId:{storeRelationshipTypeId},relatedStoreId:{relatedStoreId},storeId:{storeId}`.\n",
+                "operationRef": "#/paths/~1store-relationships~1storeRelationshipTypeId:{storeRelationshipTypeId},relatedStoreId:{relatedStoreId},storeId:{storeId}/get"
+              },
+              "GetStoreRelationshipsByStoreRelationshipTypeIdRelatedStoreIdAndStoreId": {
+                "parameters": {
+                  "relatedStoreId": "$request.body#/relatedStoreId",
+                  "storeId": "$request.body#/storeId",
+                  "storeRelationshipTypeId": "$request.body#/storeRelationshipTypeId"
+                },
+                "description": "The `storeId` value used in the request body can be used as the `storeId` parameter in `GET /store-relationships/storeRelationshipTypeId:{storeRelationshipTypeId},relatedStoreId:{relatedStoreId},storeId:{storeId}/store-relationship-type`.\n",
+                "operationRef": "#/paths/~1store-relationships~1storeRelationshipTypeId:{storeRelationshipTypeId},relatedStoreId:{relatedStoreId},storeId:{storeId}~1store-relationship-type/get"
+              },
+              "UpdateStoreRelationshipsByStoreRelationshipTypeIdAndRelatedStoreIdAndStoreId": {
+                "parameters": {
+                  "relatedStoreId": "$request.body#/relatedStoreId",
+                  "storeId": "$request.body#/storeId",
+                  "storeRelationshipTypeId": "$request.body#/storeRelationshipTypeId"
+                },
+                "description": "The `storeid` value used in the request body can be used as the `storeId` parameter in `PATCH /store-relationships/storeRelationshipTypeId:{storeRelationshipTypeId},relatedStoreId:{relatedStoreId},storeId:{storeId}`.\n",
+                "operationRef": "#/paths/~1store-entity-calculation-usages~1storeId:{storeId},calculationUsageId:{calculationUsageId}/patch"
+              }
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "store-relationships"
+        ],
+        "description": "Create a store relationship.",
+        "operationId": "createStoreRelationship",
+        "x-codegen-request-body-name": "StoreRelationship"
+      }
+    },
+    "/store-relationships/storeRelationshipTypeId:{storeRelationshipTypeId},relatedStoreId:{relatedStoreId},storeId:{storeId}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store relationship type ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "storeRelationshipTypeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The related store ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "relatedStoreId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "store-relationships"
+        ],
+        "description": "Delete a store relationship.",
+        "operationId": "deleteStoreRelationshipById"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store relationship type ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "storeRelationshipTypeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The related store ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "relatedStoreId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The store relationship.",
+            "examples": {
+              "application/json": {
+                "links": {
+                  "self": {
+                    "href": "https://10.190.66.10:8000/rest/admin/v2/store-relationships/storeRelationshipTypeId:-34,relatedStoreId:2,storeId:2"
+                  },
+                  "store-relationship-type": {
+                    "href": "https://10.190.66.10:8000/rest/admin/v2/store-relationship-types/-34"
+                  }
+                },
+                "relatedStoreId": 2,
+                "sequence\"": 0,
+                "state\"": 1,
+                "storeId\"": 2,
+                "storeRelationshipTypeId": -34
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/StoreRelationship"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "store-relationships"
+        ],
+        "description": "Get a store relationship.",
+        "operationId": "getStoreRelationshipById"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store relationship type ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "storeRelationshipTypeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The related store ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "relatedStoreId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The store relationship.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StoreRelationships"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "store-relationships"
+        ],
+        "description": "Update a store relationship.",
+        "operationId": "updateStoreRelationshipById",
+        "x-codegen-request-body-name": "StoreRelationship"
+      }
+    },
+    "/store-relationships/storeRelationshipTypeId:{storeRelationshipTypeId},relatedStoreId:{relatedStoreId},storeId:{storeId}/store-relationship-type": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store relationship type ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "storeRelationshipTypeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The related store ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "relatedStoreId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The store relationship Type.",
+            "examples": {
+              "application/json": {
+                "id": -34,
+                "links": {
+                  "self": {
+                    "href": "https://10.190.66.10:8000/rest/admin/v2/store-relationship-types/-34"
+                  }
+                },
+                "name": "com.ibm.commerce.search.price"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/StoreRelationshipType"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "store-relationships"
+        ],
+        "operationId": "getStoreRelationshipTypeOfStoreRelationship"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "properties": {},
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Link": {
+      "description": "Links to related resources.",
+      "properties": {
+        "href": {
+          "description": "The URL of the link.",
+          "format": "uri",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "StoreRelationship": {
+      "description": "The store relationship.",
+      "properties": {
+        "relatedStoreId": {
+          "description": "The related store ID.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "sequence": {
+          "description": "The selection sequence number. Used when the store has multiple related stores for the same relationship type.",
+          "format": "double",
+          "type": "number"
+        },
+        "state": {
+          "description": "The state of the relationship. Valid values are as follows, 0 = inactive. 1 = active.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeId": {
+          "description": "The store ID.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeRelationshipTypeId": {
+          "description": "The store relationship type ID.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "StoreRelationshipCollection": {
+      "description": "A collection of store relationships.",
+      "properties": {
+        "count": {
+          "description": "The total number of items.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "href": {
+          "type": "string"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/StoreRelationship"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "StoreRelationshipType": {
+      "description": "The store relationship Type.",
+      "properties": {
+        "id": {
+          "description": "A unique numeric store relationship type ID.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "links": {
+          "properties": {
+            "self": {
+              "description": "The self link.",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "name": {
+          "description": "The name of store relationship type.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "StoreRelationships": {
+      "properties": {
+        "relatedStoreId": {
+          "description": "The related store ID.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "sequence": {
+          "description": "The selection sequence number. Used when the store has multiple related stores for the same relationship type.",
+          "format": "double",
+          "type": "number"
+        },
+        "state": {
+          "description": "The state of the relationship. Valid values are as follows, 0 = inactive. 1 = active.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeId": {
+          "description": "The store ID.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "storeRelationshipTypeId": {
+          "description": "The store relationship type ID.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "x-components": {}
+}

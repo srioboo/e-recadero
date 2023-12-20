@@ -1,0 +1,204 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Interaction Specs",
+    "version": "2.0"
+  },
+  "tags": [
+    {
+      "name": "Interaction Specs",
+      "description": "This API provides RESTful services to manage interaction specifications."
+    }
+  ],
+  "paths": {
+    "/interaction-specs/{profileId}": {
+      "get": {
+        "operationId": "getInteractionSpecs",
+        "tags": [
+          "Interaction Specs"
+        ],
+        "parameters": [
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the profile.",
+            "in": "path",
+            "name": "profileId"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/InteractionSpecs"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session isn't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user isn't authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "summary": "Get the interaction specifications for the profile."
+      },
+      "patch": {
+        "operationId": "updateInteractionSpecs",
+        "tags": [
+          "Interaction Specs"
+        ],
+        "parameters": [
+          {
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "The unique numeric ID of the profile.",
+            "in": "path",
+            "name": "profileId"
+          },
+          {
+            "description": "The request body for updating the interaction specifications.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InteractionSpecs"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested completed successfully."
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request aren't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session isn't valid.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "403": {
+            "description": "The user isn't authorized to perform the specified request.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "summary": "Update the interaction specifications for the profile."
+      }
+    }
+  },
+  "definitions": {
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {},
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "InteractionSpecs": {
+      "properties": {
+        "properties": {
+          "items": {
+            "$ref": "#/definitions/InteractionSpecProperty"
+          },
+          "type": "array",
+          "description": "The interaction specification properties for the profile."
+        }
+      }
+    },
+    "InteractionSpecProperty": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The interaction specification property name."
+        },
+        "value": {
+          "type": "string",
+          "description": "The interaction specification property value."
+        }
+      }
+    }
+  }
+}

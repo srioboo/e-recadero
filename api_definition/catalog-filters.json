@@ -1,0 +1,1853 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer catalog filters.",
+    "title": "Catalog Filters",
+    "version": "9.1.12.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/catalog-filters": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The search string used to search for catalog filters.",
+            "in": "query",
+            "name": "searchString",
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogFilterCollection"
+            },
+            "x-entity-path": "dataArea/catalogFilter"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "getCatalogFilters",
+        "summary": "Get a collection of catalog filters.",
+        "x-expression-template": "{_wcf.ap='IBM_CatalogFilter_details';_wcf.dataLanguageIds='{}'}/CatalogFilter",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogFilterType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogFilterRequest"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of catalog filter.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "CreateCatalogEntriesByCatalogFilterIdAndStoreId": {
+                "parameters": {
+                  "catalogFilterId": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId` and `storeId` value used in the request body can be used as the `catalogFilterId` and `storeId` parameter in `POST /catalog-filters/{catalogFilterId}/catalog-entry-selections`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1catalog-entry-selections/post"
+              },
+              "CreateCatalogFiltersByIdAndStoreId": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id` and `storeId` value used in the request body can be used as the `id` and `storeId` parameter in `POST /catalog-filters/{id}/category-selections`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{id}~1category-selections/post"
+              },
+              "DeleteCatalogFiltersByIdAndStoreId": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id` and `storeId` value used in the request body can be used as the `id` and `storeId` parameter in `DELETE /catalog-filters/{id}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{id}/delete"
+              },
+              "GetCatalogFiltersByIdAndStoreId": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id` and `storeId` value used in the request body can be used as the `id` and `storeId` parameter in `GET /catalog-filters/{id}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{id}/get"
+              },
+              "UpdateCatalogFiltersByIdAndStoreId": {
+                "parameters": {
+                  "id": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id` and `storeId` value used in the request body can be used as the `id` and `storeId` parameter in `PATCH /catalog-filters/{id}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{id}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "createCatalogFilter",
+        "summary": "Create a catalog filter.",
+        "x-action-code": "Create",
+        "x-expression-template": "/CatalogFilter[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "processCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ProcessCatalogFilterType"
+      }
+    },
+    "/catalog-filters/by-name": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The catalog filter name.",
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogFilterCollection"
+            },
+            "x-entity-path": "dataArea/catalogFilter"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "getCatalogFiltersByName",
+        "summary": "Get catalog filters based on the name of the catalog filter.",
+        "x-expression-builder-class": "com.ibm.commerce.foundation.internal.client.taglib.util.SearchExpressionBuilder",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogFilter",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary",
+          "template": "/CatalogFilter[search(CatalogFilterIdentifier/ExternalIdentifier/Identifier='$name$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogFilterType"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/catalog-entry-selections": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "Selection type. Catalog entry selections are either Include or Exclude.",
+            "enum": [
+              "Include",
+              "Exclude"
+            ],
+            "in": "query",
+            "name": "selection",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "default": 25,
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogEntrySelectionCollection"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/productSetSelection[1]/productSet/catalogEntryIdentifier"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "getCatalogFilterCatalogEntrySelections",
+        "summary": "Get the collection of a catalog filter's catalog entry selections based on the ID of the catalog filter.",
+        "x-expression-template": "{_wcf.ap='IBM_CatalogFilter_details';_wcf.dataLanguageIds='{}'}/CatalogFilter[CatalogFilterIdentifier[UniqueID={catalogFilterId}] and ProductSetSelection[@selection='{selection}']]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogFilterType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateCatalogEntrySelection"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/productSetSelection[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of catalog filter.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/productSetSelection[1]/productSet/catalogEntryIdentifier[1]/uniqueID"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "createCatalogFilterCatalogEntrySelection",
+        "summary": "Create a catalog filter's catalog entry selection based on the ID of the catalog filter.",
+        "x-action-code": "Add",
+        "x-expression-template": "/CatalogFilter[1]/ProductSetSelection[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/catalog-entry-selections/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The selection of catalog entry ID.",
+            "enum": [
+              "Include",
+              "Exclude"
+            ],
+            "in": "query",
+            "name": "selection",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/productSetSelection[1]/selection"
+          },
+          {
+            "description": "The catalog entry ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/productSetSelection[1]/productSet/catalogEntryIdentifier[1]/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "deleteCatalogFilterCatalogEntrySelection",
+        "summary": "Delete a specific catalog filter's catalog entry selection based on the ID of the catalog entry.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/CatalogFilter[1]/ProductSetSelection[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/category-selections": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CategorySelectionCollection"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "getCatalogFilterCategorySelections",
+        "summary": "Get a collection of a catalog filter's category selections based on the ID of the catalog filter.",
+        "x-expression-template": "{_wcf.ap='IBM_CatalogFilter_Details_WithoutCatentries';_wcf.dataLanguageIds='{}'}/CatalogFilter[CatalogFilterIdentifier[(UniqueID='{catalogFilterId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogFilterType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategorySelection"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful",
+            "headers": {
+              "Location": {
+                "description": "The URI of catalog filter category element selection.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "CreateConditionGroupsByCatalogFilterIdAndCatalogGroupSelectionIdAndStoreId": {
+                "parameters": {
+                  "catalogFilterId": "$request.body#/catalogFilterId",
+                  "catalogGroupSelectionId": "$request.body#/catalogGroupSelectionId",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogGroupSelectionId` , `catalogFilterId` and `storeId` value used in the request body can be used as the `catalogGroupSelectionId`, `catalogFilterId` and `storeId` parameter in `POST /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{id}~1category-selections/post"
+              },
+              "DeleteCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionId": {
+                "parameters": {
+                  "catalogFilterId": "$request.body#/catalogFilterId",
+                  "catalogGroupSelectionId": "$request.body#/catalogGroupSelectionId",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId` and `catalogGroupSelectionId` value used in the request body can be used as the `catalogFilterId` `catalogGroupSelectionId` parameter in `DELETE /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1{catalogGroupSelectionId}~1category-selections~1{catalogGroupSelectionId}/delete"
+              },
+              "GetCategorySelectionsByCatalogFilterIdAndStoreId": {
+                "parameters": {
+                  "id": "$request.path.id",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `id` , `storeId` value used in the request body can be used as the `id`, `storeId` parameter in `GET /catalog-filters/{id}/category-selections`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{id}~1category-selections/get"
+              },
+              "UpdateCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionId": {
+                "parameters": {
+                  "catalogFilterId": "$request.body#/catalogFilterId",
+                  "catalogGroupSelectionId": "$request.body#/catalogGroupSelectionId",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId` and `catalogGroupSelectionId` value used in the request body can be used as the `catalogFilterId` `catalogGroupSelectionId` parameter in `PATCH /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1{catalogGroupSelectionId}~1category-selections~1{catalogGroupSelectionId}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/catalogGroupSelectionIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "createCatalogFilterCategorySelection",
+        "summary": "Create a catalog filter category selection.",
+        "x-action-code": "Add",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/category-selections/{categorySelectionId}/condition-groups": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/externalIdentifier/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConditionGroupRequest"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of catalog filter category group condition.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "CreateCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionIdAndconditionGroupIdAndstoreId": {
+                "parameters": {
+                  "catalogFilterId": "$request.path.catalogFilterId",
+                  "catalogGroupSelectionId": "$request.path.catalogGroupSelectionId",
+                  "conditionGroupId": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId`, `catalogGroupSelectionId` and `conditionGroupId` and `storeId` value used in the request body can be used as the `catalogFilterId` ,`catalogGroupSelectionId` and `conditionGroupId` , `storeId` parameter in `POST /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups/{conditionGroupId}/attributes`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1category-selections~1{catalogGroupSelectionId}~1condition-groups~1{conditionGroupId}~1attributes/post"
+              },
+              "DeleteCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionIdAndconditionGroupIdAndstoreId": {
+                "parameters": {
+                  "catalogFilterId": "$request.path.catalogFilterId",
+                  "catalogGroupSelectionId": "$request.path.catalogGroupSelectionId",
+                  "conditionGroupId": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId`, `catalogGroupSelectionId` and `conditionGroupId` value used in the request body can be used as the `catalogFilterId` ,`catalogGroupSelectionId` and `conditionGroupId`  parameter in `DELETE /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups/{conditionGroupId}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1category-selections~1{catalogGroupSelectionId}~1condition-groups~1{conditionGroupId}/delete"
+              },
+              "UpdateCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionIdAndconditionGroupIdAndstoreId": {
+                "parameters": {
+                  "catalogFilterId": "$request.path.catalogFilterId",
+                  "catalogGroupSelectionId": "$request.path.catalogGroupSelectionId",
+                  "conditionGroupId": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId`, `catalogGroupSelectionId` and `conditionGroupId` value used in the request body can be used as the `catalogFilterId` ,`catalogGroupSelectionId` and `conditionGroupId`  parameter in `PATCH /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups/{conditionGroupId}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1category-selections~1{catalogGroupSelectionId}~1condition-groups~1{conditionGroupId}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "createCatalogFilterCategorySelectionConditionGroup",
+        "summary": "Create a specific catalog filter's category group condition based on the ID of the category selection.",
+        "x-action-code": "Add",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/category-selections/{categorySelectionId}/condition-groups/{conditionGroupId}/attributes/{conditionId}/values/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition group.",
+            "in": "path",
+            "name": "conditionGroupId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/externalIdentifier/catalogFilterConditionGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition.",
+            "in": "path",
+            "name": "conditionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionAttributeValue[1]/conditionValueIdentifier/externalIdentifier/catalogFilterConditionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition value.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionAttributeValue[1]/conditionValueIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "deleteCatalogFilterCategorySelectionConditionGroupConditionValue",
+        "summary": "Delete a catalog filter category selection condition group condition value.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]/Condition[1]/ConditionAttributeValue[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition group.",
+            "in": "path",
+            "name": "conditionGroupId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/externalIdentifier/catalogFilterConditionGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition.",
+            "in": "path",
+            "name": "conditionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionAttributeValue[1]/conditionValueIdentifier/externalIdentifier/catalogFilterConditionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition value.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionAttributeValue[1]/conditionValueIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConditionValueRequest"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionAttributeValue[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "updateCatalogFilterCategorySelectionConditionGroupConditionValue",
+        "summary": "Update a catalog filter category selection condition group condition value.",
+        "x-action-code": "Update",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]/Condition[1]/ConditionAttributeValue[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/category-selections/{categorySelectionId}/condition-groups/{conditionGroupId}/conditions": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/externalIdentifier/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition group.",
+            "in": "path",
+            "name": "conditionGroupId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/externalIdentifier/catalogFilterConditionGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConditionRequest"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of catalog filter category selection condition group condition.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "CreateCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionIdAndconditionGroupIdAndConditionId": {
+                "parameters": {
+                  "catalogFilterId": "$request.path.catalogFilterId",
+                  "catalogGroupSelectionId": "$request.path.catalogGroupSelectionId",
+                  "conditionGroupId": "$request.path.conditionGroupId",
+                  "conditionId": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId`, `catalogGroupSelectionId` and `conditionGroupId` , `conditionId`  value used in the request body can be used as the `catalogFilterId` ,`catalogGroupSelectionId` and `conditionGroupId` , `conditionId`  parameter in `POST /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups/{conditionGroupId}/attributes/{conditionId}/attribute-values`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1category-selections~1{catalogGroupSelectionId}~1condition-groups~1{conditionGroupId}~1attributes~1{conditionId}~1attribute-values/post"
+              },
+              "DeleteCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionIdAndconditionGroupIdAndConditionId": {
+                "parameters": {
+                  "catalogFilterId": "$request.path.catalogFilterId",
+                  "catalogGroupSelectionId": "$request.path.catalogGroupSelectionId",
+                  "conditionGroupId": "$request.path.conditionGroupId",
+                  "conditionId": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId`, `catalogGroupSelectionId` and `conditionGroupId` , `conditionId`  value used in the request body can be used as the `catalogFilterId` ,`catalogGroupSelectionId` and `conditionGroupId` , `conditionId`  parameter in `DELETE /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups/{conditionGroupId}/attributes/{conditionId}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1category-selections~1{catalogGroupSelectionId}~1condition-groups~1{conditionGroupId}~1attributes~1{conditionId}/delete"
+              },
+              "UpdateCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionIdAndconditionGroupIdAndConditionId": {
+                "parameters": {
+                  "catalogFilterId": "$request.path.catalogFilterId",
+                  "catalogGroupSelectionId": "$request.path.catalogGroupSelectionId",
+                  "conditionGroupId": "$request.path.conditionGroupId",
+                  "conditionId": "$response.header.Location",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId`, `catalogGroupSelectionId` and `conditionGroupId` , `conditionId`  value used in the request body can be used as the `catalogFilterId` ,`catalogGroupSelectionId` and `conditionGroupId` , `conditionId`  parameter in `PATCH /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups/{conditionGroupId}/attributes/{conditionId}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1category-selections~1{catalogGroupSelectionId}~1condition-groups~1{conditionGroupId}~1attributes~1{conditionId}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "createCatalogFilterCategorySelectionConditionGroupCondition",
+        "summary": "Create a catalog filter category selection condition group condition.",
+        "x-action-code": "Add",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]/Condition[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/category-selections/{categorySelectionId}/condition-groups/{conditionGroupId}/conditions/{conditionId}/values": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition group.",
+            "in": "path",
+            "name": "conditionGroupId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/externalIdentifier/catalogFilterConditionGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The condition attribute ID.",
+            "in": "path",
+            "name": "conditionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionAttributeValue[1]/conditionValueIdentifier/externalIdentifier/catalogFilterConditionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConditionValueRequest"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionAttributeValue[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of catalog filter category group condition attribute value.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "DeleteCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionIdAndconditionGroupIdAndConditionIdAndConditionAttributeValueId": {
+                "parameters": {
+                  "catalogFilterId": "$request.path.catalogFilterId",
+                  "catalogGroupSelectionId": "$request.path.catalogGroupSelectionId",
+                  "conditionAttributeValueId": "$response.header.Location",
+                  "conditionGroupId": "$request.path.conditionGroupId",
+                  "conditionId": "$request.path.conditionId",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId`, `catalogGroupSelectionId` and `conditionGroupId` , `conditionId` , `conditionAttributeValueId` value used in the request body can be used as the `catalogFilterId` ,`catalogGroupSelectionId` and `conditionGroupId` , `conditionId`, `conditionAttributeValueId`  parameter in `DELETE /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups/{conditionGroupId}/attributes/{conditionId}/attribute-values/{conditionAttributeValueId}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1category-selections~1{catalogGroupSelectionId}~1condition-groups~1{conditionGroupId}~1attributes~1{conditionId}~1attribute-values~1{conditionAttributeValueId}/delete"
+              },
+              "UpdateCatalogFiltersByCatalogFilterIdAndCatalogGroupSelectionIdAndconditionGroupIdAndConditionIdAndConditionAttributeValueId": {
+                "parameters": {
+                  "catalogFilterId": "$request.path.catalogFilterId",
+                  "catalogGroupSelectionId": "$request.path.catalogGroupSelectionId",
+                  "conditionAttributeValueId": "$response.header.Location",
+                  "conditionGroupId": "$request.path.conditionGroupId",
+                  "conditionId": "$request.path.conditionId",
+                  "storeId": "$request.query.storeId"
+                },
+                "description": "The `catalogFilterId`, `catalogGroupSelectionId` and `conditionGroupId` , `conditionId` , `conditionAttributeValueId` value used in the request body can be used as the `catalogFilterId` ,`catalogGroupSelectionId` and `conditionGroupId` , `conditionId`, `conditionAttributeValueId`  parameter in `PATCH /catalog-filters/{catalogFilterId}/category-selections/{catalogGroupSelectionId}/condition-groups/{conditionGroupId}/attributes/{conditionId}/attribute-values/{conditionAttributeValueId}`.\n",
+                "operationRef": "#/paths/~1catalog-filters~1{catalogFilterId}~1category-selections~1{catalogGroupSelectionId}~1condition-groups~1{conditionGroupId}~1attributes~1{conditionId}~1attribute-values~1{conditionAttributeValueId}/patch"
+              }
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionAttributeValue[1]/conditionValueIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "createCatalogFilterCategorySelectionConditionGroupConditionValue",
+        "summary": "Create a catalog filter category selection condition group condition value.",
+        "x-action-code": "Add",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]/Condition[1]/ConditionAttributeValue[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/category-selections/{categorySelectionId}/condition-groups/{conditionGroupId}/conditions/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/externalIdentifier/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition group.",
+            "in": "path",
+            "name": "conditionGroupId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/externalIdentifier/catalogFilterConditionGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "deleteCatalogFilterCategorySelectionConditionGroupCondition",
+        "summary": "Delete a specific catalog filter category selection condition group condition.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]/Condition[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/externalIdentifier/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition group.",
+            "in": "path",
+            "name": "conditionGroupId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/externalIdentifier/catalogFilterConditionGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]/conditionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConditionRequest"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/condition[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "updateCatalogFilterCategorySelectionConditionGroupCondition",
+        "summary": "Update a specific catalog filter category selection condition group condition.",
+        "x-action-code": "Update",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]/Condition[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/category-selections/{categorySelectionId}/condition-groups/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/externalIdentifier/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition group.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The store id.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "deleteCatalogFilterCategorySelectionConditionGroup",
+        "summary": "Delete a specific catalog filter's category group condition based on the ID of the condition group.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog group selection.",
+            "in": "path",
+            "name": "categorySelectionId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/externalIdentifier/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the condition group.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]/conditionGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConditionGroupRequest"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/conditionGroup[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "updateCatalogFilterCategorySelectionConditionGroup",
+        "summary": "Update a specific catalog filter's category group condition based on the ID of the condition group.",
+        "x-action-code": "Update",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]/ConditionGroup[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-filters/{catalogFilterId}/category-selections/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "deleteCatalogFilterCategorySelection",
+        "summary": "Delete a specific catalog filter category element selection based on the ID of the category selection.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "catalogFilterId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the category selection.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]/catalogGroupSelectionIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CategorySelection"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogGroupSelection[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "updateCatalogFilterCategorySelection",
+        "summary": "Update a specific catalog filter category element selection based on the ID of the catergory selection.",
+        "x-action-code": "Update",
+        "x-expression-template": "/CatalogFilter[1]/CatalogGroupSelection[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType"
+      }
+    },
+    "/catalog-filters/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "deleteCatalogFilter",
+        "summary": "Delete a specific catalog filter based on the ID of catalog filter.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/CatalogFilter[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "processCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ProcessCatalogFilterType"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogFilter"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]"
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "getCatalogFilterById",
+        "summary": "Get a specific catalog filter based on the ID of the catalog filter.",
+        "x-expression-template": "{_wcf.ap='IBM_CatalogFilter_details';_wcf.dataLanguageIds='{}'}/CatalogFilter[CatalogFilterIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogFilterType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog filter.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogFilter[1]/catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogFilterRequest"
+            },
+            "x-entity-path": "dataArea/catalogFilter[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Filters"
+        ],
+        "operationId": "updateCatalogFilter",
+        "summary": "Update a specific catalog filter based on the ID of the catalog filter.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogFilter[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "changeCatalogFilter",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogFilterType"
+      }
+    }
+  },
+  "definitions": {
+    "CatalogEntrySelection": {
+      "description": "Catalog entry selection",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-entity-path": "uniqueID"
+        },
+        "selection": {
+          "type": "string",
+          "x-entity-path": "container/container/selection"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.CatalogEntryIdentifierType"
+    },
+    "CatalogEntrySelectionCollection": {
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/definitions/CatalogEntrySelection"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogFilter": {
+      "properties": {
+        "catalogId": {
+          "type": "string",
+          "x-entity-path": "catalogFilterIdentifier/externalIdentifier/catalogIdentifier/uniqueID"
+        },
+        "description": {
+          "description": "Optionally required when creating a catalog filter.",
+          "type": "string",
+          "x-entity-path": "description[1]/value"
+        },
+        "id": {
+          "type": "string",
+          "x-entity-path": "catalogFilterIdentifier/uniqueID"
+        },
+        "name": {
+          "description": "Required when creating a catalog filter",
+          "type": "string",
+          "x-entity-path": "catalogFilterIdentifier/externalIdentifier/identifier"
+        },
+        "storeId": {
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "catalogFilterIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "usage": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogFilterType"
+    },
+    "CatalogFilterCollection": {
+      "description": "The collection of catalog filters.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/CatalogFilter"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogFilterRequest": {
+      "properties": {
+        "catalogId": {
+          "type": "string",
+          "x-entity-path": "catalogFilterIdentifier/externalIdentifier/catalogIdentifier/uniqueID"
+        },
+        "description": {
+          "description": "Optionally required when creating a catalog filter.",
+          "type": "string",
+          "x-entity-path": "description[1]/value"
+        },
+        "name": {
+          "description": "Required when creating a catalog filter",
+          "type": "string",
+          "x-entity-path": "catalogFilterIdentifier/externalIdentifier/identifier"
+        },
+        "usage": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogFilterType"
+    },
+    "CategorySelection": {
+      "description": "A category element selection.",
+      "properties": {
+        "catalogFilterId": {
+          "type": "string",
+          "x-entity-path": "catalogGroupSelectionIdentifier/externalIdentifier/catalogFilterIdentifier/uniqueID"
+        },
+        "catalogGroupId": {
+          "type": "string",
+          "x-entity-path": "catalogGroupSelectionIdentifier/externalIdentifier/catalogGroupIdentifier/uniqueID"
+        },
+        "conditionGroups": {
+          "items": {
+            "$ref": "#/definitions/ConditionGroup"
+          },
+          "type": "array",
+          "x-entity-path": "conditionGroup"
+        },
+        "id": {
+          "type": "string",
+          "x-entity-path": "catalogGroupSelectionIdentifier/uniqueID"
+        },
+        "selection": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogGroupSelectionType"
+    },
+    "CategorySelectionCollection": {
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/definitions/CategorySelection"
+          },
+          "type": "array",
+          "x-entity-path": "catalogGroupSelection"
+        }
+      },
+      "type": "object"
+    },
+    "Condition": {
+      "description": "A condition group condition.",
+      "properties": {
+        "attributeId": {
+          "type": "string",
+          "x-entity-path": "conditionAttributeIdentifier/uniqueID"
+        },
+        "conditionGroupId": {
+          "type": "string",
+          "x-entity-path": "conditionIdentifier/externalIdentifier/catalogFilterConditionGroupIdentifier/uniqueID"
+        },
+        "conditionOperator": {
+          "type": "string"
+        },
+        "conditionType": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "id": {
+          "type": "string",
+          "x-entity-path": "conditionIdentifier/uniqueID"
+        },
+        "propertyName": {
+          "type": "string",
+          "x-entity-path": "conditionAttributeIdentifier/externalIdentifier/identifier"
+        },
+        "values": {
+          "items": {
+            "$ref": "#/definitions/ConditionValue"
+          },
+          "type": "array",
+          "x-entity-path": "conditionAttributeValue"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogFilterConditionType"
+    },
+    "ConditionGroup": {
+      "description": "A condition group of category element selection.",
+      "properties": {
+        "categorySelectionId": {
+          "type": "string",
+          "x-entity-path": "conditionGroupIdentifier/externalIdentifier/catalogGroupSelectionIdentifier/uniqueID"
+        },
+        "conditionName": {
+          "type": "string",
+          "x-entity-path": "conditionGroupIdentifier/externalIdentifier/identifier"
+        },
+        "conditionRelation": {
+          "type": "string"
+        },
+        "conditions": {
+          "items": {
+            "$ref": "#/definitions/Condition"
+          },
+          "type": "array",
+          "x-entity-path": "condition"
+        },
+        "id": {
+          "type": "string",
+          "x-entity-path": "conditionGroupIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogFilterConditionGroupType"
+    },
+    "ConditionGroupRequest": {
+      "description": "A condition group of category element selection.",
+      "properties": {
+        "conditionName": {
+          "type": "string",
+          "x-entity-path": "conditionGroupIdentifier/externalIdentifier/identifier"
+        },
+        "conditionRelation": {
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogFilterConditionGroupType"
+    },
+    "ConditionRequest": {
+      "description": "A condition group condition.",
+      "properties": {
+        "attributeId": {
+          "type": "string",
+          "x-entity-path": "conditionAttributeIdentifier/uniqueID"
+        },
+        "conditionOperator": {
+          "type": "string"
+        },
+        "conditionType": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "propertyName": {
+          "type": "string",
+          "x-entity-path": "conditionAttributeIdentifier/externalIdentifier/identifier"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogFilterConditionType"
+    },
+    "ConditionValue": {
+      "description": "The value of a condition group condition.",
+      "properties": {
+        "attributeValueId": {
+          "type": "string",
+          "x-entity-path": "identifier"
+        },
+        "floatValue": {
+          "format": "float",
+          "type": "number",
+          "x-entity-path": "floatValue/value"
+        },
+        "id": {
+          "type": "string",
+          "x-entity-path": "conditionValueIdentifier/uniqueID"
+        },
+        "integerValue": {
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "integerValue/value"
+        },
+        "stringValue": {
+          "type": "string",
+          "x-entity-path": "stringValue/value"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogFilterConditionValueType"
+    },
+    "ConditionValueRequest": {
+      "description": "The value of a condition group condition.",
+      "properties": {
+        "attributeValueId": {
+          "type": "string",
+          "x-entity-path": "identifier"
+        },
+        "floatValue": {
+          "format": "float",
+          "type": "number",
+          "x-entity-path": "floatValue/value"
+        },
+        "integerValue": {
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "integerValue/value"
+        },
+        "stringValue": {
+          "type": "string",
+          "x-entity-path": "stringValue/value"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogFilterConditionValueType"
+    },
+    "CreateCatalogEntrySelection": {
+      "description": "Catalog entry selection",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-entity-path": "productSet/catalogEntryIdentifier[1]/uniqueID"
+        },
+        "selection": {
+          "type": "string",
+          "x-entity-path": "selection"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.ProductSetSelectionType"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "This class provides RESTful services to manage catalog filters.",
+      "name": "Catalog Filters"
+    }
+  ],
+  "x-components": {}
+}

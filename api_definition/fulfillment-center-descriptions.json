@@ -1,0 +1,528 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer a collection of fulfillment center descriptions.",
+    "title": "Fulfillment Center Descriptions",
+    "version": "9.1"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/fulfillment-center-descriptions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The fulfillment center ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "fulfillmentCenterId",
+            "type": "integer"
+          },
+          {
+            "description": "A string that, along with its language Id, uniquely identifies this fulfillment center.",
+            "in": "query",
+            "name": "displayName",
+            "type": "string"
+          },
+          {
+            "description": "The fulfillment center description in the language.",
+            "in": "query",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "description": "The physical location of the FulfillmentCenter.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeAddressId",
+            "type": "integer"
+          },
+          {
+            "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "query",
+            "name": "languageId",
+            "type": "integer"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of fulfillment center descriptions.",
+            "schema": {
+              "$ref": "#/definitions/FulfillmentCenterDescriptionCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Fulfillment Center Descriptions"
+        ],
+        "description": "Get a collection of fulfillment center descriptions.",
+        "operationId": "getFulfillmentCenterDescriptions"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "Fulfillment center description.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FulfillmentCenterDescription"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the Fulfilment-CenterDescription.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "DeleteFulfillmentCentersDescriptionByFulfillmentCentersIdandLanguageId": {
+                "parameters": {
+                  "fulfillmentCenterId": "request.body#/fulfillmentCenterId",
+                  "languageId": "request.body#/languageId"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `DELETE /fulfillment-center-descriptions/fulfillmentCenterId:{fulfillmentCenterId},languageId:{languageId}`.\n",
+                "operationRef": "#/paths/~1fulfillment-center-descriptions~1fulfillmentCenterId:{fulfillmentCenterId},languageId:{languageId}/delete"
+              },
+              "GetFulfillmentCentersDescriptionByFulfillmentCentersIdandLanguageId": {
+                "parameters": {
+                  "fulfillmentCenterId": "request.body#/fulfillmentCenterId",
+                  "languageId": "request.body#/languageId"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `GET /fulfillment-center-descriptions/fulfillmentCenterId:{fulfillmentCenterId},languageId:{languageId}`.\n",
+                "operationRef": "#/paths/~1fulfillment-center-descriptions~1fulfillmentCenterId:{fulfillmentCenterId},languageId:{languageId}/get"
+              },
+              "UpdateFulfillmentCentersDescriptionByFulfillmentCentersIdandLanguageId": {
+                "parameters": {
+                  "fulfillmentCenterId": "request.body#/fulfillmentCenterId",
+                  "languageId": "request.body#/languageId"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `PATCH /fulfillment-center-descriptions/fulfillmentCenterId:{fulfillmentCenterId},languageId:{languageId}`.\n",
+                "operationRef": "#/paths/~1fulfillment-center-descriptions~1fulfillmentCenterId:{fulfillmentCenterId},languageId:{languageId}/patch"
+              }
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Fulfillment Center Descriptions"
+        ],
+        "description": "Create a fulfillment description.",
+        "operationId": "createFulfillmentCenterDescription",
+        "x-codegen-request-body-name": "FulfillmentCenterDescription"
+      }
+    },
+    "/fulfillment-center-descriptions/fulfillmentCenterId:{fulfillmentCenterId},languageId:{languageId}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The fulfillment center ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "fulfillmentCenterId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Fulfillment Center Descriptions"
+        ],
+        "description": "Delete a fulfillment description.",
+        "operationId": "deleteFulfillmentCenterDescriptionById"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The fulfillment center ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "fulfillmentCenterId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fulfillment center description.",
+            "schema": {
+              "$ref": "#/definitions/FulfillmentCenterDescription"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Fulfillment Center Descriptions"
+        ],
+        "description": "Get a fulfillment description.",
+        "operationId": "getFulfillmentCenterDescriptionById"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The fulfillment center ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "fulfillmentCenterId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Fulfillment center description.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FulfillmentCenterDescription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Fulfillment Center Descriptions"
+        ],
+        "description": "Update a fulfillment description.",
+        "operationId": "updateFulfillmentCenterDescriptionById",
+        "x-codegen-request-body-name": "FulfillmentCenterDescription"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "properties": {},
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "FulfillmentCenterDescription": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "fulfillmentCenterId": {
+          "type": "integer"
+        },
+        "languageId": {
+          "type": "integer"
+        },
+        "storeAddressId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "fulfillmentCenterId",
+        "displayName",
+        "languageId"
+      ],
+      "type": "object"
+    },
+    "FulfillmentCenterDescriptionCollection": {
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "href": {
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "displayName": {
+                "type": "string"
+              },
+              "fulfillmentCenterId": {
+                "type": "integer"
+              },
+              "languageId": {
+                "type": "integer"
+              },
+              "links": {
+                "properties": {
+                  "self": {
+                    "properties": {
+                      "href": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "self"
+                ],
+                "type": "object"
+              },
+              "storeAddressId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "fulfillmentCenterId",
+              "displayName",
+              "description",
+              "storeAddressId",
+              "languageId",
+              "links"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "href",
+        "items",
+        "count"
+      ],
+      "type": "object"
+    },
+    "Link": {
+      "description": "Links to related resources.",
+      "properties": {
+        "href": {
+          "description": "The URL of the link.",
+          "format": "uri",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provide RESTful services to manage fulfillment center descriptions.",
+      "name": "Fulfillment Center Descriptions"
+    }
+  ],
+  "x-components": {}
+}

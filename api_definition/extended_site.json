@@ -1,0 +1,552 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Extended Site Management",
+    "version": "2.0"
+  },
+  "tags": [
+    {
+      "name": "Extended Sites",
+      "description": "This API provides RESTful services to manage extended site resources."
+    }
+  ],
+  "paths": {
+    "/extended-sites": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ExtendedSiteCollection"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+           	"name": "storeId",
+            "in": "query",
+            "description": "The unique numeric ID of the hub store that owns the extended sites.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name will order the items based on the name value in ascending order.",
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Limits search results to only include extended sites with a name that matches the value of this parameter.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "Limits search results to only include extended sites with the specified status. Possible values are \n * open\n * closed\n * suspended\n * deploying\n * deployFailed",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Extended Sites"
+        ],
+        "description": "Get a collection of extended sites.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a collection extended sites.",
+        "operationId": "getExtendedSites"
+      },
+      "post": {
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "headers": {
+              "Location": {
+                "description": "Link to the newly created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "in": "body",
+            "description": "Request body.",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/ExtendedSite"
+            }
+          }
+        ],
+        "tags": [
+          "Extended Sites"
+        ],
+        "description": "Create an extended site.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create an extended site.",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createExtendedSite"
+      }
+    },
+    "/extended-sites/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ExtendedSite"
+            },
+            "description": "The requested completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "type": "string",
+            "description": "The unique numeric ID for identifying the extended site.",
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "tags": [
+          "Extended Sites"
+        ],
+        "description": "Get an extended site by its ID.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get an extended site by its ID.",
+        "operationId": "getExtendedSiteById"
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "The requested resource has been deleted."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "type": "string",
+            "description": "The unique numeric ID of the extended site.",
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "tags": [
+          "Extended Sites"
+        ],
+        "description": "Delete an extended site.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete an extended site.",
+        "operationId": "deleteExtendedSite"
+      }
+    },
+    "/extended-sites/{id}/export": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "file"
+            },
+            "description": "The extended site was exported successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "type": "string",
+            "description": "The unique numeric ID for identifying the extended site.",
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "tags": [
+          "Extended Sites"
+        ],
+        "description": "Export an extended site.",
+        "produces": [
+          "application/xml"
+        ],
+        "summary": "Exports an extended site.",
+        "operationId": "exportExtendedSite"
+      }
+    },
+    "/extended-sites/import": {
+      "post": {
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "headers": {
+              "Location": {
+                "description": "Link to the newly created resource.",
+                "type": "string"
+              }
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The unique numeric ID of the hub store that owns the extended sites.",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "required": true,
+            "in": "body",
+            "description": "Extended site XML.",
+            "name": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Extended Sites"
+        ],
+        "description": "Import an extended site.",
+        "summary": "Import an extended site.",
+        "consumes": [
+          "application/xml"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "importExtendedSite"
+      }
+    }
+  },
+  "definitions": {
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ExtendedSite": {
+      "properties": {
+        "hubStoreId": {
+          "description": "The unique numeric ID of the hub store that owns the extended site.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "id": {
+          "description": "The unique numeric ID of the extended site.",
+          "type": "string"
+        },
+        "identifier": {
+          "description": "The identifer for the extended site.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the extended site",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description of the extended site.",
+          "type": "string"
+        },
+        "defaultLanguageId": {
+          "description": "The default language ID of the extended site.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "defaultCurrency": {
+          "description": "The default currency of the extended site.",
+          "type": "string"
+        },
+        "email": {
+          "description": "The email for the extende site.",
+          "type": "string"
+        },
+        "organizationId": {
+          "description": "The unique numeric ID of the parent organization of the extended site.",
+          "type": "string"
+        },
+        "sharedOwnerOrganizationId": {
+          "description": "The unique numeric ID of the shared store organization of the extended site.",
+          "type": "string"
+        },
+        "hostOrganizationId": {
+          "description": "The unique numeric ID of the host organization of the extended site.",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID of the extended site store.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "catalogAssetStoreId": {
+          "description": "The unique numeric ID of the catalog asset store of the extended site.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "storefrontAssetStoreId": {
+          "description": "The unique numeric ID of the storefront asset store of the extended site.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "createDate": {
+          "description": "The create date of the extended site.",
+          "type": "string"
+        },
+        "status": {
+          "description": "The status of the extended site. Possible values are \n * open\n * closed\n * suspended\n * deploying\n * deployFailed",
+          "type": "string"
+        }
+      }
+    },
+    "ExtendedSiteCollection": {
+      "properties": {
+        "offset": {
+          "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "limit": {
+          "description": "The maximum number of records to return.",
+          "format": "int32",
+          "maximum": 500,
+          "type": "integer"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExtendedSite"
+          }
+        }
+      }
+    }
+  }
+}

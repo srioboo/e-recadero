@@ -1,0 +1,416 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Scheduler Job Statuses",
+    "version": "2.0"
+  },
+  "tags": [
+    {
+      "name": "Scheduled Jobs Statuses",
+      "description": "This API provides RESTful services to manage scheduled job status resources."
+    }
+  ],
+  "paths": {
+    "/job-statuses": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/JobStatusesCollection"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "This is the content type to be placed in the header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "criteriaStart",
+            "in": "query",
+            "description": "The start date of the date range for the scheduled job status to return.  The value is the actual start date the job was run on the server's time zone.  The date format is yyyy-MM-dd'T'HH:mm:ss, ie. 2020-04-20T04:00:00.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "criteriaEnd",
+            "in": "query",
+            "description": "The end date of the date range for the scheduled job status to return.  The value is the actual end date the job was run on the server's time zone.  The date format is yyyy-MM-dd'T'HH:mm:ss, ie. 2020-04-20T04:00:00.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "maxItems",
+            "default": 15000,
+            "in": "query",
+            "description": "The maxiumum number of items to fetch from the database.  Default is 15000.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The unique numeric ID of the store that the jobs are running for.  If site, store ID must be 0.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "default": 0,
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of records to return.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sort",
+            "description": "The comma-separated set of properties that control the order of the listed items. Properties can be prefixed by either (-) to sort in descending order, or (+) to sort in ascending order. By default, properties are sorted in ascending order. For example, sort=name will order the items based on the name value in ascending order.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "searchString",
+            "description": "Limits search results to only include scheduled job status with a command name that matches the value of this parameter. Searches are case-insensitive.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "description": "Limits search results to only include scheduled job status with a state that matches the value of this parameter. Searches are case-sensitive.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "description": "Limits search results to only include scheduled job status with a status that matches the value of this parameter. Searches are case-sensitive.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "applicationType",
+            "description": "Limits search results to only include scheduled job status with an application type that matches the value of this parameter. Searches are case-sensitive.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Jobs Statuses"
+        ],
+        "description": "Get a collection of scheduled job statuses.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a collection of scheduled job statuses.",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "getScheduledJobStatuses"
+      },
+      "delete": {
+        "responses": {
+            "204": {
+                "description": "The requested resource has been deleted."
+            },
+            "400": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponseContainer"
+                },
+                "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+            },
+            "401": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponseContainer"
+                },
+                "description": "Not authenticated. The user session is not valid."
+            },
+            "403": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponseContainer"
+                },
+                "description": "The user is not authorized to perform the specified request."
+            },
+            "500": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponseContainer"
+                },
+                "description": "Internal server error. For details, see the server log files."
+            }
+        },
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "This is the content type to be placed in the header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The unique numeric ID of the store that the jobs are running for.  If site, store ID must be 0.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The end time of when the jobs were run, to remove status for.  The value is the end date that the job status should be removed for.  The date format is yyyy-MM-dd'T'HH:mm:ss, ie. 2020-04-20T04:00:00.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+            "Jobs Statuses"
+        ],
+        "description": "Delete previous scheduler job status that has completed successfully, or failed.",
+        "produces": [
+            "application/json"
+        ],
+        "summary": "Delete previous scheduler job status that has completed successfully, or failed.",
+        "operationId": "Job-Statuses-delete"
+      }
+    },
+    "/job-statuses/{id}": {
+      "delete": {
+        "responses": {
+            "204": {
+                "description": "The requested resource has been deleted."
+            },
+            "400": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponseContainer"
+                },
+                "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+            },
+            "401": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponseContainer"
+                },
+                "description": "Not authenticated. The user session is not valid."
+            },
+            "403": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponseContainer"
+                },
+                "description": "The user is not authorized to perform the specified request."
+            },
+            "500": {
+                "schema": {
+                    "$ref": "#/definitions/ErrorResponseContainer"
+                },
+                "description": "Internal server error. For details, see the server log files."
+            }
+        },
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "This is the content type to be placed in the header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "in": "path",
+            "description": "The unique numeric ID for identifying the scheduler job."
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The unique numeric ID of the store that the jobs are running for.  If site, store ID must be 0.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The end time of when the jobs were run, to remove status for.  The value is the end date that the job status should be removed for.  The date format is yyyy-MM-dd'T'HH:mm:ss, ie. 2020-04-20T04:00:00.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+            "Jobs Statuses"
+        ],
+        "description": "Delete previous scheduler job status for the Job specified, that has completed successfully, or failed.",
+        "produces": [
+            "application/json"
+        ],
+        "summary": "Delete previous scheduler job status for the Job specified, that has completed successfully, or failed.",
+        "operationId": "Job-Statuses-by-JobId-delete"
+      }
+    }
+  },
+  "definitions": {
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "JobStatus": {
+      "properties": {
+        "id": {
+          "description": "The unique numeric ID of the job status (job instance).",
+          "type": "string"
+        },
+        "jobId": {
+          "description": "The unique numeric ID of the job (job configuration).",
+          "type": "string"
+        },
+        "applicationType": {
+          "description": "The application type of the job.",
+          "type": "string"
+        },       
+        "start": {
+          "description": "The start date of the date range to return the job statuses. The date is respective of the server locale and of the format yyyy-MM-dd HH:mm:ss ie. 2020-05-29 16:15:53.092",
+          "type": "string"
+        },       
+        "end": {
+          "description": "The end date of the date range to return the job statuses. The date is respective of the server locale and of the format yyyy-MM-dd HH:mm:ss ie. 2020-05-29 16:15:53.092",
+          "type": "string"
+        },       
+        "state": {
+          "description": "The state of the job execution.  ie. Has the job run?",
+          "type": "string"
+        },       
+        "status": {
+          "description": "The status of the job execution.  ie.  Successful / Failed",
+          "type": "string"
+        },       
+        "pathInfo": {
+          "description": "The command / path information of the job.",
+          "type": "string"
+        },       
+        "queryString": {
+          "description": "The parameter list of the job.",
+          "type": "string"
+        }
+      }
+    },
+    "JobStatusesCollection": {
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/JobStatus"
+          }
+        },
+        "offset": {
+          "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "limit": {
+          "description": "The maximum number of records to return.",
+          "format": "int32",
+          "maximum": 500,
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1749 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer layouts.",
+    "title": "Layouts",
+    "version": "9.1.12.0",
+    "x-introduced": "9.1.0.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/layouts": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "default": false,
+            "description": "Indicates whether it is layout template or layout.",
+            "in": "query",
+            "name": "isTemplate",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "description": "Limits search results to only include layouts with a name that matches the value of this parameter.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutCollection"
+            },
+            "x-entity-path": "dataArea/layout"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayouts",
+        "summary": "Get layouts for a store.",
+        "x-expression-builder-class": "com.ibm.commerce.rest.admin.v2.pagelayout.LayoutExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            },
+            "x-entity-path": "dataArea/layout[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the layout.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "createLayout",
+        "summary": "Create a layout.",
+        "x-action-code": "Create",
+        "x-expression-template": "{_pgl.enforceUpdateDefault=true}/Layout[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "processLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ProcessLayoutType"
+      }
+    },
+    "/layouts/by-activity": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "Limits the results to only include layouts that are associated with the specified activity ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "activityId",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutCollection"
+            },
+            "x-entity-path": "dataArea/layout"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayoutsByActivity",
+        "summary": "Get layouts by activity.",
+        "x-expression-template": "{_wcf.ap={accessProfile}}/Layout[PageLocation[@activityID='{activityId}']]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      }
+    },
+    "/layouts/by-espot/{emsId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the e-Marketing spot.",
+            "format": "int32",
+            "in": "path",
+            "name": "emsId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutCollection"
+            },
+            "x-entity-path": "dataArea/layout"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayoutsByESpot",
+        "summary": "Get layouts by e-marketing spot ID.",
+        "x-expression-template": "{_wcf.ap={accessProfile}}/Layout[Widget[WidgetProperty[Name='emsId' and Value='{emsId}']]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      }
+    },
+    "/layouts/by-ids": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The layout ID.",
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutCollection"
+            },
+            "x-entity-path": "dataArea/layout"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayoutsByIds",
+        "summary": "Get layouts by list of IDs.",
+        "x-expression-template": "{_wcf.ap='{accessProfile}'}/Layout[LayoutIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      }
+    },
+    "/layouts/by-name": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "default": false,
+            "description": "Indicates whether it is layout template or layout.",
+            "in": "query",
+            "name": "isTemplate",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "description": "The name of the layout to find.",
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutCollection"
+            },
+            "x-entity-path": "dataArea/layout"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayoutsByName",
+        "summary": "Find layouts by name.",
+        "x-expression-builder-class": "com.ibm.commerce.foundation.internal.client.taglib.util.SearchExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details",
+          "template": "/Layout[@template='$isTemplate$' and search(LayoutIdentifier/ExternalIdentifierType/Name='$name$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      }
+    },
+    "/layouts/by-page": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the page.",
+            "in": "query",
+            "name": "pageId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The page type: <ol><li>Category</li><li>Content</li><li>Search</li><li>Product</li><li>Kit</li><li>Bundle</li><li>DynamicKit</li><li>Variant</li><li>CategorySKU</li></ol>.",
+            "in": "query",
+            "name": "pageType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutCollection"
+            },
+            "x-entity-path": "dataArea/layout"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayoutsByPage",
+        "summary": "Get layouts by page.",
+        "x-expression-template": "{_wcf.ap={accessProfile}}/Layout[PageLocation[Page[@pageGroup='{pageType}' and PageIdentifier[UniqueID='{pageId}']]]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      }
+    },
+    "/layouts/search": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "Indicates whether the layout is a layout template or layout.",
+            "in": "query",
+            "name": "isTemplate",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "description": "The name of the layout.",
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The start date time of the layout shedule. The date and time must be entered as a timestamp in the following ISO8601 format: \"YYYY-MM-DDThh:mm:ssZ\".",
+            "format": "date-time",
+            "in": "query",
+            "name": "startDate",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The class of the device that this layout is designed to.",
+            "in": "query",
+            "name": "deviceClass",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The end date time of the layout shedule. The date and time must be entered as a timestamp in the following ISO8601 format: \"YYYY-MM-DDThh:mm:ssZ\".",
+            "format": "date-time",
+            "in": "query",
+            "name": "endDate",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutCollection"
+            },
+            "x-entity-path": "dataArea/layout"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "description": "Find layouts, used for advanced search.",
+        "operationId": "getLayoutsByAdvancedSearch",
+        "summary": "Find layouts.",
+        "x-expression-builder-class": "com.ibm.commerce.foundation.internal.client.taglib.util.SearchExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary",
+          "template": "{_wcf.ap=$accessProfile$;_pgl.isTemplate='$isTemplate$';_pgl.startDate='$startDate$';_pgl.endDate='$endDate$';_pgl.deviceClass='$deviceClass$'}/Layout[search(LayoutIdentifier/ExternalIdentifierType/Name='$name$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      }
+    },
+    "/layouts/template-by-device": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The class of the device that this layout is designed to.",
+            "in": "query",
+            "name": "deviceClass",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutCollection"
+            },
+            "x-entity-path": "dataArea/layout"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayoutTemplatesByDeviceClass",
+        "summary": "Get layout templates by device class.",
+        "x-expression-template": "{_wcf.ap='{accessProfile}'}/Layout[@deviceClass='{deviceClass}' and template]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      }
+    },
+    "/layouts/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "deleteLayout",
+        "summary": "Delete a layout.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/Layout[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "processLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ProcessLayoutType"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            },
+            "x-entity-path": "dataArea/layout[1]"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayout",
+        "summary": "Get a layout by ID.",
+        "x-expression-template": "{_wcf.ap='{accessProfile}'}/Layout[LayoutIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            },
+            "x-entity-path": "dataArea/layout[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/Layout"
+            },
+            "x-entity-path": "dataArea/layout[1]"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "updateLayout",
+        "summary": "Update a layout.",
+        "x-action-code": "Update",
+        "x-expression-template": "{_pgl.enforceUpdateDefault=true}/Layout[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType"
+      }
+    },
+    "/layouts/{layoutId}/assignments": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "default": 1000,
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AssignmentCollection"
+            },
+            "x-entity-path": "dataArea/layout[1]/pageLocation"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayoutAssignments",
+        "summary": "Get layout assignments by layout ID.",
+        "x-expression-template": "{_wcf.ap={accessProfile}}/Layout[LayoutIdentifier[UniqueID='{layoutId}']]/PageLocation",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Layout_Locations"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LayoutAssignment"
+            },
+            "x-entity-path": "dataArea/layout[1]/pageLocation[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the layout assignment.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/layout[1]/pageLocation[1]/pageLocationID"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "createLayoutAssignment",
+        "summary": "Create a layout assignment.",
+        "x-action-code": "Add",
+        "x-expression-template": "/Layout[1]/PageLocation[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      }
+    },
+    "/layouts/{layoutId}/assignments/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the layout assignment.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/pageLocation[1]/pageLocationID"
+          },
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "deleteLayoutAssignment",
+        "summary": "Delete a layout assignment.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/Layout[1]/PageLocation[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the layout assignment.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/pageLocation[1]/pageLocationID"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the layout.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LayoutAssignment"
+            },
+            "x-entity-path": "dataArea/layout[1]/pageLocation[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/LayoutAssignment"
+            },
+            "x-entity-path": "dataArea/layout[1]/pageLocation[1]"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "updateLayoutAssignment",
+        "summary": "Update a layout assignment.",
+        "x-action-code": "Update",
+        "x-expression-template": "/Layout[1]/PageLocation[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      }
+    },
+    "/layouts/{layoutId}/widgets": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/WidgetCollection"
+            },
+            "x-entity-path": "dataArea/layout[1]/widget"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "getLayoutWidgets",
+        "summary": "Get layout widgets by layout ID.",
+        "x-expression-template": "{_wcf.ap='{accessProfile}'}/Layout[LayoutIdentifier[(UniqueID='{layoutId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "getLayout",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.GetLayoutType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the layout.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Widget"
+            },
+            "x-entity-path": "dataArea/layout[1]/widget[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/Widget"
+            },
+            "x-entity-path": "dataArea/layout[1]/widget[1]"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "createLayoutWidget",
+        "summary": "Create a layout widget.",
+        "x-action-code": "Add",
+        "x-expression-template": "/Layout[1]/Widget[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      }
+    },
+    "/layouts/{layoutId}/widgets/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the widget.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/widgetIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the layout.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "deleteLayoutWidget",
+        "summary": "Delete a layout widget.",
+        "x-action-code": "Remove",
+        "x-expression-template": "/Layout[1]/Widget[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the widget.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/widgetIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the layout.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Widget"
+            },
+            "x-entity-path": "dataArea/layout[1]/widget[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/Widget"
+            },
+            "x-entity-path": "dataArea/layout[1]/widget[1]"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "updateLayoutWidget",
+        "summary": "Update a layout widget.",
+        "x-action-code": "Update",
+        "x-expression-template": "/Layout[1]/Widget[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      }
+    },
+    "/layouts/{layoutId}/widgets/{widgetId}/extended-data": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The widget ID.",
+            "in": "path",
+            "name": "widgetId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/widgetIdentifier/uniqueID"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ExtendedData"
+            },
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the layout widget.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]/uniqueID"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "createLayoutWidgetExtendedData",
+        "summary": "Create a layout widget extended datum.",
+        "x-action-code": "Add",
+        "x-expression-template": "/Layout[1]/Widget[1]/ExtendedData[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      }
+    },
+    "/layouts/{layoutId}/widgets/{widgetId}/extended-data/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the extended datum.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]/attributes[1]/attribute/uniqueId"
+          },
+          {
+            "description": "The widget ID.",
+            "in": "path",
+            "name": "widgetId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/widgetIdentifier/uniqueID"
+          },
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The data type of the extended data.",
+            "in": "query",
+            "name": "dataType",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]/dataType"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]/storeIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "deleteLayoutWidgetExtendedData",
+        "summary": "Delete a widget extended datum.",
+        "x-action-code": "Remove",
+        "x-expression-template": "/Layout[1]/Widget[1]/ExtendedData[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the extended datum.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]/attributes[1]/attribute/uniqueId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the widget.",
+            "in": "path",
+            "name": "widgetId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/widgetIdentifier/uniqueID"
+          },
+          {
+            "description": "The layout ID.",
+            "in": "path",
+            "name": "layoutId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/layout[1]/layoutIdentifier/uniqueID"
+          },
+          {
+            "description": "The store ID.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ExtendedData"
+            },
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedData"
+            },
+            "x-entity-path": "dataArea/layout[1]/widget[1]/extendedData[1]"
+          }
+        },
+        "tags": [
+          "Layouts"
+        ],
+        "operationId": "updateLayoutWidgetExtendedData",
+        "summary": "Update a widget extended datum.",
+        "x-action-code": "Change",
+        "x-expression-template": "/Layout[1]/Widget[1]/ExtendedData[1]",
+        "x-facade-client-class": "com.ibm.commerce.pagelayout.facade.client.PageLayoutFacadeClient",
+        "x-facade-client-method": "changeLayout",
+        "x-request-bod-class": "com.ibm.commerce.pagelayout.facade.datatypes.ChangeLayoutType",
+        "x-request-verb": "change"
+      }
+    }
+  },
+  "definitions": {
+    "AssignmentCollection": {
+      "description": "A collection of page layout assignments.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/LayoutAssignment"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ExtendedData": {
+      "description": "The widget extended data.",
+      "properties": {
+        "attributes": {
+          "description": "The widget extended data for each supported language.",
+          "items": {
+            "$ref": "#/definitions/LanguageData"
+          },
+          "type": "array"
+        },
+        "dataType": {
+          "description": "The data type for the extended data.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The extended data ID.The unique numeric ID for identifying the extended data.",
+          "type": "string",
+          "x-entity-path": "uniqueID"
+        },
+        "sequenceOrder": {
+          "description": "The sequence that the extended data displays for the widget.",
+          "format": "double",
+          "type": "number"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "storeIdentifier/uniqueID"
+        },
+        "widgetId": {
+          "description": "The unique numeric ID for identifying the widget.",
+          "type": "string",
+          "x-entity-path": "container/widgetIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.pagelayout.facade.datatypes.ExtendedDataType"
+    },
+    "LanguageData": {
+      "description": "The extended data for a language.",
+      "properties": {
+        "data": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "The data.",
+          "type": "object",
+          "x-entity-path": "attribute"
+        },
+        "languageId": {
+          "description": "The languageId of the extended data.",
+          "type": "number",
+          "x-entity-path": "language"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.pagelayout.facade.datatypes.AttributesType"
+    },
+    "Layout": {
+      "description": "A page layout.",
+      "properties": {
+        "assignment": {
+          "description": "The page layout assignment. The matching layout assignment is returned for layouts requested for a specific page.",
+          "schema": {
+            "$ref": "#/definitions/LayoutAssignment"
+          },
+          "x-entity-path": "pageLocation[1]"
+        },
+        "default": {
+          "description": "The flag that indicates whether the page layout is a default page layout. Only one default page layout should exist for each page layout type.",
+          "type": "boolean"
+        },
+        "description": {
+          "description": "The description of the page layout.",
+          "type": "string"
+        },
+        "deviceClass": {
+          "description": "The class of the device that this layout is designed to render a store page for, for example: <ul><li>Mobile</li><li>Web</li><li>Any (responsive web page)</li></ul>",
+          "type": "string"
+        },
+        "endDate": {
+          "description": "The end time for the page layout. If the end time is null, then the page layout will run indefinitely.",
+          "format": "date-time",
+          "type": "string",
+          "x-entity-path": "schedule/endDate"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the page layout.",
+          "type": "string",
+          "x-entity-path": "layoutIdentifier/uniqueID"
+        },
+        "layoutGroup": {
+          "description": "The layout group this layout belongs to.",
+          "type": "string"
+        },
+        "managingTool": {
+          "description": "Indicates which tool manages the page layout.",
+          "type": "string"
+        },
+        "memberId": {
+          "description": "The unique numeric ID for identifying the organization that owns the layout.",
+          "type": "string",
+          "x-entity-path": "layoutIdentifier/externalIdentifier/ownerID"
+        },
+        "name": {
+          "description": "The name of the layout.",
+          "type": "string",
+          "x-entity-path": "layoutIdentifier/externalIdentifier/name"
+        },
+        "priority": {
+          "description": "The priority of the page layout. The default value is 0.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "schedule/priority"
+        },
+        "startDate": {
+          "description": "The start time for the page layout. If the start time is null, then the page layout can start immediately.",
+          "format": "date-time",
+          "type": "string",
+          "x-entity-path": "schedule/startDate"
+        },
+        "state": {
+          "description": "The state of the page layout.",
+          "type": "string"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "layoutIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "template": {
+          "description": "Indicates whether the page layout is a layout template or not.",
+          "type": "boolean"
+        },
+        "templateId": {
+          "description": "The unique identifier of the template, based on which the page layout is created.",
+          "type": "string",
+          "x-entity-path": "templateIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.pagelayout.facade.datatypes.LayoutType"
+    },
+    "LayoutAssignment": {
+      "description": "A layout assignment.",
+      "properties": {
+        "activityId": {
+          "description": "The unique numeric ID for identifying the web activity that defines a rule and mapping between a page and a layout.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "activityID"
+        },
+        "applyToSubPage": {
+          "description": "Flag that indicates whether the layout assignment applies to the sub-pages instead of only the page that is indicated by the page name. The value of this attribute indicates the type of sub-pages where the page applies. For example, 'CatalogEntry' indicates that the page layout applies to all the sub-catalog entry pages.",
+          "type": "string",
+          "x-entity-path": "page/applyToSubPage"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the layout assignment.",
+          "type": "string",
+          "x-entity-path": "pageLocationID"
+        },
+        "pageId": {
+          "description": "The unique numeric ID for identifying the page.",
+          "type": "string",
+          "x-entity-path": "page/pageIdentifier/uniqueID"
+        },
+        "pageName": {
+          "description": "The page name.",
+          "type": "string",
+          "x-entity-path": "page/pageIdentifier/externalIdentifier/name"
+        },
+        "pageStoreId": {
+          "description": "The store ID.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "page/pageIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "pageType": {
+          "description": "The page type: <ul><li>Category</li><li>Content</li><li>Search</li><li>Product</li><li>Kit</li><li>Bundle</li><li>DynamicKit</li><li>Variant</li><li>CategorySKU</li></ul>",
+          "type": "string",
+          "x-entity-path": "page/pageGroup"
+        },
+        "propagateToSubLevels": {
+          "description": "Flag that indicates whether the page layout propagates to sub-levels.  It is typically used for 1)Category pages and 2)all child catalog entry pages under a Category.",
+          "type": "boolean",
+          "x-entity-path": "page/propagateToSubLevels"
+        },
+        "searchKeyword": {
+          "description": "A search keyword.",
+          "type": "string",
+          "x-entity-path": "keyword"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "storeIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.pagelayout.facade.datatypes.PageLocationType"
+    },
+    "LayoutCollection": {
+      "description": "A collection of page layouts.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/Layout"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Widget": {
+      "description": "An authoring widget.",
+      "properties": {
+        "extendedData": {
+          "description": "The list of extended data for the widget.",
+          "items": {
+            "$ref": "#/definitions/ExtendedData"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the widget.",
+          "type": "string",
+          "x-entity-path": "widgetIdentifier/uniqueID"
+        },
+        "layoutId": {
+          "description": "The unique numeric ID for identifying the page layout.",
+          "type": "string",
+          "x-entity-path": "container/layoutIdentifier/uniqueID"
+        },
+        "name": {
+          "description": "The name of the widget.",
+          "type": "string",
+          "x-entity-path": "widgetIdentifier/name"
+        },
+        "parentWidgetId": {
+          "description": "The unique numeric ID for identifying the parent widget.",
+          "type": "string",
+          "x-entity-path": "parentWidget/uniqueID"
+        },
+        "parentWidgetName": {
+          "description": "The name of the parent widget.",
+          "type": "string",
+          "x-entity-path": "parentWidget/name"
+        },
+        "properties": {
+          "description": "The list of properties for the widget.",
+          "items": {
+            "$ref": "#/definitions/WidgetProperty"
+          },
+          "type": "array",
+          "x-entity-path": "widgetProperty"
+        },
+        "slotName": {
+          "description": "The name of the slot where the widget is included.",
+          "type": "string",
+          "x-entity-path": "slot/internalSlotId"
+        },
+        "widgetDefinitionId": {
+          "description": "The unique numeric ID for identifying the widget definition for the widget.",
+          "type": "string",
+          "x-entity-path": "widgetDefinitionIdentifier/uniqueID"
+        },
+        "widgetDefinitionName": {
+          "description": "The widget definition name of the widget.",
+          "type": "string",
+          "x-entity-path": "widgetDefinitionIdentifier/externalIdentifier/identifier"
+        },
+        "widgetSequence": {
+          "description": "The order that the child widget or child container is displayed within a parent container.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.pagelayout.facade.datatypes.AuthoringWidgetType"
+    },
+    "WidgetCollection": {
+      "description": "A collection of page layout widgets.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/Widget"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "WidgetProperty": {
+      "description": "A widget property.",
+      "properties": {
+        "id": {
+          "description": "The unique numeric ID for identifying the widget property.",
+          "type": "string",
+          "x-entity-path": "widgetPropertyID"
+        },
+        "name": {
+          "description": "The name of the widget property.",
+          "type": "string"
+        },
+        "sequenceOrder": {
+          "description": "The sequence that the properties display for the widget.",
+          "format": "double",
+          "type": "number"
+        },
+        "value": {
+          "description": "The value of the widget property.",
+          "type": "string"
+        },
+        "widgetId": {
+          "description": "The widget ID.The unique numeric ID for identifying the widget.",
+          "type": "string",
+          "x-entity-path": "container/widgetIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.pagelayout.facade.datatypes.WidgetPropertyType"
+    }
+  },
+  "tags": [
+    {
+      "description": "Provide RESTful services to manage layouts.",
+      "name": "Layouts"
+    }
+  ],
+  "x-components": {}
+}

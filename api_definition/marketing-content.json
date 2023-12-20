@@ -1,0 +1,1044 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Marketing Contents Admininistrative REST APIs",
+    "version": "2.0"
+  },
+  "paths": {
+    "/marketing-contents": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "Limits search results to only include marketing contents with a name that matches the value of this parameter.",
+            "in": "query",
+            "name": "searchString",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingContentCollection"
+            },
+            "x-entity-path": "dataArea/marketingContent"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "getMarketingContents",
+        "summary": "Get the marketing contents in a store.",
+        "x-expression-builder-class": "com.ibm.commerce.rest.admin.v2.marketing.MarketingContentExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingContentType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MarketingContent"
+            },
+            "x-entity-path": "dataArea/marketingContent[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the content.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "createMarketingContent",
+        "summary": "Create a marketing content.",
+        "x-action-code": "Add",
+        "x-expression-template": "/MarketingContent[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "processMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ProcessMarketingContentType"
+      }
+    },
+    "/marketing-contents/by-attachment-id": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the attachment.",
+            "in": "query",
+            "name": "attachmentId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingContentCollection"
+            },
+            "x-entity-path": "dataArea/marketingContent"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "getMarketingContentsByAttachmentId",
+        "summary": "Search for marketing contents by attachment.",
+        "x-expression-template": "{_wcf.ap={accessProfile};_wcf.dataLanguageIds={dataLanguageIds}}/MarketingContent[Attachment[AttachmentIdentifier[(UniqueID='{attachmentId}')]]]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingContent",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingContentType"
+      }
+    },
+    "/marketing-contents/by-ids": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing content.",
+            "format": "int32",
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingContentCollection"
+            },
+            "x-entity-path": "dataArea/marketingContent"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "getMarketingContentByIds",
+        "summary": "Get marketing contents by IDs.",
+        "x-expression-template": "{_wcf.ap={accessProfile}}/MarketingContent[MarketingContentIdentifier[(UniqueID={'{id}'})]]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingContent",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingContentType"
+      }
+    },
+    "/marketing-contents/by-name-and-type": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The name or description pattern to search.",
+            "in": "query",
+            "name": "searchText",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Specify the type id of marketing content:\n * '1' - Asset\n * '2' - Text for store page dispaly\n * '5' - text message for mobile device\n",
+            "enum": [
+              1,
+              2,
+              5
+            ],
+            "in": "query",
+            "name": "contentTypeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingContentCollection"
+            },
+            "x-entity-path": "dataArea/marketingContent"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "getMarketingContentsByNameAndType",
+        "summary": "Search for marketing contents by name and content type.",
+        "x-expression-builder-class": "com.ibm.commerce.foundation.internal.client.taglib.util.SearchExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingContent",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary",
+          "template": "/MarketingContent[MarketingContentFormat[UniqueID=$contentTypeId$] and search(MarketingContentIdentifier/ExternalIdentifier/Name='$searchText$' or MarketingContentDescription/MarketingText='$searchText$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingContentType"
+      }
+    },
+    "/marketing-contents/by-name-or-description": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The name or description pattern to search.",
+            "in": "query",
+            "name": "searchText",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The offset.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The limit.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingContentCollection"
+            },
+            "x-entity-path": "dataArea/marketingContent"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "getMarketingContentsByNameOrDescription",
+        "summary": "Search for marketing contents by name or description.",
+        "x-expression-builder-class": "com.ibm.commerce.foundation.internal.client.taglib.util.SearchExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingContent",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary",
+          "template": "/MarketingContent[search(MarketingContentIdentifier/ExternalIdentifier/Name='$searchText$' or MarketingContentDescription/MarketingText='$searchText$')]"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingContentType"
+      }
+    },
+    "/marketing-contents/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The content ID.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "deleteMarketingContent",
+        "summary": "Delete a marketing content.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/MarketingContent[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "processMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ProcessMarketingContentType"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The content ID",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingContent"
+            },
+            "x-entity-path": "dataArea/marketingContent[1]"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "getMarketingContent",
+        "summary": "Get a marketing content.",
+        "x-expression-template": "{_wcf.ap={accessProfile};_wcf.dataLanguageIds={dataLanguageIds}}/MarketingContent[MarketingContentIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingContent",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingContentType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing content.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MarketingContent"
+            },
+            "x-entity-path": "dataArea/marketingContent[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "updateMarketingContent",
+        "summary": "Update a marketing content.",
+        "x-action-code": "Change",
+        "x-expression-template": "/MarketingContent[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingContentType"
+      }
+    },
+    "/marketing-contents/{id}/descriptions": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing content.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MarketingContentDescription"
+            },
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentDescription[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the marketing content description.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/marketingContent/marketingContentDescription[1]/language"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "createMarketingContentDescription",
+        "summary": "Add a new description to marketing content.",
+        "x-action-code": "Add",
+        "x-expression-template": "/MarketingContent[1]/MarketingContentDescription[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingContentType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      }
+    },
+    "/marketing-contents/{id}/descriptions/{languageId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing content.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "uniqueId",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          },
+          {
+            "description": "The integer for identifying the language of the marketing content description. For a list of the integers that map to the supported default languages, refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/MarketingContentDescription"
+            },
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentDescription[1]"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "getMarketingContentDescription",
+        "summary": "Get the description that is part of a marketing content for a specific language.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_Details';_wcf.dataLanguageIds='{languageId}'}/MarketingContent[MarketingContentIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "getMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.GetMarketingContentType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing content.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          },
+          {
+            "description": "The langauge ID of the marketing content description.",
+            "in": "path",
+            "name": "languageId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentDescription[1]/language"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MarketingContentDescription"
+            },
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentDescription[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "updateMarketingContentDescription",
+        "summary": "Update the description of a marketing content.",
+        "x-action-code": "Change",
+        "x-expression-template": "/MarketingContent[1]/MarketingContentDescription[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingContentType"
+      }
+    },
+    "/marketing-contents/{id}/image-map-areas": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing content.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The integer for identifying the language of the marketing content image map. For a list of the integers that map to the supported default languages, refer to the Knowledge Center.",
+            "format": "int32",
+            "in": "query",
+            "name": "languageId",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentImageMap/language"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Area"
+            },
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentImageMap[1]/area[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the image map area.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/marketingContent/marketingContentImageMap[1]/area[1]/uniqueID"
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "createMarketingContentImageMapArea",
+        "summary": "Add a new image map area.",
+        "x-action-code": "Add",
+        "x-expression-template": "/MarketingContent[1]/MarketingContentImageMap[1]/Area[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingContentType",
+        "x-request-verb": "change",
+        "x-response-verb": "respond"
+      }
+    },
+    "/marketing-contents/{id}/image-map-areas/{areaId}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing content.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the image map area.",
+            "in": "path",
+            "name": "areaId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentImageMap[1]/area[1]/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "deleteMarketingContentImageMapArea",
+        "summary": "Delete an image map area of a marketing content.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/MarketingContent[1]/MarketingContentImageMap[1]/Area[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingContentType",
+        "x-request-verb": "change"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the marketing content.",
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the image map area.",
+            "in": "path",
+            "name": "areaId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentImageMap[1]/area[1]/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Area"
+            },
+            "x-entity-path": "dataArea/marketingContent[1]/marketingContentImageMap[1]/area[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Marketing Contents"
+        ],
+        "operationId": "updateMarketingContentImageMapArea",
+        "summary": "Update an image map area of a marketing content.",
+        "x-action-code": "Change",
+        "x-expression-template": "/MarketingContent[1]/MarketingContentImageMap[1]/Area[1]",
+        "x-facade-client-class": "com.ibm.commerce.marketing.facade.client.MarketingFacadeClient",
+        "x-facade-client-method": "changeMarketingContent",
+        "x-request-bod-class": "com.ibm.commerce.marketing.facade.datatypes.ChangeMarketingContentType"
+      }
+    }
+  },
+  "definitions": {
+    "Area": {
+      "description": "An area in the image map.",
+      "properties": {
+        "alternateText": {
+          "description": "An alternate text for the image map.",
+          "type": "string"
+        },
+        "coordinates": {
+          "description": "The coordinate of the image map. For example, \"10,20,62,126\"",
+          "type": "string"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the area.",
+          "format": "int64",
+          "type": "integer",
+          "x-entity-path": "uniqueID"
+        },
+        "sequence": {
+          "description": "The sequence of the area.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "shape": {
+          "description": "Specify the shape of the image map area:\n * 'rect' - Rectangle\n * 'circle' - Circle\n * 'poly' - Polygon\n",
+          "enum": [
+            "rect",
+            "circle",
+            "poly"
+          ],
+          "type": "string"
+        },
+        "target": {
+          "description": "Specify where to open the target URL. For example, _blank, _parent, _self, _top, and the frame name.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title of the image map.",
+          "type": "string"
+        },
+        "url": {
+          "description": "The link to the image.",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.marketing.facade.datatypes.AreaType"
+    },
+    "MarketingContent": {
+      "description": "A marketing content.",
+      "properties": {
+        "attachmentReferenceId": {
+          "x-entity-path": "attachment/attachmentReferenceIdentifier/uniqueID"
+        },
+        "behavior": {
+          "description": "Specify the behavior of the marketing content in marketing spot. The associated e-Marketing Spot can use this setting to determine how to cache the e-Marketing Spot results.\n * '0' - The marketing content is static, whcih means it displays the same results to all customers.\n * '1' - The marketing content has dynamic behavior that can display different results.\n",
+          "enum": [
+            0,
+            1
+          ],
+          "type": "string",
+          "x-entity-path": "marketingSpotBehavior"
+        },
+        "clickAction": {
+          "description": "Specify the number of click actions supported by the marketing content:\n * 'None' - No URL defined for the marketing content.\n * 'Single' - Whole marketing content is mapped to one single URL.\n * 'Multiple' - A HTML image map is defined for the marketing content. The image map has multiple areas, each has its own URL.\n",
+          "enum": [
+            "None",
+            "Text",
+            "Sms"
+          ],
+          "type": "string"
+        },
+        "contentType": {
+          "description": "The type of marketing content:\n * 'File' - Asset\n * 'Text' - Text for store page dispaly\n * 'Sms' - Text message for mobile device\n",
+          "enum": [
+            "File",
+            "Text",
+            "Sms"
+          ],
+          "type": "string",
+          "x-entity-path": "marketingContentFormat/name"
+        },
+        "contentTypeId": {
+          "description": "The type id of marketing content:\n * '1' - Asset\n * '2' - Text for store page dispaly\n * '5' - Text message for mobile device\n",
+          "enum": [
+            1,
+            2,
+            5
+          ],
+          "type": "string",
+          "x-entity-path": "marketingContentFormat/uniqueID"
+        },
+        "descriptions": {
+          "description": "The descriptions of the marketing content.",
+          "items": {
+            "$ref": "#/definitions/MarketingContentDescription"
+          },
+          "type": "array",
+          "x-entity-path": "marketingContentDescription"
+        },
+        "id": {
+          "description": "The unique numeric ID for identifying the marketing content.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "marketingContentIdentifier/uniqueID"
+        },
+        "ignoreAssetSizeLimit": {
+          "description": "Indicates if allowing marketing content to display when associated asset file is larger than the maximum file size limit. Default value is \"1\".\n * '0': No\n * '1': Yes\n",
+          "enum": [
+            0,
+            1
+          ],
+          "type": "string",
+          "x-entity-path": "ovrMktLimit"
+        },
+        "imageMaps": {
+          "description": "The image map information that are used in the store front pages.",
+          "items": {
+            "$ref": "#/definitions/MarketingContentImageMap"
+          },
+          "type": "array",
+          "x-entity-path": "marketingContentImageMap"
+        },
+        "inputOption": {
+          "description": "Specify the method for defining the image map: * 'Area': Define each area in the image map individually. * 'Source': Include the HTML source code to define the entire image map.\n",
+          "enum": [
+            "Area",
+            "Source"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the marketing content.",
+          "type": "string",
+          "x-entity-path": "marketingContentIdentifier/externalIdentifier/name"
+        },
+        "storeId": {
+          "description": "The ID of the store to which the markting content belongs.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "marketingContentIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "url": {
+          "description": "The click action (URL) to be invoked when the marketing content on the page is clicked.",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.marketing.facade.datatypes.MarketingContentType",
+      "x-entity-paths": {
+        "attachmentReference": "attachment"
+      }
+    },
+    "MarketingContentCollection": {
+      "description": "A collection of marketing contents.",
+      "properties": {
+        "count": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/MarketingContent"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "MarketingContentDescription": {
+      "description": "An description of a marketing content.",
+      "properties": {
+        "languageId": {
+          "description": "The language for this marketing content description.",
+          "type": "string",
+          "x-entity-path": "language"
+        },
+        "location": {
+          "description": "The full image path of the marketing content in the Web application.",
+          "type": "string"
+        },
+        "marketingText": {
+          "description": "The marketing text of the marketing content. It describes the marketing objective intended by the marketing campaign.",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.marketing.facade.datatypes.MarketingContentDescriptionType"
+    },
+    "MarketingContentImageMap": {
+      "description": "The marketing contant image map information that are used in the store front pages.",
+      "properties": {
+        "areas": {
+          "description": "The image map areas.",
+          "items": {
+            "$ref": "#/definitions/Area"
+          },
+          "type": "array",
+          "x-entity-path": "area"
+        },
+        "languageId": {
+          "description": "The language for this marketing content image map.",
+          "type": "string",
+          "x-entity-path": "language"
+        },
+        "name": {
+          "description": "The name of the image map.",
+          "type": "string"
+        },
+        "source": {
+          "description": "The HTML definition of the image map.",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.marketing.facade.datatypes.MarketingContentImageMapType"
+    }
+  },
+  "tags": [
+    {
+      "description": "This class provides RESTful services to pages.",
+      "name": "Marketing Contents"
+    }
+  ],
+  "x-components": {}
+}

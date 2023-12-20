@@ -1,0 +1,174 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Scheduler Job Store Commands",
+    "version": "2.0"
+  },
+  "tags": [
+    {
+      "name": "Scheduled Job Store Commands",
+      "description": "This API provides RESTful services to manage scheduled Job Store command resources."
+    }
+  ],
+  "paths": {
+    "/job-store-commands": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/JobStoreCommandsCollection"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "This is the content type to be placed in the header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Job Store Commands"
+        ],
+        "description": "Get a collection of scheduled Job Store commands.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a collection of scheduled Job Store commands.",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "getScheduledJobStoreCommands"
+      }
+    }
+  },
+  "definitions": {
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "JobStoreCommand": {
+      "properties": {
+        "command": {
+          "description": "The command / path information of the job.",
+          "type": "string"
+        },
+        "checkCommands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/JobCheckCommand"
+          }
+        }
+      }
+    },
+    "JobCheckCommand": {
+      "properties": {
+        "id": {
+          "description": "The internal ID of the check command.",
+          "type": "string"
+        },
+        "displayName": {
+          "description": "The display name of the check command.",
+          "type": "string"
+        },
+        "interfaceName": {
+          "description": "The interface name of the check command.",
+          "type": "string"
+        }
+      }
+    },
+    "JobStoreCommandsCollection": {
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/JobStoreCommand"
+          }
+        },
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

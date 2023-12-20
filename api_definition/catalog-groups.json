@@ -1,0 +1,736 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Catalog Group Admin REST APIs",
+    "version": "2.0"
+  },
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/catalog-groups": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog.",
+            "in": "query",
+            "name": "catalogId",
+            "required": true,
+            "type": "string",
+            "x-context-data": "catalogId"
+          },
+          {
+            "description": "The name pattern to search.",
+            "in": "query",
+            "name": "searchText",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "description": "The top category indicator used to search for top level catalog groups.",
+            "in": "query",
+            "name": "topCatalogGroup",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "description": "The unique numeric ID for identifying the parent catalog group.",
+            "in": "query",
+            "name": "parentCatalogGroupId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "description": "The unique numeric ID for identifying the catalog group.",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "id",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The integer(s) for identifying the language of the catalog group description. For a list of the integers that map to the supported default languages, refer to the Knowledge Center. Multiple identifiers should be specified as a comma-separated list.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/recordSetStartNumber"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer",
+            "x-entity-path": "dataArea/get/maxItems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupCollection"
+            },
+            "x-entity-path": "dataArea/catalogGroup"
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "getCatalogGroups",
+        "summary": "Get catalog groups by store and usage.",
+        "x-expression-builder-class": "com.ibm.commerce.rest.admin.v2.catalog.CatalogGroupExpressionBuilder",
+        "x-expression-builder-method": "formatExpression",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "getCatalogGroup",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogGroupType"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog .",
+            "in": "query",
+            "name": "catalogId",
+            "required": true,
+            "type": "string",
+            "x-context-data": "catalogId"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogGroup"
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation is successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the catalog group.",
+                "type": "string"
+              }
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]/catalogGroupIdentifier/uniqueID"
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "createCatalogGroups",
+        "summary": "Create a catalog group.",
+        "x-action-code": "Create",
+        "x-expression-template": "/CatalogGroup[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "processCatalogGroup",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ProcessCatalogGroupType",
+        "x-request-verb": "process"
+      }
+    },
+    "/catalog-groups/{catalogGroupId}/seo-properties": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog group.",
+            "in": "path",
+            "name": "catalogGroupId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string",
+            "x-default-to-supported": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupSeoPropertyCollection"
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]/SEOProperties"
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "getCatalogGroupSeoProperties",
+        "summary": "Get the seo properties for a catalog group.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_SEO';_wcf.dataLanguageIds ='{dataLanguageIds}'}/CatalogGroup[CatalogGroupIdentifier[(UniqueID='{catalogGroupId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "getCatalogGroup",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogGroupType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog group.",
+            "in": "path",
+            "name": "catalogGroupId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogGroup[1]/catalogGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogGroup[1]/catalogGroupIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupSeoProperty"
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]/SEOProperties[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupSeoProperty"
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]/SEOProperties[1]"
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "updateCatalogGroupSeoProperty",
+        "summary": "Update a catalog group SEO property.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogGroup[1]/SEOProperties[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "changeCatalogGroup",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogGroupType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-groups/{catalogGroupId}/seo-urls": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog group.",
+            "in": "path",
+            "name": "catalogGroupId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string",
+            "x-default-to-supported": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupSeoUrlCollection"
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]/SEOURL",
+            "x-sub-entity-path": "URLKeyword"
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "getCatalogGroupSeoUrls",
+        "summary": "Get the SEO URLs for a catalog group.",
+        "x-expression-template": "{_wcf.ap='IBM_Admin_SEO';_wcf.dataLanguageIds ='{dataLanguageIds}'}/CatalogGroup[CatalogGroupIdentifier[(UniqueID='{catalogGroupId}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "getCatalogGroup",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogGroupType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog group.",
+            "in": "path",
+            "name": "catalogGroupId",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogGroup[1]/catalogGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogGroup[1]/SEOURL[1]/parentStoreIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupSeoUrl"
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]/SEOURL[1]/URLKeyword[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupSeoUrl"
+            }
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "updateCatalogGroupSeoUrl",
+        "summary": "Update a catalog group SEO URL.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogGroup[1]/SEOURL[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "changeCatalogGroup",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogGroupType",
+        "x-request-verb": "change"
+      }
+    },
+    "/catalog-groups/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog group.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogGroup[1]/catalogGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogGroup[1]/catalogGroupIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "deleteCatalogGroup",
+        "summary": "Delete a catalog group based on the ID of the catalog group.",
+        "x-action-code": "Delete",
+        "x-expression-template": "/CatalogGroup[1]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "processCatalogGroup",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ProcessCatalogGroupType",
+        "x-request-verb": "process"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog group.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroup"
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]"
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "getCatalogGroupById",
+        "summary": "Get a catalog group based on the ID of the catalog group.",
+        "x-expression-template": "{_wcf.ap='{accessProfile}';_wcf.dataLanguageIds='{dataLanguageIds}'}/CatalogGroup[CatalogGroupIdentifier[(UniqueID='{id}')]]",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "getCatalogGroup",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Details"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetCatalogGroupType"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the catalog group.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-entity-path": "dataArea/catalogGroup[1]/catalogGroupIdentifier/uniqueID"
+          },
+          {
+            "description": "The unique numeric ID for identifying the catalog .",
+            "in": "query",
+            "name": "catalogId",
+            "required": true,
+            "type": "string",
+            "x-context-data": "catalogId"
+          },
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId",
+            "x-entity-path": "dataArea/catalogGroup[1]/catalogGroupIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+          },
+          {
+            "description": "The request body.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogGroup"
+            },
+            "x-entity-path": "dataArea/catalogGroup[1]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful."
+          }
+        },
+        "tags": [
+          "Catalog Groups"
+        ],
+        "operationId": "updateCatalogGroup",
+        "summary": "Update a catalog group based on the ID of the catalog group.",
+        "x-action-code": "Change",
+        "x-expression-template": "/CatalogGroup[1]/CatalogGroupIdentifier",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogGroupFacadeClient",
+        "x-facade-client-method": "changeCatalogGroup",
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.ChangeCatalogGroupType",
+        "x-request-verb": "change"
+      }
+    }
+  },
+  "definitions": {
+    "CatalogGroup": {
+      "description": "A catalog group.",
+      "properties": {
+        "displaySequence": {
+          "description": "The display sequence of the catalog group.",
+          "format": "double",
+          "type": "number",
+          "x-entity-path": "displaySequence"
+        },
+        "id": {
+          "description": "The internal unique reference number of the catalog group. In Delete, either this field or the PartNumber is required.",
+          "type": "string",
+          "x-entity-path": "catalogGroupIdentifier/uniqueID"
+        },
+        "longDescription": {
+          "description": "The catalog group long description.",
+          "type": "string",
+          "x-entity-path": "description[1]/longDescription"
+        },
+        "name": {
+          "description": "The catalog group name.",
+          "type": "string",
+          "x-entity-path": "description[1]/name"
+        },
+        "ownerId": {
+          "description": "The numeric identifier of the organization that owns the catalog group.",
+          "type": "string",
+          "x-entity-path": "catalogGroupIdentifier/externalIdentifier/ownerID"
+        },
+        "owningStoreDirectory": {
+          "description": "The owningStoreDirectory of the catalog group.",
+          "type": "string",
+          "x-entity-path": "owningStoreDirectory"
+        },
+        "parentCatalogGroupId": {
+          "description": "The unique numeric ID for identifying the parent catalog group.",
+          "type": "string",
+          "x-entity-path": "parentCatalogGroupIdentifier/uniqueID"
+        },
+        "shortDescription": {
+          "description": "The catalog group short description.",
+          "type": "string",
+          "x-entity-path": "description[1]/shortDescription"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "catalogGroupIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        },
+        "topCatalogGroup": {
+          "description": "The top category indicator",
+          "type": "boolean"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.CatalogGroupType"
+    },
+    "CatalogGroupCollection": {
+      "description": "A collection of catalog groups.",
+      "properties": {
+        "count": {
+          "description": "The number of catalog groups found.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/definitions/CatalogGroup"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogGroupSeoProperty": {
+      "description": "SEO Property",
+      "properties": {
+        "fullImageAltDescription": {
+          "description": "The language-specific image alternate description for the catalog group page.",
+          "type": "string",
+          "x-entity-path": "fullImageAltDescription"
+        },
+        "languageId": {
+          "description": "The language ID.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "metaDescription": {
+          "description": "The language-specific meta description for the catalog group page.",
+          "type": "string",
+          "x-entity-path": "metaDescription"
+        },
+        "metaKeyword": {
+          "description": "The language-specific meta keyword for the catalog group page.",
+          "type": "string",
+          "x-entity-path": "metaKeyword"
+        },
+        "resolved": {
+          "description": "Flag to indicate is resolved or not.",
+          "type": "boolean",
+          "x-entity-path": "resolved"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the parent store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "parentStoreIdentifier/uniqueID"
+        },
+        "title": {
+          "description": "The language specific catalog group page title.",
+          "type": "string",
+          "x-entity-path": "title"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.SEOPropertiesType"
+    },
+    "CatalogGroupSeoPropertyCollection": {
+      "description": "A collection of SEO properties.",
+      "properties": {
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The data objects or resources that that match the query parameters.",
+          "items": {
+            "$ref": "#/definitions/CatalogGroupSeoProperty"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogGroupSeoUrl": {
+      "description": "The SEO URL object.",
+      "properties": {
+        "keyword": {
+          "description": "The SEO URL keyword.",
+          "type": "string",
+          "x-entity-path": "keyword"
+        },
+        "languageId": {
+          "description": "The language of the keyword. For a list of integer language identifiers, please refer to the Knowledge Center.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "language"
+        },
+        "previewUrl": {
+          "description": "The preview URL.",
+          "type": "string",
+          "x-entity-path": "previewURL"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "container/parentStoreIdentifier/uniqueID"
+        },
+        "urlPrefix": {
+          "description": "The URL prefix which contains store token and seo keyword token. e.g. https://localhost/wcs/shop/en/$SEO:STORETOKEN$/$SEO:PRIMARYTOKEN$",
+          "type": "string",
+          "x-entity-path": "URLPrefix"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.foundation.common.datatypes.SEOURLKeywordType"
+    },
+    "CatalogGroupSeoUrlCollection": {
+      "description": "A collection of SEO URLs.",
+      "properties": {
+        "count": {
+          "description": "The total number of item records that match the query parameters.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The data objects or resources that that match the query parameters.",
+          "items": {
+            "$ref": "#/definitions/CatalogGroupSeoUrl"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "x-components": {}
+}

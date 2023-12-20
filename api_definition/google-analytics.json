@@ -1,0 +1,234 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Google Analytics Integration",
+    "version": "2.0"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "tags": [
+    {
+      "name": "Google Analytics Integration",
+      "description": "This API provides RESTful services to manage Google Analytics Integration."
+    }
+  ],
+  "paths": {
+    "/google-analytics/token": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/GoogleAccessToken"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "tags": [
+          "Google Analytics"
+        ],
+        "description": "Get a Google Access Token, for use with Google Analytics.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a Google Access Token, for use with Google Analytics.",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "getGoogleOAuthAccessToken"
+      }
+    },
+    "/google-analytics/configuration": {
+      "get": {
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/GoogleAnalyticsConfiguration"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Not authenticated. The user session is not valid."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            },
+            "description": "Internal server error. For details, see the server log files."
+          }
+        },
+        "parameters": [
+          {
+            "name": "storeId",
+            "description": "The store to return the configuration for.  Default is store ID 0 (all stores)",
+            "in": "query",
+            "required": false,
+            "type": "number"
+          }
+        ],
+        "tags": [
+          "Google Analytics"
+        ],
+        "description": "Get a Google Access Token, for use with Google Analytics.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a Google Access Token, for use with Google Analytics.",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "getGoogleAnalyticsConfiguration"
+      }
+    }
+  },
+  "definitions": {
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "GoogleAccessTokenContainer": {
+      "type": "object",
+      "description": "The google access token container.",
+      "properties": {
+        "response": {
+          "$ref": "#/definitions/GoogleAccessToken"
+        }
+      }
+    },
+    "GoogleAccessToken": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "description": "The Google Access Token",
+          "type": "string"
+        },
+        "expirationTime": {
+          "description": "The Google Access Token expiration time",
+          "type": "string"
+        },
+        "scopes": {
+          "description": "The configured allowed scopes for Google Authorization",
+          "type": "string"
+        }
+      }
+    },
+    "GoogleAnalyticsConfigurationContainer": {
+      "type": "object",
+      "description": "The google analytics configuration container.",
+      "properties": {
+        "response": {
+          "$ref": "#/definitions/GoogleAnalyticsConfiguration"
+        }
+      }
+    },
+    "GoogleAnalyticsConfiguration": {
+      "type": "object",
+      "properties": {
+        "propertyGa4": {
+          "description": "(GA4) The Google Analytics GA4 property ID the service account is allowed access to.",
+          "type": "string"
+        },
+        "viewId": {
+          "description": "(Universal Analytics) The Google Analytics view ID the service account is allowed access to.",
+          "type": "string"
+        },
+        "scopes": {
+          "description": "The configured allowed scopes for Google Authorization",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

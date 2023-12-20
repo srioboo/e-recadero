@@ -1,0 +1,372 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "version": "2.0",
+    "title": "user-account-lockout-policy-descriptions"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/user-account-lockout-policy-descriptions": {
+      "get": {
+        "tags": [
+          "user-account-lockout-policy-descriptions"
+        ],
+        "description": "Get a collection of user account lockout policy descriptions.",
+        "operationId": "getUserAccountLockoutPolicyDescriptions",
+        "parameters": [
+          {
+            "name": "userAccountLockoutPolicyId",
+            "in": "query",
+            "description": "The unique numeric ID for identifying the user account lockout policy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "description": "The description of the user account lockout policy.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "languageId",
+            "in": "query",
+            "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of records to return.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of user account lockout policy descriptions.",
+            "schema": {
+              "$ref": "#/definitions/UserAccountLockoutPolicyDescriptionCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user-account-lockout-policy-descriptions"
+        ],
+        "description": "Create a description for a user account lockout policy.",
+        "operationId": "createUserAccountLockoutPolicyDescription",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "UserAccountLockoutPolicyDescription",
+            "description": "The description of a user account lockout policy.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserAccountLockoutPolicyDescription"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      }
+    },
+    "/user-account-lockout-policy-descriptions/userAccountLockoutPolicyId:{userAccountLockoutPolicyId},languageId:{languageId}": {
+      "get": {
+        "tags": [
+          "user-account-lockout-policy-descriptions"
+        ],
+        "description": "Get a description for a user account lockout policy.",
+        "operationId": "getUserAccountLockoutPolicyDescriptionById",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The description of a user account lockout policy.",
+            "schema": {
+              "$ref": "#/definitions/UserAccountLockoutPolicyDescription"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user-account-lockout-policy-descriptions"
+        ],
+        "description": "Delete a description for a user account lockout policy.",
+        "operationId": "deleteUserAccountLockoutPolicyDescriptionById",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "user-account-lockout-policy-descriptions"
+        ],
+        "description": "Update a description for a user account lockout policy.",
+        "operationId": "updateUserAccountLockoutPolicyDescriptionById",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "UserAccountLockoutPolicyDescription",
+            "description": "The description of a user account lockout policy.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserAccountLockoutPolicyDescription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "userAccountLockoutPolicyId",
+          "in": "path",
+          "description": "The unique numeric ID for identifying the user account lockout policy.",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "languageId",
+          "in": "path",
+          "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The error message code."
+        },
+        "message": {
+          "type": "string",
+          "description": "The error message."
+        },
+        "messageKey": {
+          "type": "string",
+          "description": "The error message key."
+        },
+        "messageArguments": {
+          "type": "array",
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          }
+        },
+        "correlationId": {
+          "type": "string",
+          "description": "The unique identifier for the request."
+        },
+        "locale": {
+          "type": "string",
+          "description": "The locale of the error message."
+        }
+      },
+      "description": "The error message item model."
+    },
+    "ErrorResponseContainer": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "The request identifier."
+        },
+        "errors": {
+          "type": "array",
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      },
+      "description": "The error message model."
+    },
+    "UserAccountLockoutPolicyDescription": {
+      "type": "object",
+      "properties": {
+        "userAccountLockoutPolicyId": {
+          "type": "string",
+          "description": "The unique numeric ID for identifying the user account lockout policy."
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the user account lockout policy."
+        },
+        "languageId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center."
+        }
+      },
+      "description": "The description of a user account lockout policy."
+    },
+    "UserAccountLockoutPolicyDescriptionCollection": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total number of items."
+        },
+        "items": {
+          "type": "array",
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/UserAccountLockoutPolicyDescription"
+          }
+        }
+      },
+      "description": "A collection of user account lockout policy descriptions."
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Provide access to the attribute dictionary in a store.",
+    "title": "Attribute Dictionary",
+    "version": "9.1.12.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/attribute-dictionaries": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique numeric ID for identifying the store.",
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer",
+            "x-context-data": "storeId"
+          },
+          {
+            "description": "The data language IDs.",
+            "in": "query",
+            "name": "dataLanguageIds",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation is successful.",
+            "schema": {
+              "$ref": "#/definitions/AttributeDictionary"
+            },
+            "x-entity-path": "dataArea/attributeDictionary[1]"
+          }
+        },
+        "tags": [
+          "Attribute Dictionaries"
+        ],
+        "description": "Get the attribute dictionary in a store.",
+        "operationId": "getAttributeDictionary",
+        "x-expression-template": "{_wcf.ap='{accessProfile}';_wcf.dataLanguageIds='{dataLanguageIds}'}/AttributeDictionary",
+        "x-facade-client-class": "com.ibm.commerce.catalog.facade.client.CatalogFacadeClient",
+        "x-facade-client-method": "getAttributeDictionary",
+        "x-parameters": {
+          "accessProfile": "IBM_Admin_Summary"
+        },
+        "x-request-bod-class": "com.ibm.commerce.catalog.facade.datatypes.GetAttributeDictionaryType"
+      }
+    }
+  },
+  "definitions": {
+    "AttributeDictionary": {
+      "description": "An attribute dictonary.",
+      "properties": {
+        "id": {
+          "description": "The unique numeric ID for identifying the attribute dictionary.",
+          "type": "string",
+          "x-entity-path": "attributeDictionaryIdentifier/uniqueID"
+        },
+        "storeId": {
+          "description": "The unique numeric ID for identifying the store.",
+          "format": "int32",
+          "type": "integer",
+          "x-entity-path": "attributeDictionaryIdentifier/externalIdentifier/storeIdentifier/uniqueID"
+        }
+      },
+      "type": "object",
+      "x-entity-class": "com.ibm.commerce.catalog.facade.datatypes.AttributeDictionaryType"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provide RESTful services to retrieve attribute dictionary resources.",
+      "name": "Attribute Dictionary"
+    }
+  ],
+  "x-components": {}
+}

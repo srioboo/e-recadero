@@ -1,0 +1,1020 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Create and administer offers.",
+    "title": "Offers",
+    "version": "9.1.12.0"
+  },
+  "host": "localhost:443",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/offers": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The Offer ID.",
+            "in": "query",
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "description": "The start of the time range during which this Offer is effective. This is a valid ISO 8601 date 2018-05-29T11:00:00Z.",
+            "format": "date-time",
+            "in": "query",
+            "name": "startDate",
+            "type": "string"
+          },
+          {
+            "description": "The catalog entry offered for sale. Please see the catalog entry data API for details.",
+            "in": "query",
+            "name": "catalogEntryId",
+            "type": "string"
+          },
+          {
+            "description": "The end of the time range during which this Offer is effective. This is a valid ISO 8601 date 2018-05-29T11:00:00Z.",
+            "format": "date-time",
+            "in": "query",
+            "name": "endDate",
+            "type": "string"
+          },
+          {
+            "description": "When more than one Offer is effective at a particular time, the one with the highest precedence is used.",
+            "format": "double",
+            "in": "query",
+            "name": "precedence",
+            "type": "number"
+          },
+          {
+            "description": "Describes whether or not the offer has been published as follows: \\n0 = not published (temporarily disabled).\\n1 = published.\\n2 = marked for deletion (and not published).",
+            "format": "int32",
+            "in": "query",
+            "name": "published",
+            "type": "integer"
+          },
+          {
+            "description": "The last time this Offer was updated.",
+            "format": "date-time",
+            "in": "query",
+            "name": "updatedDate",
+            "type": "string"
+          },
+          {
+            "description": "The minimum quantity that can be purchased in a single Order under this Offer.",
+            "format": "double",
+            "in": "query",
+            "name": "minimumQuantity",
+            "type": "number"
+          },
+          {
+            "description": "The maximum quantity that can be purchased in a single Order under this Offer.",
+            "format": "double",
+            "in": "query",
+            "name": "maximumQuantity",
+            "type": "number"
+          },
+          {
+            "description": "A customizable field.",
+            "in": "query",
+            "name": "field1",
+            "type": "string"
+          },
+          {
+            "description": "A customizable field.",
+            "in": "query",
+            "name": "field2",
+            "type": "string"
+          },
+          {
+            "description": "A field reserved for internal use only.",
+            "format": "int32",
+            "in": "query",
+            "name": "flags",
+            "type": "integer"
+          },
+          {
+            "description": "A number that uniquely identifies this Offer along with its specified catalog entry and price list identifier.",
+            "format": "int64",
+            "in": "query",
+            "name": "identifier",
+            "type": "integer"
+          },
+          {
+            "description": "A unit of measure for minimumQuantity and maximumQuantity. If the value is NULL, then the minimumQuantity and maximumQuantity are multiplied by nominal quantity for a product, used for pricing and the unit of measure of the results.",
+            "in": "query",
+            "name": "quantityUnit",
+            "type": "string"
+          },
+          {
+            "description": "The trading position container or price list this Offer is part of.  Please see the trading position container data API for details.",
+            "in": "query",
+            "name": "priceListId",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of offers.",
+            "schema": {
+              "$ref": "#/definitions/OfferCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Offers"
+        ],
+        "description": "Get a collection of offers.",
+        "operationId": "getOffers"
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          },
+          {
+            "description": "The offer.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Offer.requestbody"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful.",
+            "headers": {
+              "Location": {
+                "description": "The URI of the offers.",
+                "type": "string"
+              }
+            },
+            "links": {
+              "DeleteOffersByOffersId": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `DELETE /offers/{id}`.\n",
+                "operationRef": "#/paths/~1offers~1{id}/delete"
+              },
+              "GetOffersByOffersId": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `GET /offers/{id}`.\n",
+                "operationRef": "#/paths/~1offers~1{id}/get"
+              },
+              "UpdateOffersByOffersId": {
+                "parameters": {
+                  "id": "$request.body#/id"
+                },
+                "description": "The `id` value used in the request body can be used as the `id` parameter in `PATCH /offers/{id}`.\n",
+                "operationRef": "#/paths/~1offers~1{id}/patch"
+              }
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Offers"
+        ],
+        "description": "Create an offer.",
+        "operationId": "createOffer",
+        "x-codegen-request-body-name": "Offer"
+      }
+    },
+    "/offers/{id}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The Offer ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Offers"
+        ],
+        "description": "Delete an offer.",
+        "operationId": "deleteOfferById"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The Offer ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The offer.",
+            "schema": {
+              "$ref": "#/definitions/Offer"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Offers"
+        ],
+        "description": "Get an offer.",
+        "operationId": "getOfferById"
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The Offer ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the workspace. This identifier is not the name that is assigned to the workspace by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.name",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task group. This identifier is not the name that is assigned to the task group by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.taskGroup",
+            "type": "string"
+          },
+          {
+            "description": "The unique system-generated code for identifying the task. This identifier is not the name that is assigned to the task by the Workspace Manager.",
+            "in": "query",
+            "name": "workspace.task",
+            "type": "string"
+          },
+          {
+            "description": "The offer.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Offer.requestbody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Offers"
+        ],
+        "description": "Update an offer.",
+        "operationId": "updateOfferById",
+        "x-codegen-request-body-name": "Offer"
+      }
+    },
+    "/offers/{id}/descriptions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The Offer ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of offer descriptions.",
+            "schema": {
+              "$ref": "#/definitions/OfferDescriptionCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "getDescriptionsOfOffer"
+      }
+    },
+    "/offers/{id}/prices": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The Offer ID.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum number of records to return.",
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "in": "query",
+            "name": "fields",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "in": "query",
+            "name": "expand",
+            "type": "string"
+          },
+          {
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "in": "query",
+            "name": "sort",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of offer prices.",
+            "schema": {
+              "$ref": "#/definitions/OfferPriceCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        },
+        "tags": [
+          "Offers"
+        ],
+        "operationId": "getPricesOfOffer"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "description": "The error message item model.",
+      "properties": {
+        "code": {
+          "description": "The error message code.",
+          "type": "string"
+        },
+        "correlationId": {
+          "description": "The unique identifier for the request.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "The locale of the error message.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "messageArguments": {
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "properties": {},
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "messageKey": {
+          "description": "The error message key.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorResponseContainer": {
+      "description": "The error message model.",
+      "properties": {
+        "errors": {
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          },
+          "type": "array"
+        },
+        "requestId": {
+          "description": "The request identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Link": {
+      "description": "Links to related resources.",
+      "properties": {
+        "href": {
+          "description": "The URL of the link.",
+          "format": "uri",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Offer": {
+      "description": "The offer.",
+      "properties": {
+        "catalogEntryId": {
+          "description": "The catalog entry offered for sale. Please see the catalog entry data API for details.",
+          "type": "string"
+        },
+        "endDate": {
+          "description": "The end of the time range during which this Offer is effective. This is a valid ISO 8601 date 2018-05-29T11:00:00Z.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "field1": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "field2": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "flags": {
+          "description": "A field reserved for internal use only.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "id": {
+          "description": "The Offer ID.",
+          "type": "string"
+        },
+        "identifier": {
+          "description": "A number that uniquely identifies this Offer along with its specified catalog entry and price list identifier.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "links": {
+          "description": "Links to related resources.",
+          "properties": {
+            "descriptions": {
+              "description": "",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "prices": {
+              "description": "",
+              "properties": {
+                "href": {
+                  "description": "The URL of the link.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "self": {
+              "properties": {
+                "href": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "maximumQuantity": {
+          "description": "The maximum quantity that can be purchased in a single Order under this Offer.",
+          "format": "double",
+          "type": "number"
+        },
+        "minimumQuantity": {
+          "description": "The minimum quantity that can be purchased in a single Order under this Offer.",
+          "format": "double",
+          "type": "number"
+        },
+        "precedence": {
+          "description": "When more than one Offer is effective at a particular time, the one with the highest precedence is used.",
+          "format": "double",
+          "type": "number"
+        },
+        "priceListId": {
+          "description": "The trading position container or price list this Offer is part of.  Please see the trading position container data API for details.",
+          "type": "string"
+        },
+        "published": {
+          "description": "Describes whether or not the offer has been published as follows: \\n0 = not published (temporarily disabled).\\n1 = published.\\n2 = marked for deletion (and not published).",
+          "format": "int32",
+          "type": "integer"
+        },
+        "quantityUnit": {
+          "description": "A unit of measure for minimumQuantity and maximumQuantity. If the value is NULL, then the minimumQuantity and maximumQuantity are multiplied by nominal quantity for a product, used for pricing and the unit of measure of the results.",
+          "type": "string"
+        },
+        "startDate": {
+          "description": "The start of the time range during which this Offer is effective. This is a valid ISO 8601 date 2018-05-29T11:00:00Z.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "updatedDate": {
+          "description": "The last time this Offer was updated.",
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Offer.requestbody": {
+      "description": "The offer.",
+      "properties": {
+        "catalogEntryId": {
+          "description": "The catalog entry offered for sale. Please see the catalog entry data API for details.",
+          "type": "string"
+        },
+        "endDate": {
+          "description": "The end of the time range during which this Offer is effective. This is a valid ISO 8601 date 2018-05-29T11:00:00Z.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "field1": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "field2": {
+          "description": "A customizable field.",
+          "type": "string"
+        },
+        "flags": {
+          "description": "A field reserved for internal use only.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "id": {
+          "description": "The Offer ID.",
+          "type": "string"
+        },
+        "identifier": {
+          "description": "A number that uniquely identifies this Offer along with its specified catalog entry and price list identifier.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "maximumQuantity": {
+          "description": "The maximum quantity that can be purchased in a single Order under this Offer.",
+          "format": "double",
+          "type": "number"
+        },
+        "minimumQuantity": {
+          "description": "The minimum quantity that can be purchased in a single Order under this Offer.",
+          "format": "double",
+          "type": "number"
+        },
+        "precedence": {
+          "description": "When more than one Offer is effective at a particular time, the one with the highest precedence is used.",
+          "format": "double",
+          "type": "number"
+        },
+        "priceListId": {
+          "description": "The trading position container or price list this Offer is part of.  Please see the trading position container data API for details.",
+          "type": "string"
+        },
+        "published": {
+          "description": "Describes whether or not the offer has been published as follows: \\n0 = not published (temporarily disabled).\\n1 = published.\\n2 = marked for deletion (and not published).",
+          "format": "int32",
+          "type": "integer"
+        },
+        "quantityUnit": {
+          "description": "A unit of measure for minimumQuantity and maximumQuantity. If the value is NULL, then the minimumQuantity and maximumQuantity are multiplied by nominal quantity for a product, used for pricing and the unit of measure of the results.",
+          "type": "string"
+        },
+        "startDate": {
+          "description": "The start of the time range during which this Offer is effective. This is a valid ISO 8601 date 2018-05-29T11:00:00Z.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "updatedDate": {
+          "description": "The last time this Offer was updated.",
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "OfferCollection": {
+      "description": "A collection of offers.",
+      "properties": {
+        "count": {
+          "description": "The total number of items.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/Offer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "OfferDescription": {
+      "description": "The Offer description.",
+      "properties": {
+        "description": {
+          "description": "The offer description in the language.",
+          "type": "string"
+        },
+        "languageId": {
+          "description": "The language of the description. For a list of integer language identifiers, please refer to the Knowledge Center.",
+          "format": "int32",
+          "type": "integer"
+        },
+        "links": {
+          "properties": {
+            "self": {
+              "properties": {
+                "href": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "offerId": {
+          "description": "The offer ID.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "OfferDescriptionCollection": {
+      "description": "A collection of offer descriptions.",
+      "properties": {
+        "count": {
+          "description": "The total number of items.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/OfferDescription"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "OfferPrice": {
+      "description": "The offer price.",
+      "properties": {
+        "currency": {
+          "description": "The standard ISO currency code for the offer",
+          "type": "string"
+        },
+        "links": {
+          "properties": {
+            "self": {
+              "properties": {
+                "href": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "offerId": {
+          "description": "The offer ID.",
+          "type": "string"
+        },
+        "price": {
+          "description": "The offer price in the currency.",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "OfferPriceCollection": {
+      "description": "A collection of offer prices.",
+      "properties": {
+        "count": {
+          "description": "The total number of items.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "items": {
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/OfferPrice"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Provide RESTful services to manage offers.",
+      "name": "Offers"
+    }
+  ],
+  "x-components": {}
+}

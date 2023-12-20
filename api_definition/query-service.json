@@ -1,0 +1,4874 @@
+{
+  "host": "hostname.com",
+  "basePath": "/search/resources",
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Query Service Api Documentation",
+    "title": "Query Service API",
+    "version": "9.1"
+  },
+  "paths": {
+    "/api/v2/categories": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "identifier",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "id",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "in": "query",
+            "name": "parentCategoryId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "depthAndLimit",
+            "required": false,
+            "type": "array"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request completed successfully.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "V2-Category-Resource"
+        ],
+        "operationId": "getV2CategoryResources",
+        "summary": "Gets Response for V2.0 API for store as per the requirements"
+      }
+    },
+    "/api/v2/configuration": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "nodeName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Env name",
+            "in": "query",
+            "name": "envType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Locale name",
+            "in": "query",
+            "name": "locale",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Config-Resource"
+        ],
+        "operationId": "getConfigurationData",
+        "summary": "Get the configuration node data from ZooKeeper."
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "nodeName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Env name",
+            "in": "query",
+            "name": "envType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Locale name",
+            "in": "query",
+            "name": "locale",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Config-Resource"
+        ],
+        "operationId": "updateConfigurationData",
+        "summary": "Update the configuration node in ZooKeeper."
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "nodeName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Env name",
+            "in": "query",
+            "name": "envType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Locale name",
+            "in": "query",
+            "name": "locale",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Config-Resource"
+        ],
+        "operationId": "addConfiguration",
+        "summary": "Create the configuration node in ZooKeeper."
+      },
+      "put": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Config-Resource"
+        ],
+        "operationId": "performZKPushToLive",
+        "summary": "Use to perform Push To Live operation from authoring to live environment."
+      }
+    },
+    "/api/v2/configuration/colors": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Env name",
+            "in": "query",
+            "name": "envType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Locale name",
+            "in": "query",
+            "name": "locale",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Config-Resource"
+        ],
+        "operationId": "getColorConfig",
+        "summary": "Get the Colors configuration data from ZooKeeper."
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "description": "Env name",
+            "in": "query",
+            "name": "envType",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Locale name",
+            "in": "query",
+            "name": "locale",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Config-Resource"
+        ],
+        "operationId": "updateColorConfig",
+        "summary": "Update the Colors configuration data in ZooKeeper."
+      }
+    },
+    "/api/v2/data/status": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "envType",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "V2-Data-Status"
+        ],
+        "operationId": "getAllIngestControllerStatus",
+        "summary": "Get the summary of all Ingest Connector Status."
+      }
+    },
+    "/api/v2/documents/bod": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Search-Document-Resource"
+        ],
+        "operationId": "getMarketingESpotData",
+        "summary": "Gets BOD data."
+      }
+    },
+    "/api/v2/documents/profiles": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SearchProfile"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SearchProfile"
+              },
+              "type": "array"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SearchProfile"
+              },
+              "type": "array"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SearchProfile"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Search-Profile-Resource"
+        ],
+        "operationId": "getSearchProfileList",
+        "summary": "Gets the search profiles."
+      }
+    },
+    "/api/v2/documents/profiles/{profileName}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "profileName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "204": {
+            "description": "The requested completed successfully. No content is returned in the response.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Profile-Resource"
+        ],
+        "operationId": "deleteProfile",
+        "summary": "Delete the search profile."
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "profileName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SearchProfile"
+              },
+              "type": "array"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SearchProfile"
+              },
+              "type": "array"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SearchProfile"
+              },
+              "type": "array"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SearchProfile"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Search-Profile-Resource"
+        ],
+        "operationId": "getSearchProfile",
+        "summary": "Get the search profile."
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "profileName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "409": {
+            "description": "The specified resource already exist.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Profile-Resource"
+        ],
+        "operationId": "createSearchProfile",
+        "summary": "Create the search profile."
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "profileName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "201": {
+            "description": "The requested resource has been created.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Profile-Resource"
+        ],
+        "operationId": "updateSearchProfile",
+        "summary": "Update the search profile."
+      }
+    },
+    "/api/v2/products": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "categoryId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "searchTerm",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "id",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "in": "query",
+            "name": "productId",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "partNumber",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "format": "int32",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "format": "int32",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The attribute associated keywords to be returned.",
+            "in": "query",
+            "name": "attributeKeyword",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          },
+          {
+            "description": "This field is used to disable search rules and rankings for fetching organic search results",
+            "in": "query",
+            "name": "disableSearchRules",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductDetail"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "V2-Product-Resource"
+        ],
+        "operationId": "findProducts",
+        "summary": "Gets Products"
+      }
+    },
+    "/api/v2/rankings": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/SearchRankingNameCollection"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Search-Ranking-Resource"
+        ],
+        "operationId": "getSearchRankings",
+        "summary": "Gets all of the search rankings."
+      }
+    },
+    "/api/v2/rankings/{id}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The requested completed successfully. No content is returned in the response."
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Ranking-Resource"
+        ],
+        "operationId": "deleteSearchRankingById",
+        "summary": "Delete the search rankings for this search term."
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/SearchRanking"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Search-Ranking-Resource"
+        ],
+        "operationId": "getSearchRankingById",
+        "summary": "Gets a search ranking by ID."
+      }
+    },
+    "/api/v2/rankings/{id}/actions": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchRankingAction"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The requested resource has been created.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "409": {
+            "description": "The specified resource already exist.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Ranking-Resource"
+        ],
+        "operationId": "createSearchRanking",
+        "summary": "Creates a new search ranking for this search term."
+      }
+    },
+    "/api/v2/rankings/{id}/actions/{catalogEntryId}": {
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The requested completed successfully. No content is returned in the response."
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Ranking-Resource"
+        ],
+        "operationId": "deleteSearchRankingActionById",
+        "summary": "Delete the search ranking action for this search term and catalog entry."
+      },
+      "patch": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "languageId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "catalogEntryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchRankingAction"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            }
+          }
+        },
+        "tags": [
+          "Search-Ranking-Resource"
+        ],
+        "operationId": "updateSearchRanking",
+        "summary": "Updates a search ranking for this search term and catalog entry."
+      }
+    },
+    "/api/v2/urls": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "query",
+            "name": "storeId",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "identifier",
+            "required": false,
+            "type": "array"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "V2-Url-Resource"
+        ],
+        "operationId": "getV2CategoryResources_1",
+        "summary": "Gets Response for V2.0 API Seo url data"
+      }
+    },
+    "/health": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Query service is in a healthy live state."
+          }
+        },
+        "tags": [
+          "Health"
+        ],
+        "operationId": "getHealth",
+        "summary": "Get liveness."
+      }
+    },
+    "/store/{storeId}/categoryview/@top": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The comma separated list of numbers is used to control the depth of sub-categories and limit the number of items returned under each child category level. The first number in this list determines the maximum number of categories (first level sub-categories) to be returned under the immediate child category. The second number in the list determines the maximum number of categories to be returned under the first level sub-categories. A value of \"-1\" implies no limit. In that case, only the first level categories will be returned. For example, \"pageSize=4&limitSubCategories=-1,3,0,1\" implies that there will be unlimited first level sub-categories under the immediate child categories.  Under these categories (up to 4), all sub-categories will be returned and a maximum of 3 second level sub-categories will be returned. There will be no third level or fourth level since the third level limit is 0. Any level after a limit of 0 will be ignored. By default, no sub-category will be returned if this parameter is not specified. When the asterisk \"*\" is specified, it is considered the same as \"-1\" but, any subsequent levels will also be treated \"-1\".",
+            "in": "query",
+            "name": "depthAndLimit",
+            "type": "string"
+          },
+          {
+            "description": "The field name to use when ordering the results.",
+            "in": "query",
+            "name": "orderBy",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Page size. Used to limit the amount of data returned by a query. Valid values include positive integers of 1 and above. The \"pageNumber\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageSize",
+            "type": "integer"
+          },
+          {
+            "description": "Page number, starting at 1. Valid values include positive integers of 1 and above. The \"pageSize\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageNumber",
+            "type": "integer"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupDetailWithSequenceArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Category-View-Resource"
+        ],
+        "operationId": "findTopCategories",
+        "summary": "Gets all top level categories."
+      }
+    },
+    "/store/{storeId}/categoryview/byId/{categoryId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "categoryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupDetailArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Category-View-Resource"
+        ],
+        "operationId": "findCategoryByUniqueId",
+        "summary": "Gets category details based on the unique ID assigned to the category by the database."
+      }
+    },
+    "/store/{storeId}/categoryview/byIdentifiers": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "identifier",
+            "required": false,
+            "type": "array"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The field name to use when ordering the results.",
+            "in": "query",
+            "name": "orderBy",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupDetailArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Category-View-Resource"
+        ],
+        "operationId": "findCategoryByIdentifiers",
+        "summary": "Gets category details based on category identifiers specified (not the id assigned by the database)."
+      }
+    },
+    "/store/{storeId}/categoryview/byIds": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "id",
+            "required": true,
+            "type": "array"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The field name to use when ordering the results.",
+            "in": "query",
+            "name": "orderBy",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupDetailArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Category-View-Resource"
+        ],
+        "operationId": "findCategoriesByUniqueIds",
+        "summary": "Gets category details based on a list of unique IDs assigned to the categories by the database."
+      }
+    },
+    "/store/{storeId}/categoryview/byParentCategory/{parentCategoryId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "parentCategoryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The comma separated list of numbers is used to control the depth of sub-categories and limit the number of items returned under each child category level. The first number in this list determines the maximum number of categories (first level sub-categories) to be returned under the immediate child category. The second number in the list determines the maximum number of categories to be returned under the first level sub-categories. A value of \"-1\" implies no limit. In that case, only the first level categories will be returned. For example, \"pageSize=4&limitSubCategories=-1,3,0,1\" implies that there will be unlimited first level sub-categories under the immediate child categories.  Under these categories (up to 4), all sub-categories will be returned and a maximum of 3 second level sub-categories will be returned. There will be no third level or fourth level since the third level limit is 0. Any level after a limit of 0 will be ignored. By default, no sub-category will be returned if this parameter is not specified. When the asterisk \"*\" is specified, it is considered the same as \"-1\" but, any subsequent levels will also be treated \"-1\".",
+            "in": "query",
+            "name": "depthAndLimit",
+            "type": "string"
+          },
+          {
+            "description": "The field name to use when ordering the results.",
+            "in": "query",
+            "name": "orderBy",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Page size. Used to limit the amount of data returned by a query. Valid values include positive integers of 1 and above. The \"pageNumber\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageSize",
+            "type": "integer"
+          },
+          {
+            "description": "Page number, starting at 1. Valid values include positive integers of 1 and above. The \"pageSize\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageNumber",
+            "type": "integer"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupDetailWithSequenceArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Category-View-Resource"
+        ],
+        "operationId": "findSubCategories",
+        "summary": "Gets child categories based on the unique Id assigned to the parent category by the database."
+      }
+    },
+    "/store/{storeId}/categoryview/{categoryIdentifier}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "categoryIdentifier",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CatalogGroupDetailArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Category-View-Resource"
+        ],
+        "operationId": "findCategoryByIdentifier",
+        "summary": "Gets category details based on its identifier (not the ID assigned by the database)."
+      }
+    },
+    "/store/{storeId}/productview/byCategory/{categoryId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "categoryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The attribute associated keywords to be returned.",
+            "in": "query",
+            "name": "attributeKeyword",
+            "type": "string"
+          },
+          {
+            "description": "The selected facets.",
+            "in": "query",
+            "name": "facet",
+            "type": "boolean"
+          },
+          {
+            "description": "The multiple name-value pairs of the facet limit defining the maximum number of items to be returned under each facet. The sequence of limits honored alongside with the sequence of facet name-value pairs.",
+            "in": "query",
+            "name": "facetLimit",
+            "type": "string"
+          },
+          {
+            "description": "The advanced facet list.",
+            "in": "query",
+            "name": "advancedFacetList",
+            "type": "string"
+          },
+          {
+            "description": "The filter facet.",
+            "in": "query",
+            "name": "filterFacet",
+            "type": "string"
+          },
+          {
+            "description": "The filter term.",
+            "in": "query",
+            "name": "filterTerm",
+            "type": "string"
+          },
+          {
+            "description": "The manufacturer name.",
+            "in": "query",
+            "name": "manufacturer",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The minimum price. Based on the selected currency.",
+            "in": "query",
+            "name": "minPrice",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum price for the product based on the selected currency.",
+            "in": "query",
+            "name": "maxPrice",
+            "type": "integer"
+          },
+          {
+            "description": "The field name to use when ordering the results.",
+            "in": "query",
+            "name": "orderBy",
+            "type": "string"
+          },
+          {
+            "description": "The search type is a numeric string which controls the query operator: ANY, OR, AND and control what data to be returned. For a detailed list of valid values, see the online documentation on Match type (_wcf.search.type). Known valid values include : 0: ANY (exclude SKU)1: EXACT (exclude SKU), 2: ALL (exclude SKU), 3: NONE (exclude SKU), 10: ANY (include SKU), 11: EXACT (include SKU), 12: ALL (include SKU), 13: NONE (include SKU), 100: ANY (only SKU), 101: EXACT (only SKU), 102: ALL (only SKU), 103: NONE (only SKU), 1000: ANY (include products, kits, bundles, category level SKU) (exclude product level SKU), 1001: EXACT (include products, kits, bundles, category level SKU) (exclude product level SKU), 1002: ALL (include products, kits, bundles, category level SKU) (exclude product level SKU), 1003: NONE (include products, kits, bundles, category level SKU) (exclude product level SKU), 10000: ANY (include category level SKU) (exclude products, kits, bundles, product level SKU), 10001: EXACT (include category level SKU) (exclude products, kits, bundles, product level SKU), 10002: ALL (include category level SKU) (exclude products, kits, bundles, product level SKU), 10003: NONE (include category level SKU) (exclude products, kits, bundles, product level SKU)",
+            "in": "query",
+            "name": "searchType",
+            "type": "integer"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Page size. Used to limit the amount of data returned by a query. Valid values include positive integers of 1 and above. The \"pageNumber\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageSize",
+            "type": "integer"
+          },
+          {
+            "description": "Page number, starting at 1. Valid values include positive integers of 1 and above. The \"pageSize\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageNumber",
+            "type": "integer"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductSummaryArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Product-View-Resource"
+        ],
+        "operationId": "findProductsByCategory",
+        "summary": "Finds a product by its ID."
+      }
+    },
+    "/store/{storeId}/productview/byCategoryForAdmin/{categoryId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "categoryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The attribute associated keywords to be returned.",
+            "in": "query",
+            "name": "attributeKeyword",
+            "type": "string"
+          },
+          {
+            "description": "The selected facets.",
+            "in": "query",
+            "name": "facet",
+            "type": "string"
+          },
+          {
+            "description": "The multiple name-value pairs of the facet limit defining the maximum number of items to be returned under each facet. The sequence of limits honored alongside with the sequence of facet name-value pairs.",
+            "in": "query",
+            "name": "facetLimit",
+            "type": "string"
+          },
+          {
+            "description": "The advanced facet list.",
+            "in": "query",
+            "name": "advancedFacetList",
+            "type": "string"
+          },
+          {
+            "description": "The filter facet.",
+            "in": "query",
+            "name": "filterFacet",
+            "type": "string"
+          },
+          {
+            "description": "The filter term.",
+            "in": "query",
+            "name": "filterTerm",
+            "type": "string"
+          },
+          {
+            "description": "The manufacturer name.",
+            "in": "query",
+            "name": "manufacturer",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The minimum price. Based on the selected currency.",
+            "in": "query",
+            "name": "minPrice",
+            "type": "string"
+          },
+          {
+            "description": "The maximum price for the product based on the selected currency.",
+            "in": "query",
+            "name": "maxPrice",
+            "type": "string"
+          },
+          {
+            "description": "The field name to use when ordering the results.",
+            "in": "query",
+            "name": "orderBy",
+            "type": "string"
+          },
+          {
+            "description": "The search type is a numeric string which controls the query operator: ANY, OR, AND and control what data to be returned. For a detailed list of valid values, see the online documentation on Match type (_wcf.search.type). Known valid values include : 0: ANY (exclude SKU)1: EXACT (exclude SKU), 2: ALL (exclude SKU), 3: NONE (exclude SKU), 10: ANY (include SKU), 11: EXACT (include SKU), 12: ALL (include SKU), 13: NONE (include SKU), 100: ANY (only SKU), 101: EXACT (only SKU), 102: ALL (only SKU), 103: NONE (only SKU), 1000: ANY (include products, kits, bundles, category level SKU) (exclude product level SKU), 1001: EXACT (include products, kits, bundles, category level SKU) (exclude product level SKU), 1002: ALL (include products, kits, bundles, category level SKU) (exclude product level SKU), 1003: NONE (include products, kits, bundles, category level SKU) (exclude product level SKU), 10000: ANY (include category level SKU) (exclude products, kits, bundles, product level SKU), 10001: EXACT (include category level SKU) (exclude products, kits, bundles, product level SKU), 10002: ALL (include category level SKU) (exclude products, kits, bundles, product level SKU), 10003: NONE (include category level SKU) (exclude products, kits, bundles, product level SKU)",
+            "in": "query",
+            "name": "searchType",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "string"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Page size. Used to limit the amount of data returned by a query. Valid values include positive integers of 1 and above. The \"pageNumber\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageSize",
+            "type": "string"
+          },
+          {
+            "description": "Used to display debug info. Set to 'true' to display sequence score.",
+            "in": "query",
+            "name": "debug",
+            "type": "string"
+          },
+          {
+            "description": "Page number, starting at 1. Valid values include positive integers of 1 and above. The \"pageSize\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageNumber",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductSummaryArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Not authenticated. The user session is not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the specified request.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Product-View-Resource"
+        ],
+        "operationId": "findProductsByCategoryForAdmin",
+        "summary": "By default, this API returns all products under the category and subcategories by deep search. It does not only return products in the current category. There is no control over the limit of each subcategory under the category facet."
+      }
+    },
+    "/store/{storeId}/productview/byId/{productId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The attribute associated keywords to be returned.",
+            "in": "query",
+            "name": "attributeKeyword",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductDetail"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Product-View-Resource"
+        ],
+        "operationId": "findProductById",
+        "summary": "Gets product details based on the product ID."
+      }
+    },
+    "/store/{storeId}/productview/byIds": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "id",
+            "required": true,
+            "type": "array"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The attribute associated keywords to be returned.",
+            "in": "query",
+            "name": "attributeKeyword",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductDetail"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Product-View-Resource"
+        ],
+        "operationId": "findProductsByIds",
+        "summary": "Gets product details based on the product ID."
+      }
+    },
+    "/store/{storeId}/productview/byPartNumber/{partNumber}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "partNumber",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The attribute associated keywords to be returned.",
+            "in": "query",
+            "name": "attributeKeyword",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductDetail"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Product-View-Resource"
+        ],
+        "operationId": "findProductByAPartNumber",
+        "summary": "Gets products by part number."
+      }
+    },
+    "/store/{storeId}/productview/byPartNumbers": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "collectionFormat": "multi",
+            "in": "query",
+            "items": {
+              "type": "string"
+            },
+            "name": "partNumber",
+            "required": true,
+            "type": "array"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductDetailArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Product-View-Resource"
+        ],
+        "operationId": "findProductByPartNumbers",
+        "summary": "Gets products by part numbers."
+      }
+    },
+    "/store/{storeId}/productview/bySearchTerm/{searchTerm}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "searchTerm",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The attribute associated keywords to be returned.",
+            "in": "query",
+            "name": "attributeKeyword",
+            "type": "string"
+          },
+          {
+            "description": "The selected facets.",
+            "in": "query",
+            "name": "facet",
+            "type": "boolean"
+          },
+          {
+            "description": "The multiple name-value pairs of the facet limit defining the maximum number of items to be returned under each facet. The sequence of limits honored alongside with the sequence of facet name-value pairs.",
+            "in": "query",
+            "name": "facetLimit",
+            "type": "string"
+          },
+          {
+            "description": "The advanced facet list.",
+            "in": "query",
+            "name": "advancedFacetList",
+            "type": "string"
+          },
+          {
+            "description": "The filter facet.",
+            "in": "query",
+            "name": "filterFacet",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The filter term.",
+            "in": "query",
+            "name": "filterTerm",
+            "type": "string"
+          },
+          {
+            "description": "The manufacturer name.",
+            "in": "query",
+            "name": "manufacturer",
+            "type": "string"
+          },
+          {
+            "description": "The minimum price. Based on the selected currency.",
+            "in": "query",
+            "name": "minPrice",
+            "type": "integer"
+          },
+          {
+            "description": "The maximum price for the product based on the selected currency.",
+            "in": "query",
+            "name": "maxPrice",
+            "type": "integer"
+          },
+          {
+            "description": "The field name to use when ordering the results.",
+            "in": "query",
+            "name": "orderBy",
+            "type": "string"
+          },
+          {
+            "description": "The search type is a numeric string which controls the query operator: ANY, OR, AND and control what data to be returned. For a detailed list of valid values, see the online documentation on Match type (_wcf.search.type). Known valid values include : 0: ANY (exclude SKU)1: EXACT (exclude SKU), 2: ALL (exclude SKU), 3: NONE (exclude SKU), 10: ANY (include SKU), 11: EXACT (include SKU), 12: ALL (include SKU), 13: NONE (include SKU), 100: ANY (only SKU), 101: EXACT (only SKU), 102: ALL (only SKU), 103: NONE (only SKU), 1000: ANY (include products, kits, bundles, category level SKU) (exclude product level SKU), 1001: EXACT (include products, kits, bundles, category level SKU) (exclude product level SKU), 1002: ALL (include products, kits, bundles, category level SKU) (exclude product level SKU), 1003: NONE (include products, kits, bundles, category level SKU) (exclude product level SKU), 10000: ANY (include category level SKU) (exclude products, kits, bundles, product level SKU), 10001: EXACT (include category level SKU) (exclude products, kits, bundles, product level SKU), 10002: ALL (include category level SKU) (exclude products, kits, bundles, product level SKU), 10003: NONE (include category level SKU) (exclude products, kits, bundles, product level SKU)",
+            "in": "query",
+            "name": "searchType",
+            "type": "integer"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "The category identifier.",
+            "in": "query",
+            "name": "categoryId",
+            "type": "string"
+          },
+          {
+            "description": "The list of physical store identifiers.",
+            "in": "query",
+            "name": "physicalStoreIds",
+            "type": "string"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Page size. Used to limit the amount of data returned by a query. Valid values include positive integers of 1 and above. The \"pageNumber\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageSize",
+            "type": "integer"
+          },
+          {
+            "description": "Page number, starting at 1. Valid values include positive integers of 1 and above. The \"pageSize\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageNumber",
+            "type": "integer"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          },
+          {
+            "description": "This field is used to disable search rules and rankings for fetching organic search results",
+            "in": "query",
+            "name": "disableSearchRules",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductSummaryArray"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Product-View-Resource"
+        ],
+        "operationId": "findProductsBySearchTerm",
+        "summary": "Gets product details based on a search term."
+      }
+    },
+    "/store/{storeId}/productview/{partNumber}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "partNumber",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The type of the merchandising association to be returned.",
+            "in": "query",
+            "name": "associationType",
+            "type": "string"
+          },
+          {
+            "description": "The attribute associated keywords to be returned.",
+            "in": "query",
+            "name": "attributeKeyword",
+            "type": "string"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "The currency code to use. Example usage : currency=USD. If no currency code is specified, the store default currency will be used.",
+            "in": "query",
+            "name": "currency",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "The attachment filter.",
+            "in": "query",
+            "name": "attachmentFilter",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductDetail"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Product-View-Resource"
+        ],
+        "operationId": "findProductByPartNumber",
+        "summary": "Gets products by part number."
+      }
+    },
+    "/store/{storeId}/sitecontent/brandSuggestions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Limit.",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The sorting to be used in the returned result, \"count\" or \"index\". By default, it is \"count\".",
+            "in": "query",
+            "name": "termsSort",
+            "type": "boolean"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CategorySuggestion"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Site-Content-Resource"
+        ],
+        "operationId": "findBrandSuggestions",
+        "summary": "Provides suggestions with type-ahead for search result page."
+      }
+    },
+    "/store/{storeId}/sitecontent/categorySuggestions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Limit.",
+            "in": "query",
+            "name": "limit",
+            "type": "integer"
+          },
+          {
+            "description": "The number of suggested keywords to be returned. The default value is 4.",
+            "in": "query",
+            "name": "count",
+            "type": "integer"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The sorting to be used in the returned result, \"count\" or \"index\". By default, it is \"count\".",
+            "in": "query",
+            "name": "termsSort",
+            "type": "boolean"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CategorySuggestion"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Site-Content-Resource"
+        ],
+        "operationId": "findCategorySuggestions",
+        "summary": "Provides suggestions with type-ahead for search result page."
+      }
+    },
+    "/store/{storeId}/sitecontent/keywordSuggestionsByTerm/{term}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "term",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Limit.",
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The sorting to be used in the returned result, \"count\" or \"index\". By default, it is \"count\".",
+            "in": "query",
+            "name": "termsSort",
+            "type": "boolean"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/KeywordSuggestion"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Site-Content-Resource"
+        ],
+        "operationId": "findKeywordSuggestionsByTerm",
+        "summary": "Provides keyword suggestions with type-ahead for search result page based on a term."
+      }
+    },
+    "/store/{storeId}/sitecontent/productSuggestionsBySearchTerm/{searchTerm}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "searchTerm",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Page size. Used to limit the amount of data returned by a query. Valid values include positive integers of 1 and above. The \"pageNumber\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageSize",
+            "type": "integer"
+          },
+          {
+            "description": "Page number, starting at 1. Valid values include positive integers of 1 and above. The \"pageSize\" must be specified for paging to work.",
+            "in": "query",
+            "name": "pageNumber",
+            "type": "integer"
+          },
+          {
+            "description": "The search type is a numeric string which controls the query operator: ANY, OR, AND and control what data to be returned. For a detailed list of valid values, see the online documentation on Match type (_wcf.search.type). Known valid values include : 0: ANY (exclude SKU)1: EXACT (exclude SKU), 2: ALL (exclude SKU), 3: NONE (exclude SKU), 10: ANY (include SKU), 11: EXACT (include SKU), 12: ALL (include SKU), 13: NONE (include SKU), 100: ANY (only SKU), 101: EXACT (only SKU), 102: ALL (only SKU), 103: NONE (only SKU), 1000: ANY (include products, kits, bundles, category level SKU) (exclude product level SKU), 1001: EXACT (include products, kits, bundles, category level SKU) (exclude product level SKU), 1002: ALL (include products, kits, bundles, category level SKU) (exclude product level SKU), 1003: NONE (include products, kits, bundles, category level SKU) (exclude product level SKU), 10000: ANY (include category level SKU) (exclude products, kits, bundles, product level SKU), 10001: EXACT (include category level SKU) (exclude products, kits, bundles, product level SKU), 10002: ALL (include category level SKU) (exclude products, kits, bundles, product level SKU), 10003: NONE (include category level SKU) (exclude products, kits, bundles, product level SKU)",
+            "in": "query",
+            "name": "searchType",
+            "type": "integer"
+          },
+          {
+            "description": "The sorting to be used in the returned result, \"count\" or \"index\". By default, it is \"count\".",
+            "in": "query",
+            "name": "term",
+            "type": "boolean"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The sorting to be used in the returned result, \"count\" or \"index\". By default, it is \"count\".",
+            "in": "query",
+            "name": "termsSort",
+            "type": "boolean"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          },
+          {
+            "description": "Option to force an entitlement check.",
+            "in": "query",
+            "name": "checkEntitlement",
+            "type": "boolean"
+          },
+          {
+            "description": "Profile name. Profiles determine the subset of data to be returned by a search query.",
+            "in": "query",
+            "name": "profileName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/ProductSuggestion"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Site-Content-Resource"
+        ],
+        "operationId": "findProductSuggestionsBySearchTerm",
+        "summary": "Provides suggestions with type-ahead for search result page."
+      }
+    },
+    "/store/{storeId}/sitecontent/suggestions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The suggestion type. Accepted values are 'Category', 'Brand', 'Articles', 'Keyword', and 'Product'.",
+            "in": "query",
+            "name": "suggestType",
+            "type": "string"
+          },
+          {
+            "description": "The search term.",
+            "in": "query",
+            "name": "term",
+            "type": "string"
+          },
+          {
+            "description": "Limit.",
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "description": "The number of suggested keywords to be returned. The default value is 4.",
+            "in": "query",
+            "name": "count",
+            "type": "integer"
+          },
+          {
+            "description": "The contractId",
+            "in": "query",
+            "name": "contractId",
+            "type": "string"
+          },
+          {
+            "description": "Language identifier. If not specified, the \"locale\" parameter will be used. If \"locale\" is not specified, then the store default language will be used.",
+            "in": "query",
+            "name": "langId",
+            "type": "string"
+          },
+          {
+            "description": "The sorting to be used in the returned result, \"count\" or \"index\". By default, it is \"count\".",
+            "in": "query",
+            "name": "termsSort",
+            "type": "boolean"
+          },
+          {
+            "description": "The catalog identifier. If none is specified, the store default catalog will be used.",
+            "in": "query",
+            "name": "catalogId",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is completed successfully.",
+            "schema": {
+              "$ref": "#/definitions/CommonSuggestions"
+            }
+          },
+          "400": {
+            "description": "Bad request. Some of the inputs provided to the request are not valid.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "404": {
+            "description": "The specified resource could not be found.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Additional details will be contained on the server logs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "tags": [
+          "Site-Content-Resource"
+        ],
+        "operationId": "findSuggestions",
+        "summary": "Provides suggestions with type-ahead for search result page."
+      }
+    }
+  },
+  "definitions": {
+    "AD_attribute": {
+      "properties": {
+        "ad_attribute": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "usage": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Attachment": {
+      "properties": {
+        "attachmentAssetID": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "attachmentAssetPath": {
+          "type": "string"
+        },
+        "catentry_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "usage": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Attribute": {
+      "properties": {
+        "facetable": {
+          "type": "boolean"
+        },
+        "sequence": {
+          "type": "string"
+        },
+        "storeDisplay": {
+          "type": "boolean"
+        },
+        "usage": {
+          "type": "string"
+        },
+        "value": {
+          "items": {
+            "$ref": "#/definitions/AttributeValue"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "AttributeValue": {
+      "properties": {
+        "identifier": {
+          "type": "string"
+        },
+        "sequence": {
+          "type": "string"
+        },
+        "uniqueID": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "BreadCrumbTrailEntryView": {
+      "properties": {
+        "lable": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "BreadCrumbTrailEntryViewExtended": {
+      "type": "object"
+    },
+    "CatalogGroupDetailArray": {
+      "properties": {
+        "catalogGroupView": {
+          "items": {
+            "$ref": "#/definitions/CatalogGroupView"
+          },
+          "type": "array"
+        },
+        "recordSetComplete": {
+          "type": "boolean"
+        },
+        "recordSetCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetStartNumber": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetTotal": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "uniqueId": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogGroupDetailWithSequenceArray": {
+      "properties": {
+        "catalogGroupView": {
+          "items": {
+            "$ref": "#/definitions/CatalogGroupViewWithSequence"
+          },
+          "type": "array"
+        },
+        "recordSetComplete": {
+          "type": "boolean"
+        },
+        "recordSetCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetStartNumber": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetTotal": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "uniqueId": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogGroupView": {
+      "properties": {
+        "childCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "fullImage": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "storeID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "userData": {
+          "$ref": "#/definitions/UserDataType"
+        }
+      },
+      "type": "object"
+    },
+    "CatalogGroupViewWithSequence": {
+      "properties": {
+        "childCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "fullImage": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "sequnece": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "storeID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "userData": {
+          "$ref": "#/definitions/UserDataType"
+        }
+      },
+      "type": "object"
+    },
+    "CategorySuggestion": {
+      "properties": {
+        "suggestionView": {
+          "items": {
+            "$ref": "#/definitions/CategorySuggestionView"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CategorySuggestionView": {
+      "properties": {
+        "categorySeparator": {
+          "type": "string"
+        },
+        "entry": {
+          "items": {
+            "$ref": "#/definitions/CategoryViewEntry"
+          },
+          "type": "array"
+        },
+        "identifier": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CategoryViewEntry": {
+      "properties": {
+        "fullPath": {
+          "type": "string"
+        },
+        "fullPathCategoryIds": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "userData": {
+          "$ref": "#/definitions/UserDataType"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CommonSuggestionView": {
+      "properties": {
+        "entry": {
+          "items": {
+            "$ref": "#/definitions/Entry"
+          },
+          "type": "array"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "userData": {
+          "$ref": "#/definitions/UserDataType"
+        }
+      },
+      "type": "object"
+    },
+    "CommonSuggestions": {
+      "properties": {
+        "suggestionView": {
+          "items": {
+            "$ref": "#/definitions/CommonSuggestionView"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Component": {
+      "properties": {
+        "buyable": {
+          "type": "boolean"
+        },
+        "catalogEntryTypeCode": {
+          "type": "string"
+        },
+        "fullImage": {
+          "type": "string"
+        },
+        "hasSingleSKU": {
+          "type": "boolean"
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "partNumber": {
+          "type": "string"
+        },
+        "price": {
+          "items": {
+            "$ref": "#/definitions/Price"
+          },
+          "type": "array"
+        },
+        "quantity": {
+          "type": "string"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "skus": {
+          "items": {
+            "$ref": "#/definitions/SKU"
+          },
+          "type": "array"
+        },
+        "storeID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "uniqueID": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "Entry": {
+      "type": "object"
+    },
+    "FacetView": {
+      "properties": {
+        "entry": {
+          "items": {
+            "$ref": "#/definitions/Entry"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "KeywordSuggestion": {
+      "properties": {
+        "suggestionView": {
+          "items": {
+            "$ref": "#/definitions/KeywordSuggestionView"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "KeywordSuggestionView": {
+      "properties": {
+        "entry": {
+          "items": {
+            "$ref": "#/definitions/Entry"
+          },
+          "type": "array"
+        },
+        "identifier": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "MerchandisingAssociation": {
+      "properties": {
+        "ad_attribute": {
+          "$ref": "#/definitions/AD_attribute"
+        },
+        "associationType": {
+          "type": "string"
+        },
+        "buyable": {
+          "type": "boolean"
+        },
+        "catalogEntryTypeCode": {
+          "type": "string"
+        },
+        "fullImage": {
+          "type": "string"
+        },
+        "hasSingleSKU": {
+          "type": "boolean"
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "numberOfSKUs": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "parentCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "partNumber": {
+          "type": "string"
+        },
+        "price": {
+          "items": {
+            "$ref": "#/definitions/Price"
+          },
+          "type": "array"
+        },
+        "quantity": {
+          "type": "string"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "storeID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "uniqueID": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "MetaData": {
+      "properties": {
+        "price": {
+          "type": "string"
+        },
+        "spellCheck": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Price": {
+      "properties": {
+        "currency": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "usage": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "ProductDetail": {
+      "properties": {
+        "components": {
+          "items": {
+            "$ref": "#/definitions/Component"
+          },
+          "type": "array"
+        },
+        "ad_attribute": {
+          "items": {
+            "$ref": "#/definitions/AD_attribute"
+          },
+          "type": "array"
+        },
+        "attachments": {
+          "items": {
+            "$ref": "#/definitions/Attachment"
+          },
+          "type": "array"
+        },
+        "attributes": {
+          "items": {
+            "$ref": "#/definitions/Attribute"
+          },
+          "type": "array"
+        },
+        "buyable": {
+          "type": "boolean"
+        },
+        "catalogEntryTypeCode": {
+          "type": "string"
+        },
+        "disallowRecurringOrder": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "dynamicKitDefaultConfiguration": {
+          "type": "string"
+        },
+        "dynamicKitDefaultConfigurationComplete": {
+          "type": "boolean"
+        },
+        "dynamicKitDefaultConfigurationCompleteESet": {
+          "type": "boolean"
+        },
+        "dynamicKitModelReference": {
+          "type": "string"
+        },
+        "dynamicKitURL": {
+          "type": "string"
+        },
+        "fullImage": {
+          "type": "string"
+        },
+        "fullImageAltDescription": {
+          "type": "string"
+        },
+        "hasSingleSKU": {
+          "type": "boolean"
+        },
+        "hasSingleSKUESet": {
+          "type": "boolean"
+        },
+        "keyword": {
+          "type": "string"
+        },
+        "longDescription": {
+          "type": "string"
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "merchandisingAssociations": {
+          "items": {
+            "$ref": "#/definitions/MerchandisingAssociation"
+          },
+          "type": "array"
+        },
+        "metaData": {
+          "$ref": "#/definitions/MetaData"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "metaKeyword": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "numberOfSKUs": {
+          "type": "string"
+        },
+        "parentCatalogEntryID": {
+          "type": "string"
+        },
+        "parentCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "partNumber": {
+          "type": "string"
+        },
+        "price": {
+          "items": {
+            "$ref": "#/definitions/Price"
+          },
+          "type": "array"
+        },
+        "recordSetComplete": {
+          "type": "boolean"
+        },
+        "recordSetCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetStartNumber": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetTotal": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetTotalMatches": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "singleSKUCatalogEntryID": {
+          "type": "string"
+        },
+        "skus": {
+          "items": {
+            "$ref": "#/definitions/SKU"
+          },
+          "type": "array"
+        },
+        "storeID": {
+          "type": "string"
+        },
+        "subscriptionTypeCode": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "uniqueID": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "userData": {
+          "items": {
+            "$ref": "#/definitions/UserDataType"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ProductDetailArray": {
+      "properties": {
+        "breadCrumbTrailEntryView": {
+          "items": {
+            "$ref": "#/definitions/BreadCrumbTrailEntryView"
+          },
+          "type": "array"
+        },
+        "breadCrumbTrailEntryViewExtended": {
+          "$ref": "#/definitions/BreadCrumbTrailEntryViewExtended"
+        },
+        "catalogEntryView": {
+          "items": {
+            "$ref": "#/definitions/ProductDetail"
+          },
+          "type": "array"
+        },
+        "facetView": {
+          "items": {
+            "$ref": "#/definitions/FacetView"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ProductSuggestion": {
+      "properties": {
+        "recordSetComplete": {
+          "type": "boolean"
+        },
+        "recordSetCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetStartNumber": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetTotal": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "suggestionView": {
+          "items": {
+            "$ref": "#/definitions/ProductSuggestionView"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ProductSuggestionView": {
+      "properties": {
+        "entry": {
+          "items": {
+            "$ref": "#/definitions/productSuggestionEntry"
+          },
+          "type": "array"
+        },
+        "identifier": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProductSummary": {
+      "properties": {
+        "ad_attribute": {
+          "items": {
+            "$ref": "#/definitions/AD_attribute"
+          },
+          "type": "array"
+        },
+        "attributes": {
+          "items": {
+            "$ref": "#/definitions/Attribute"
+          },
+          "type": "array"
+        },
+        "buyable": {
+          "type": "boolean"
+        },
+        "catalogEntryTypeCode": {
+          "type": "string"
+        },
+        "disallowRecurringOrder": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "dynamicKitDefaultConfiguration": {
+          "type": "string"
+        },
+        "dynamicKitDefaultConfigurationComplete": {
+          "type": "boolean"
+        },
+        "dynamicKitDefaultConfigurationCompleteESet": {
+          "type": "boolean"
+        },
+        "dynamicKitModelReference": {
+          "type": "string"
+        },
+        "dynamicKitURL": {
+          "type": "string"
+        },
+        "fullImage": {
+          "type": "string"
+        },
+        "fullImageAltDescription": {
+          "type": "string"
+        },
+        "hasSingleSKU": {
+          "type": "boolean"
+        },
+        "hasSingleSKUESet": {
+          "type": "boolean"
+        },
+        "keyword": {
+          "type": "string"
+        },
+        "longDescription": {
+          "type": "string"
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "metaData": {
+          "$ref": "#/definitions/MetaData"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "metaKeyword": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "numberOfSKUs": {
+          "type": "string"
+        },
+        "parentCatalogEntryID": {
+          "type": "string"
+        },
+        "parentCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "partNumber": {
+          "type": "string"
+        },
+        "price": {
+          "items": {
+            "$ref": "#/definitions/Price"
+          },
+          "type": "array"
+        },
+        "recordSetComplete": {
+          "type": "boolean"
+        },
+        "recordSetCount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetStartNumber": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetTotal": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "recordSetTotalMatches": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "singleSKUCatalogEntryID": {
+          "type": "string"
+        },
+        "storeID": {
+          "type": "string"
+        },
+        "subscriptionTypeCode": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "uniqueID": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "userData": {
+          "items": {
+            "$ref": "#/definitions/UserDataType"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ProductSummaryArray": {
+      "properties": {
+        "breadCrumbTrailEntryView": {
+          "items": {
+            "$ref": "#/definitions/BreadCrumbTrailEntryView"
+          },
+          "type": "array"
+        },
+        "breadCrumbTrailEntryViewExtended": {
+          "$ref": "#/definitions/BreadCrumbTrailEntryViewExtended"
+        },
+        "catalogEntryView": {
+          "items": {
+            "$ref": "#/definitions/ProductSummary"
+          },
+          "type": "array"
+        },
+        "facetView": {
+          "items": {
+            "$ref": "#/definitions/FacetView"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Query": {
+      "properties": {
+        "group": {
+          "type": "object"
+        },
+        "hero": {
+          "type": "object"
+        },
+        "highlight": {
+          "type": "object"
+        },
+        "params": {
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "postprocessor": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "preprocessor": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "provider": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "queryFields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "responseFields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "sortFields": {
+          "type": "object"
+        },
+        "spellcheck": {
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "SKU": {
+      "properties": {
+        "buyable": {
+          "type": "boolean"
+        },
+        "catalogEntryTypeCode": {
+          "type": "string"
+        },
+        "fullImage": {
+          "type": "string"
+        },
+        "hasSingleSKU": {
+          "type": "boolean"
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentCatalogGroupID": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "partNumber": {
+          "type": "string"
+        },
+        "price": {
+          "items": {
+            "$ref": "#/definitions/Price"
+          },
+          "type": "array"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "storeID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "uniqueID": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "SearchProfile": {
+      "properties": {
+        "indexName": {
+          "type": "string"
+        },
+        "lookupProfileName": {
+          "type": "string"
+        },
+        "parentProfileName": {
+          "type": "string"
+        },
+        "profileName": {
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/definitions/Query"
+        }
+      },
+      "type": "object"
+    },
+    "SearchRanking": {
+      "properties": {
+        "actions": {
+          "items": {
+            "$ref": "#/definitions/SearchRankingAction"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "languageId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "modified": {
+          "type": "string"
+        },
+        "storeId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "SearchRankingAction": {
+      "properties": {
+        "add": {
+          "type": "boolean"
+        },
+        "catalogEntryId": {
+          "type": "string"
+        },
+        "hide": {
+          "type": "boolean"
+        },
+        "pin": {
+          "type": "boolean"
+        },
+        "position": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "referenceCatalogEntryId": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SearchRankingName": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "modified": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SearchRankingNameCollection": {
+      "properties": {
+        "contents": {
+          "items": {
+            "$ref": "#/definitions/SearchRankingName"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "UserDataType": {
+      "properties": {
+        "name": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "value": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "productSuggestionEntry": {
+      "properties": {
+        "hasSingleSKU": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "partNumber": {
+          "type": "string"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "storeID": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "uniqueID": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "userData": {
+          "$ref": "#/definitions/UserDataType"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "tags": [
+    {
+      "description": "This class provides RESTful services to get SEO data for specified resources.",
+      "name": "V2-Url-Resource"
+    },
+    {
+      "description": "This class provides RESTful services to get the ProductView details.",
+      "name": "V2-Product-Resource"
+    },
+    {
+      "description": "This class provides RESTful services to get Status of Connectors.",
+      "name": "V2-Data-Status"
+    },
+    {
+      "description": "This class provides RESTful services to get category data for search-based catalog navigation for V2.0 store.",
+      "name": "V2-Category-Resource"
+    },
+    {
+      "description": "This class provides RESTful services to get resource details for site content.",
+      "name": "Site-Content-Resource"
+    },
+    {
+      "description": "This class provides RESTful services to create, read, update and delete search rankings.",
+      "name": "Search-Ranking-Resource"
+    },
+    {
+      "description": "This class provides RESTful services to create search profile. Not available for live environment.",
+      "name": "Search-Profile-Resource"
+    },
+    {
+      "description": "This class provides RESTful services for BOD. Not available for live environment.",
+      "name": "Search-Document-Resource"
+    },
+    {
+      "description": "This class provides RESTful services to add configuration data in ZooKeeper. Available for data and toolkit environment only.",
+      "name": "Search-Config-Resource"
+    },
+    {
+      "description": "This class provides RESTful services to get the ProductView details.",
+      "name": "Product-View-Resource"
+    },
+    {
+      "description": "Health endpoints.",
+      "name": "Health"
+    },
+    {
+      "description": "This class provides RESTful services to get category data for search-based catalog navigation. It performs the services by delegating to the CatalogNavigationView BOD service.",
+      "name": "Category-View-Resource"
+    }
+  ],
+  "x-components": {}
+}

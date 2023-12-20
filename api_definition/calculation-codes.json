@@ -1,0 +1,731 @@
+{
+  "host": "hostname.com",
+  "basePath": "/rest/admin/v2",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "version": "2.0",
+    "title": "calculation-codes"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/calculation-codes": {
+      "get": {
+        "tags": [
+          "calculation-codes"
+        ],
+        "description": "Get a collection of calculation codes.",
+        "operationId": "getCalculationCodes",
+        "parameters": [
+          {
+            "name": "searchString",
+            "description": "Limits search results to only include calculation codes with a calculationCode that matches the value of this parameter. Searches are case-insensitive.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The unique numeric ID for identifying the calculation Code.",
+            "required": false,
+            "type": "array",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "excludeId",
+            "in": "query",
+            "description": "The unique numeric ID for identifying calculation codes to be excluded from the result set.",
+            "required": false,
+            "type": "array",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "calculationCode",
+            "in": "query",
+            "description": "The external identifier or name for identifying the calculation code, given a particular calculation usage and store ID.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "combination",
+            "in": "query",
+            "description": "Specify the bit flag to determine how this calculation rule can be combined with other calculation rules, 0 = The rule can be combined with any other rule. 1 = The rule can only be combined with rules that have the combination type 0 rules. 2 = The rule cannot be combined with rules that have the combination type 1.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "groupBy",
+            "in": "query",
+            "description": "A Bit flag to indicate how the calculation method groups order items when performing calculations. Each group of order itmes is used to calculate a monetary amount, which is applied separately. The default calculation method recognizes the following groupings, 1 by product - Order items with different catalog entries should be grouped separately. When a catalog entry has a parent catalog entry, then the parent catalog entry is used instead. 2 by trading agreement - Order items with different trading agreements should be grouped separately. 4 by offer - Order items with different Offers should be grouped separately. 8 by address - Order items with different shipping addresses should be grouped separately. Bit flags can be added together to combine groupings. For example, 0 = No grouping. Place all applicable order items in a single group. 1 = Use for product grouping. 2 = Use for trading agreement grouping. 3 = Use for product and for trading agreement grouping. 4 = Use for offer grouping. 6 = Use for offer and for trading agreement grouping. 9 = Use for product and for address grouping.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "published",
+            "in": "query",
+            "description": "Specifies whether or not the calculation code is published, 0 = not published (temporarily disabled). 1 = published.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sequence",
+            "in": "query",
+            "description": "When multiple calculation codes with the same calculation usage are processed, they are processed in ascending order based on the numeric values of this property.",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "storeId",
+            "in": "query",
+            "description": "The store ID this calculation code is associated with.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "taxCodeClassId",
+            "in": "query",
+            "description": "If this calculation code is used to calculate taxes, then it can be grouped together with other tax calculation codes into a tax code classification. When the calculation code is used for shipping, this value can be null.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "updatedDate",
+            "in": "query",
+            "description": "The time this calculation code was most recently updated.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "field1",
+            "in": "query",
+            "description": "A customizable field.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "description": "A brief description of this calculation code, suitable for display by a user interface that manages calculation codes.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "displayLevel",
+            "in": "query",
+            "description": "Amounts calculated by this calculation code should be displayed with each, 0 = OrderItem, 1 = Order, 2 = Product, 3 = Item, 4 = Contract.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The date and time this calculation code begins being effective.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The date and time this calculation code stops being effective.",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "precedence",
+            "in": "query",
+            "description": "Reserved for HCL Internal use.",
+            "required": false,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "calculationUsageId",
+            "in": "query",
+            "description": "default is, -2. The calculation usage identifier. Indicates the kind of calculation this calculation code is used for. For example, the calculation code may be used to calculate one of the following monetary amounts, discounts, shipping charges, sales tax, or shipping tax. Out of box, -1 is for Discount, -2 is for Shipping, -3 is for Sales Tax. -4 is for Shipping Tax, -5 is for Coupon and -6 is for surcharge. For shipping always use the value -2.",
+            "required": false,
+            "type": "array",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "calculationMethodId",
+            "in": "query",
+            "description": "default is, -23. The calculation code calculate method that defines how to calculate a monetary amount for this calculation code. For shipping, the calculation method ID must be -23.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "calculationCodeApplyMethodId",
+            "in": "query",
+            "description": "default is, -24. The calculation code apply method that stores the calculated amount for the associated order items. For shipping, the calculation code apply method ID must be -24.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "calculationCodeQualifyMethodId",
+            "in": "query",
+            "description": "default is, -22. The calculation code qualify method that defines which order items are associated with this valculation code. For shipping, the calculation code qualify methodID must be -22.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "calculationCodeQualifyMethodMode",
+            "in": "query",
+            "description": "The mode which controls whether the qualify calculation method ID (calculationCodeQualifyMethodId) of this calculation code should be invoked. Allowed values are, 0 = unrestricted, the method will not be invoked, and 1 = restricted, the method will be invoked. Default is 0.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of records to return.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of calculation Codes.",
+            "schema": {
+              "$ref": "#/definitions/CalculationCodeCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "calculation-codes"
+        ],
+        "description": "Create a calculation code.",
+        "operationId": "createCalculationCode",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "CalculationCode",
+            "description": "The calculation code.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CalculationCode"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      }
+    },
+    "/calculation-codes/{id}": {
+      "get": {
+        "tags": [
+          "calculation-codes"
+        ],
+        "description": "Get a calculation code.",
+        "operationId": "getCalculationCodeById",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The calculation code.",
+            "schema": {
+              "$ref": "#/definitions/CalculationCode"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "calculation-codes"
+        ],
+        "description": "Delete a calculation code.",
+        "operationId": "deleteCalculationCodeById",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "calculation-codes"
+        ],
+        "description": "Update a calculation code.",
+        "operationId": "updateCalculationCodeById",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "CalculationCode",
+            "description": "The calculation code.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CalculationCode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The operation was successful."
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "404": {
+            "description": "The resource was not found."
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The unique numeric ID for identifying the calculation Code.",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    },
+    "/calculation-codes/{id}/descriptions": {
+      "get": {
+        "tags": [
+          "calculation-codes"
+        ],
+        "description": "",
+        "operationId": "getDescriptionsOfCalculationCode",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of records to return.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of calculation code descriptions.",
+            "schema": {
+              "$ref": "#/definitions/CalculationCodeDescriptionCollection"
+            }
+          },
+          "400": {
+            "description": "There was a client error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          },
+          "500": {
+            "description": "There was a server error.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponseContainer"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "The unique numeric ID for identifying the calculation Code.",
+          "required": true,
+          "type": "integer",
+          "format": "int32"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The error message code."
+        },
+        "message": {
+          "type": "string",
+          "description": "The error message."
+        },
+        "messageKey": {
+          "type": "string",
+          "description": "The error message key."
+        },
+        "messageArguments": {
+          "type": "array",
+          "description": "The arguments used to construct the error message.",
+          "items": {
+            "type": "object"
+          }
+        },
+        "correlationId": {
+          "type": "string",
+          "description": "The unique identifier for the request."
+        },
+        "locale": {
+          "type": "string",
+          "description": "The locale of the error message."
+        }
+      },
+      "description": "The error message item model."
+    },
+    "ErrorResponseContainer": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "The request identifier."
+        },
+        "errors": {
+          "type": "array",
+          "description": "The errors.",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      },
+      "description": "The error message model."
+    },
+    "CalculationCode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The unique numeric ID for identifying the calculation Code."
+        },
+        "calculationCode": {
+          "type": "string",
+          "description": "The external identifier or name for identifying the calculation code, given a particular calculation usage and store ID."
+        },
+        "combination": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Specify the bit flag to determine how this calculation rule can be combined with other calculation rules, 0 = The rule can be combined with any other rule. 1 = The rule can only be combined with rules that have the combination type 0 rules. 2 = The rule cannot be combined with rules that have the combination type 1."
+        },
+        "groupBy": {
+          "type": "integer",
+          "format": "int32",
+          "description": "A Bit flag to indicate how the calculation method groups order items when performing calculations. Each group of order itmes is used to calculate a monetary amount, which is applied separately. The default calculation method recognizes the following groupings, 1 by product - Order items with different catalog entries should be grouped separately. When a catalog entry has a parent catalog entry, then the parent catalog entry is used instead. 2 by trading agreement - Order items with different trading agreements should be grouped separately. 4 by offer - Order items with different Offers should be grouped separately. 8 by address - Order items with different shipping addresses should be grouped separately. Bit flags can be added together to combine groupings. For example, 0 = No grouping. Place all applicable order items in a single group. 1 = Use for product grouping. 2 = Use for trading agreement grouping. 3 = Use for product and for trading agreement grouping. 4 = Use for offer grouping. 6 = Use for offer and for trading agreement grouping. 9 = Use for product and for address grouping."
+        },
+        "published": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Specifies whether or not the calculation code is published, 0 = not published (temporarily disabled). 1 = published."
+        },
+        "sequence": {
+          "type": "number",
+          "format": "double",
+          "description": "When multiple calculation codes with the same calculation usage are processed, they are processed in ascending order based on the numeric values of this property."
+        },
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The store ID this calculation code is associated with."
+        },
+        "taxCodeClassId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "If this calculation code is used to calculate taxes, then it can be grouped together with other tax calculation codes into a tax code classification. When the calculation code is used for shipping, this value can be null."
+        },
+        "updatedDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time this calculation code was most recently updated."
+        },
+        "field1": {
+          "type": "string",
+          "description": "A customizable field."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of this calculation code, suitable for display by a user interface that manages calculation codes."
+        },
+        "displayLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Amounts calculated by this calculation code should be displayed with each, 0 = OrderItem, 1 = Order, 2 = Product, 3 = Item, 4 = Contract."
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time this calculation code begins being effective."
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time this calculation code stops being effective."
+        },
+        "precedence": {
+          "type": "number",
+          "format": "double",
+          "description": "Reserved for HCL Internal use."
+        },
+        "calculationUsageId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "default is, -2. The calculation usage identifier. Indicates the kind of calculation this calculation code is used for. For example, the calculation code may be used to calculate one of the following monetary amounts, discounts, shipping charges, sales tax, or shipping tax. Out of box, -1 is for Discount, -2 is for Shipping, -3 is for Sales Tax. -4 is for Shipping Tax, -5 is for Coupon and -6 is for surcharge. For shipping always use the value -2."
+        },
+        "calculationMethodId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "default is, -23. The calculation code calculate method that defines how to calculate a monetary amount for this calculation code. For shipping, the calculation method ID must be -23."
+        },
+        "calculationCodeApplyMethodId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "default is, -24. The calculation code apply method that stores the calculated amount for the associated order items. For shipping, the calculation code apply method ID must be -24."
+        },
+        "calculationCodeQualifyMethodId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "default is, -22. The calculation code qualify method that defines which order items are associated with this valculation code. For shipping, the calculation code qualify methodID must be -22."
+        },
+        "calculationCodeQualifyMethodMode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The mode which controls whether the qualify calculation method ID (calculationCodeQualifyMethodId) of this calculation code should be invoked. Allowed values are, 0 = unrestricted, the method will not be invoked, and 1 = restricted, the method will be invoked. Default is 0."
+        }
+      },
+      "description": "The calculation code."
+    },
+    "CalculationCodeCollection": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total number of items."
+        },
+        "items": {
+          "type": "array",
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/CalculationCode"
+          }
+        }
+      },
+      "description": "A collection of calculation Codes."
+    },
+    "CalculationCodeDescription": {
+      "type": "object",
+      "properties": {
+        "calculationCodeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The calculation code ID."
+        },
+        "languageId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The language ID for which this information applies."
+        },
+        "description": {
+          "type": "string",
+          "description": "A short description of the calculation code."
+        },
+        "longDescription": {
+          "type": "string",
+          "description": "A detailed description of the calculation code."
+        }
+      },
+      "description": "The calculation code description."
+    },
+    "CalculationCodeDescriptionCollection": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total number of items."
+        },
+        "items": {
+          "type": "array",
+          "description": "The items.",
+          "items": {
+            "$ref": "#/definitions/CalculationCodeDescription"
+          }
+        }
+      },
+      "description": "A collection of calculation code descriptions."
+    }
+  }
+}

@@ -1,0 +1,447 @@
+{
+    "host": "hostname.com",
+    "basePath": "/rest/admin/v2",
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "version": "2.0",
+        "title": "calculation-ranges"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/calculation-ranges": {
+            "get": {
+                "tags": [
+                    "calculation-ranges"
+                ],
+                "description": "Get a collection of calculation range.",
+                "operationId": "getCalculationRanges",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "The calculation range ID.",
+                        "required": false,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "cumulative",
+                        "in": "query",
+                        "description": "Valid values, 0 = only the matching Calculation Range with the highest RANGE START value is used. 1 = all matching Calculation Ranges are used. The calculated monetary amounts are summed to arrive at the final result.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "rangeStart",
+                        "in": "query",
+                        "description": "If a lookup number is greater than or equal to RANGE START, or if RANGE START is NULL, this row matches the lookup number.",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "name": "field1",
+                        "in": "query",
+                        "description": "Customizable.",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "name": "field2",
+                        "in": "query",
+                        "description": "Customizable.",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "name": "field3",
+                        "in": "query",
+                        "description": "Customizable.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "markForDelete",
+                        "in": "query",
+                        "description": "Reserved for HCL Internal use.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "calculationMethodId",
+                        "in": "query",
+                        "description": "The Calculation Range Method that determines a monetary amount from the Calculation Range Lookup Result.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "calculationScaleId",
+                        "in": "query",
+                        "description": "The Calculation Scale of which this Calculation Range is a part.",
+                        "required": false,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The position within the resulting dataset where the query begins returning item records. If the offset is \"5\", the records that returned begin with the sixth record that matches the query parameters. If the offset is \"0\", the records that are returned begin with the first record that matches the query parameters.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The maximum number of records to return.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of calculation range.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRangeCollection"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "calculation-ranges"
+                ],
+                "description": "Create a calculation range.",
+                "operationId": "createCalculationRange",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "CalculationRange",
+                        "description": "A calculation ranges.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            }
+        },
+        "/calculation-ranges/{id}": {
+            "get": {
+                "tags": [
+                    "calculation-ranges"
+                ],
+                "description": "Get a calculation range.",
+                "operationId": "getCalculationRangeById",
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "The comma-separated set of properties to be returned. If no properties are specified, all properties are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "The comma-separated set of related resources referenced in the links to be returned. If no related resources are specified, no related resources are returned.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "The comma-separated set of properties which controls the order of the items being listed, prefixed by either (-) to sort by descending order, or optionally (+) to sort by ascending order. For example, sort=name,-d which means, order the items based on the name value in ascending order, then by the id value in descending order.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A calculation ranges.",
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRange"
+                        }
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "calculation-ranges"
+                ],
+                "description": "Delete a calculation range.",
+                "operationId": "deleteCalculationRangeById",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "calculation-ranges"
+                ],
+                "description": "Update a calculation range.",
+                "operationId": "updateCalculationRangeById",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "CalculationRange",
+                        "description": "A calculation ranges.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CalculationRange"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The operation was successful."
+                    },
+                    "400": {
+                        "description": "There was a client error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    },
+                    "404": {
+                        "description": "The resource was not found."
+                    },
+                    "500": {
+                        "description": "There was a server error.",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponseContainer"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "The calculation range ID.",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "The error message code."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "The error message."
+                },
+                "messageKey": {
+                    "type": "string",
+                    "description": "The error message key."
+                },
+                "messageArguments": {
+                    "type": "array",
+                    "description": "The arguments used to construct the error message.",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The unique identifier for the request."
+                },
+                "locale": {
+                    "type": "string",
+                    "description": "The locale of the error message."
+                }
+            },
+            "description": "The error message item model."
+        },
+        "ErrorResponseContainer": {
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "type": "string",
+                    "description": "The request identifier."
+                },
+                "errors": {
+                    "type": "array",
+                    "description": "The errors.",
+                    "items": {
+                        "$ref": "#/definitions/Error"
+                    }
+                }
+            },
+            "description": "The error message model."
+        },
+        "CalculationRange": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The calculation range ID."
+                },
+                "cumulative": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Valid values, 0 = only the matching Calculation Range with the highest RANGE START value is used. 1 = all matching Calculation Ranges are used. The calculated monetary amounts are summed to arrive at the final result."
+                },
+                "rangeStart": {
+                    "type": "number",
+                    "description": "If a lookup number is greater than or equal to RANGE START, or if RANGE START is NULL, this row matches the lookup number."
+                },
+                "field1": {
+                    "type": "number",
+                    "description": "Customizable."
+                },
+                "field2": {
+                    "type": "number",
+                    "description": "Customizable."
+                },
+                "field3": {
+                    "type": "string",
+                    "description": "Customizable."
+                },
+                "markForDelete": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Reserved for HCL Internal use."
+                },
+                "calculationMethodId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The Calculation Range Method that determines a monetary amount from the Calculation Range Lookup Result."
+                },
+                "calculationScaleId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The Calculation Scale of which this Calculation Range is a part."
+                }
+            },
+            "description": "A calculation ranges."
+        },
+        "CalculationRangeCollection": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The total number of items."
+                },
+                "items": {
+                    "type": "array",
+                    "description": "The items.",
+                    "items": {
+                        "$ref": "#/definitions/CalculationRange"
+                    }
+                }
+            },
+            "description": "A collection of calculation range."
+        }
+    }
+}

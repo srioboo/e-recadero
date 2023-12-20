@@ -1,0 +1,383 @@
+{
+  "host": "analyticsdata.googleapis.com",
+  "basePath": "/v1beta",
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Google Analytics Reporting APIs (GA4)",
+    "version": "2.0"
+  },
+  "tags": [
+    {
+      "name": "Google Analytics Reporting APIs (GA4)",
+      "description": "This API provides RESTful services to Google Analytics Reporting APIs (GA4)."
+    }
+  ],
+  "paths": {
+    "/properties/{property}:runReport": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "property",
+            "description": "The GA4 Google Analytics property ID.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "The body of the run report.",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RunReportBody"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "This is the bearer token to be placed in the header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/RunReportResponse"
+            },
+            "description": "The request completed successfully."
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/GoogleErrorResponse"
+            },
+            "description": "Bad request. The request could not be understood by the server due to malformed syntax."
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/GoogleErrorResponse"
+            },
+            "description": "Not authenticated."
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/GoogleErrorResponse"
+            },
+            "description": "The user is not authorized to perform the specified request."
+          }
+        },
+        "tags": [
+          "Google Analytics GA4 Report Data"
+        ],
+        "description": "Get google analytics GA4 data.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get google analytics GA4 data.",
+        "operationId": "getGoogleAnalyticsGA4Data"
+      }
+    }
+  },
+  "definitions": {
+    "RunReportBody": {
+      "description": "Google Analytics run report body",
+      "properties": {
+        "dimensions": {
+          "description": "The dimensions requested and displayed.",
+          "items": {
+            "$ref": "#/definitions/dimension"
+          },
+          "type": "array"
+        },
+        "metrics": {
+          "description": "The metrics requested and displayed.",
+          "items": {
+            "$ref": "#/definitions/metric"
+          },
+          "type": "array"
+        },
+        "dateRanges": {
+          "description": "Date ranges of data to read. If multiple date ranges are requested, each response row will contain a zero based date range index. If two date ranges overlap, the event data for the overlapping days is included in the response rows for both date ranges.",
+          "items": {
+            "$ref": "#/definitions/dateRange"
+          },
+          "type": "array"
+        },
+        "dimensionFilter": {
+          "description": "Dimension filters allow you to ask for only specific dimension values in the report.",
+          "items": {
+            "$ref": "#/definitions/FilterExpression"
+          },
+          "type": "object"
+        },
+        "metricFilter": {
+          "description": "The filter clause of metrics. Applied after aggregating the report's rows, similar to SQL having-clause. Dimensions cannot be used in this filter.",
+          "items": {
+            "$ref": "#/definitions/FilterExpression"
+          },
+          "type": "object"
+        },
+        "orderBys": {
+          "description": "Specifies how rows are ordered in the response.",
+          "items": {
+            "$ref": "#/definitions/orderBys"
+          },
+          "type": "array"
+        },
+        "offset": {
+          "description": "The row count of the start row. The first row is counted as row 0.",
+          "type": "string"
+        },
+        "limit": {
+          "description": "The number of rows to return. If unspecified, 10,000 rows are returned. The API returns a maximum of 100,000 rows per request, no matter how many you ask for. limit must be positive.",
+          "type": "string"
+        },
+        "currencyCode": {
+          "description": "A currency code in ISO4217 format, such as 'USD'. If the field is empty, the report uses the property's default currency.",
+          "type": "string"
+        },
+        "keepEmptyRows": {
+          "description": "If false or unspecified, each row with all metrics equal to 0 will not be returned. If true, these rows will be returned if they are not separately removed by a filter.",
+          "type": "boolean"
+        },
+        "returnPropertyQuota": {
+          "description": "Toggles whether to return the current state of this Analytics Property's quota.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "dimension": {
+      "description": "Google Analytics run report body - dimension",
+      "properties": {
+        "name": {
+          "description": "The name of the dimension. ",
+          "type": "string"
+        },
+        "dimensionExpression": {
+          "description": "One dimension can be the result of an expression of multiple dimensions.",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "metric": {
+      "description": "Google Analytics run report body - metric",
+      "properties": {
+        "name": {
+          "description": "The name of the metric. ",
+          "type": "string"
+        },
+        "expression": {
+          "description": "A mathematical expression for derived metrics. For example, the metric Event count per user is eventCount/totalUsers.",
+          "type": "string"
+        },
+        "invisible": {
+          "description": "Indicates if a metric is invisible in the report response. If a metric is invisible, the metric will not produce a column in the response, but can be used in metricFilter, orderBys, or a metric expression.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "dateRange": {
+      "description": "Date ranges to be read.",
+      "properties": {
+        "name": {
+          "description": "Assigns a name to this date range.",
+          "type": "string"
+        },
+        "startDate": {
+          "description": "The inclusive start date for the query in the format YYYY-MM-DD.",
+          "type": "string"
+        },
+        "endDate": {
+          "description": "The inclusive end date for the query in the format YYYY-MM-DD.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "FilterExpression": {
+      "description": "The filter expression.",
+      "type": "object"
+    },
+    "orderBys": {
+      "description": "Order bys define how rows will be sorted in the response.",
+      "type": "object"
+    },
+    "GoogleErrorResponse": {
+      "description": "The error response.",
+      "properties": {
+        "error": {
+          "properties": {
+            "code": {
+              "description": "The response code",
+              "type": "integer"
+            },
+            "message": {
+              "description": "The error message.",
+              "type": "string"
+            },
+            "errors": {
+              "description": "The errors.",
+              "items": {
+                "$ref": "#/definitions/Error"
+              },
+              "type": "array"
+            },
+            "status": {
+              "description": "The error status",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "Error": {
+      "description": "The error.",
+      "properties": {
+        "message": {
+          "description": "The error message.",
+          "type": "string"
+        },
+        "domain": {
+          "description": "The domain.",
+          "type": "string"
+        },
+        "reason": {
+          "description": "The reason.",
+          "type": "string"
+        },
+        "location": {
+          "description": "The location.",
+          "type": "string"
+        },
+        "locationType": {
+          "description": "The location type.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "RunReportResponse": {
+      "description": "Google Analytics run report response",
+      "properties": {
+        "dimensionHeaders": {
+          "description": "The dimension headers",
+          "items": {
+            "$ref": "#/definitions/dimensionHeader"
+          },
+          "type": "array"
+        },
+        "metricHeaders": {
+          "description": "The metric headers",
+          "items": {
+            "$ref": "#/definitions/metricHeader"
+          },
+          "type": "array"
+        },
+        "rows": {
+          "description": "The analytics data rows",
+          "items": {
+            "$ref": "#/definitions/rows"
+          },
+          "type": "array"
+        },
+        "totals": {
+          "description": "The analytics data totals",
+          "items": {
+            "$ref": "#/definitions/rows"
+          },
+          "type": "array"
+        },
+        "maximums": {
+          "description": "The analytics data maximums",
+          "items": {
+            "$ref": "#/definitions/rows"
+          },
+          "type": "array"
+        },
+        "minimums": {
+          "description": "The analytics data minimums",
+          "items": {
+            "$ref": "#/definitions/rows"
+          },
+          "type": "array"
+        },
+        "rowCount": {
+          "description": "The total number of rows in the query result. rowCount is independent of the number of rows returned in the response, the limit request parameter, and the offset request parameter. For example if a query returns 175 rows and includes limit of 50 in the API request, the response will contain rowCount of 175 but only 50 rows.",
+          "type": "integer"
+        },
+        "kind": {
+          "description": "Identifies what kind of resource this message is. This kind is always the fixed string 'analyticsData#runReport'. Useful to distinguish between response types in JSON.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dimensionHeader": {
+      "description": "Google Analytics run report response - dimensionHeader",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "metricHeader": {
+      "description": "Google Analytics run report response - metricHeader",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rows": {
+      "description": "Google Analytics run report response - rows",
+      "properties": {
+        "dimensionValues": {
+          "description": "The dimension values",
+          "items": {
+            "$ref": "#/definitions/dimensionValue"
+          },
+          "type": "array"
+        },
+        "metricValues": {
+          "description": "The metric values",
+          "items": {
+            "$ref": "#/definitions/metricValue"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "dimensionValue": {
+      "description": "Google Analytics run report response - dimensionValue",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "metricValue": {
+      "description": "Google Analytics run report response - metricValue",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}
