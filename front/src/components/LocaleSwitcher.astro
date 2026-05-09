@@ -1,0 +1,78 @@
+---
+import { getSupportedLocales, getMessage } from '@/lib/i18n';
+
+interface Props {
+  currentLocale?: string;
+}
+
+const { currentLocale = 'en' } = Astro.props;
+const locales = getSupportedLocales();
+---
+
+<div class="locale-switcher">
+  {locales.map((locale) => (
+    <button
+      class:list={[
+        'locale-button',
+        {
+          active: locale === currentLocale,
+        },
+      ]}
+      data-locale={locale}
+      aria-label={`Switch to ${locale.toUpperCase()}`}
+    >
+      {locale.toUpperCase()}
+    </button>
+  ))}
+</div>
+
+<style>
+  .locale-switcher {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .locale-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .locale-button:hover {
+    border-color: #2c3e50;
+    color: #2c3e50;
+  }
+
+  .locale-button.active {
+    background: #2c3e50;
+    color: white;
+    border-color: #2c3e50;
+  }
+</style>
+
+<script>
+  function setupLocaleSwitch() {
+    const buttons = document.querySelectorAll('.locale-button');
+    
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const locale = button.getAttribute('data-locale');
+        if (locale) {
+          localStorage.setItem('user_locale', locale);
+          
+          // Reload page or emit event for reactive update
+          // For now, reload to get new translations
+          window.location.reload();
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupLocaleSwitch);
+  setupLocaleSwitch();
+</script>

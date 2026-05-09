@@ -1,0 +1,133 @@
+---
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  links?: FooterLink[];
+}
+
+const defaultLinks: FooterLink[] = [
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" },
+  { label: "Sitemap", href: "/sitemap" },
+];
+
+const { links = defaultLinks } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>E-Recadero</h3>
+        <p>Your trusted platform for digital transactions</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          {
+            links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">Twitter</a>
+          <a href="#" aria-label="GitHub">GitHub</a>
+          <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {currentYear} E-Recadero. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #2c3e50;
+    color: white;
+    padding: 3rem 2rem 1rem;
+    margin-top: 4rem;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer-section h3,
+  .footer-section h4 {
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+  }
+
+  .footer-section p {
+    margin: 0;
+    color: #ecf0f1;
+    font-size: 0.9rem;
+  }
+
+  .footer-section ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-section li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-section a {
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 0.9rem;
+  }
+
+  .footer-section a:hover {
+    color: #3498db;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-bottom {
+    padding-top: 2rem;
+    border-top: 1px solid #34495e;
+    text-align: center;
+    color: #bdc3c7;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      padding: 2rem 1rem 1rem;
+    }
+
+    .footer-content {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
