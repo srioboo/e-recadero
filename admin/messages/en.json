@@ -1,4 +1,38 @@
 {
-	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from en!"
+  "common": {
+    "language": "Language",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "settings": "Settings",
+    "documentation": "Documentation",
+    "logout": "Logout",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "admin": {
+    "title": "E-Recadero Admin",
+    "dashboard": "Dashboard",
+    "welcome": "Welcome to Admin Panel",
+    "systemStatus": "System Status",
+    "systemReady": "System Ready",
+    "environmentLoaded": "Environment Loaded",
+    "typeScriptEnabled": "TypeScript Enabled"
+  },
+  "front": {
+    "title": "E-Recadero",
+    "subtitle": "Your Delivery Partner",
+    "welcome": "Welcome to E-Recadero",
+    "tagline": "Fast, reliable delivery management platform",
+    "features": "Features",
+    "fastReliable": "Fast & Reliable",
+    "fastReliableDesc": "Lightning-fast order processing and delivery tracking",
+    "secure": "Secure",
+    "secureDesc": "Enterprise-grade security for your business data",
+    "global": "Global",
+    "globalDesc": "Deliver anywhere with our worldwide network",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  }
 }
