@@ -1,0 +1,52 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = "Dashboard" } = Astro.props;
+---
+
+<header class="header">
+  <div class="header-content">
+    <h1>{title}</h1>
+    <div class="header-actions">
+      <span class="user-info">Admin User</span>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    background: white;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .user-info {
+    color: #666;
+    font-size: 0.9rem;
+  }
+</style>
