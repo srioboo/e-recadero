@@ -1,2 +1,3 @@
-# recadero
-Recadero Shopping Store
+# E-recadero
+
+E-Recadero Shopping Store
