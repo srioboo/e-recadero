@@ -1,0 +1,84 @@
+# Development Profile Configuration
+# Used for local development with Docker Compose services
+# Activate with: spring.profiles.active=dev or java ... --spring.profiles.active=dev
+
+spring:
+  application:
+    name: recadero-backend
+  
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        generate_statistics: true
+        format_sql: true
+        use_sql_comments: true
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/recadero
+    username: recadero
+    password: recadero123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 20000
+  
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: false
+    locations: classpath:db/migration
+  
+  redis:
+    host: localhost
+    port: 6379
+    password: redis123
+    timeout: 2000
+  
+  kafka:
+    bootstrap-servers: localhost:9092
+  
+  devtools:
+    restart:
+      enabled: true
+      exclude: logs/*,.git
+    livereload:
+      enabled: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+  error:
+    include-message: always
+    include-stacktrace: always
+
+logging:
+  level:
+    root: INFO
+    org.sirantar.recadero: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.data: DEBUG
+    org.hibernate: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,flyway,db
+  endpoint:
+    health:
+      show-details: always
+    env:
+      enabled: true
+  endpoints.web.base-path: /api/v1/actuator
