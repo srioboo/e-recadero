@@ -2,7 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.4.3"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("org.springframework.modulith") version "1.2.0"
+	id("org.flywaydb.flyway") version "9.22.3"
 	id("jacoco")
 	id("com.github.spotbugs") version "6.0.9"
 	id("checkstyle")
@@ -13,15 +13,18 @@ version = "0.0.1-SNAPSHOT"
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(23)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
 repositories {
 	mavenCentral()
+	maven { url = uri("https://repo.spring.io/milestone") }
+	maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
 extra["springCloudVersion"] = "2023.0.0"
+extra["springModulithVersion"] = "1.1.5"
 
 dependencyManagement {
 	imports {
@@ -38,8 +41,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	
 	// Spring Modulith
-	implementation("org.springframework.modulith:spring-modulith-starter-core")
-	implementation("org.springframework.modulith:spring-modulith-events-core")
+	implementation("org.springframework.modulith:spring-modulith-starter-core:${property("springModulithVersion")}")
+	implementation("org.springframework.modulith:spring-modulith-events-core:${property("springModulithVersion")}")
 	
 	// Spring Cloud Stream & Kafka
 	implementation("org.springframework.cloud:spring-cloud-starter-stream-kafka")
@@ -118,7 +121,15 @@ spotbugs {
 	excludeFilter.set(file("config/spotbugs-exclude.xml"))
 }
 
-// Modulith Configuration
-modulith {
-	directlyRequired = false
+// Flyway Configuration
+flyway {
+	url = System.getenv("FLYWAY_URL") ?: "jdbc:postgresql://localhost:5432/recadero"
+	user = System.getenv("FLYWAY_USER") ?: "recadero"
+	password = System.getenv("FLYWAY_PASSWORD") ?: "recadero123"
+	baselineOnMigrate = true
+	cleanDisabled = true
+	locations = arrayOf("classpath:db/migration")
+	sqlMigrationPrefix = "V"
+	sqlMigrationSeparator = "__"
+	sqlMigrationSuffixes = arrayOf(".sql")
 }
