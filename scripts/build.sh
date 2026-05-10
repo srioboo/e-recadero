@@ -9,6 +9,10 @@ set -e
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 ADMIN_DIR="$PROJECT_ROOT/admin"
 FRONT_DIR="$PROJECT_ROOT/front"
+BACK_DIR="$PROJECT_ROOT/back"
+
+# Java configuration (required for Gradle with Java 21)
+export JAVA_HOME="/Users/salrio/Library/Java/JavaVirtualMachines/ms-21.0.7/Contents/Home"
 
 # Colors for output
 RED='\033[0;31m'
@@ -32,6 +36,11 @@ if [ ! -d "$FRONT_DIR" ]; then
   exit 1
 fi
 
+if [ ! -d "$BACK_DIR" ]; then
+  echo -e "${RED}✗ Backend directory not found: $BACK_DIR${NC}"
+  exit 1
+fi
+
 # Build admin
 echo -e "${BLUE}Building Admin Dashboard...${NC}"
 cd "$ADMIN_DIR"
@@ -50,17 +59,31 @@ FRONT_SIZE=$(du -sh dist/ | cut -f1)
 echo -e "${GREEN}✓ Front build complete (Size: $FRONT_SIZE)${NC}"
 echo ""
 
+# Build backend
+echo -e "${BLUE}Building Backend API...${NC}"
+cd "$BACK_DIR"
+./gradlew clean build || { echo -e "${RED}✗ Backend build failed${NC}"; exit 1; }
+BACK_JAR=$(find build/libs -name "*.jar" -type f | head -1)
+if [ -z "$BACK_JAR" ]; then
+  echo -e "${RED}✗ Backend JAR not found${NC}"
+  exit 1
+fi
+BACK_SIZE=$(du -sh "$BACK_JAR" | cut -f1)
+echo -e "${GREEN}✓ Backend build complete (JAR: $BACK_SIZE)${NC}"
+echo ""
+
 # Summary
 echo -e "${GREEN}==================================${NC}"
 echo -e "${GREEN}✓ All builds completed successfully${NC}"
 echo -e "${GREEN}==================================${NC}"
 echo ""
 echo "Build Artifacts:"
-echo "  Admin: $ADMIN_DIR/dist/ (Size: $ADMIN_SIZE)"
-echo "  Front: $FRONT_DIR/dist/ (Size: $FRONT_SIZE)"
+echo "  Admin:   $ADMIN_DIR/dist/ (Size: $ADMIN_SIZE)"
+echo "  Front:   $FRONT_DIR/dist/ (Size: $FRONT_SIZE)"
+echo "  Backend: $BACK_JAR (Size: $BACK_SIZE)"
 echo ""
 echo "Next Steps:"
-echo "  1. Test locally:  npm run preview --prefix admin/"
-echo "  2. Deploy:        Upload dist/ to your hosting"
-echo "  3. Verify:        Check https://your-domain.com"
+echo "  1. Local testing:  ./scripts/dev.sh"
+echo "  2. Deploy:         Upload admin/dist & front/dist; Deploy backend JAR"
+echo "  3. Verify:         Check https://your-domain.com and https://api.your-domain.com"
 echo ""
