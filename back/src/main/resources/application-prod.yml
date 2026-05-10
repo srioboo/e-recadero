@@ -1,0 +1,141 @@
+# Production Profile Configuration
+# Used for production deployments on cloud infrastructure
+# Activate with: spring.profiles.active=prod or SPRING_PROFILES_ACTIVE=prod
+
+spring:
+  application:
+    name: recadero-backend
+  
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate  # Never auto-modify schema in production
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        generate_statistics: false
+        format_sql: false
+        jdbc:
+          batch_size: 50
+          fetch_size: 100
+        connection:
+          pool_size: 20
+  
+  # External database via environment variables
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      auto-commit: false
+  
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: false
+    locations: classpath:db/migration
+    clean-disabled: true  # Never clean production database
+  
+  # External Redis via environment variables
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD}
+    timeout: 2000
+    ssl: ${REDIS_SSL:false}
+    lettuce:
+      pool:
+        max-active: 16
+        max-idle: 8
+        min-idle: 4
+        max-wait: 2000
+  
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      cache-null-values: false
+  
+  # External Kafka cluster via environment variables
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS}
+    producer:
+      acks: all
+      retries: 5
+      properties:
+        linger:
+          ms: 100
+        batch:
+          size: 32768
+        compression:
+          type: snappy
+    consumer:
+      group-id: recadero-prod
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      max-poll-records: 100
+  
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: ${KAFKA_BROKERS}
+          auto-create-topics: false
+          configuration:
+            security:
+              protocol: ${KAFKA_SECURITY_PROTOCOL:SASL_SSL}
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+  compression:
+    enabled: true
+    min-response-size: 1024
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-exception: false
+
+logging:
+  level:
+    root: WARN
+    org.sirantar.recadero: INFO
+    org.springframework: WARN
+    org.springframework.boot.actuate: INFO
+    org.hibernate: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /var/log/recadero/application.log
+    max-size: 100MB
+    max-history: 30
+    total-size-cap: 1GB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  observation:
+    metrics:
+      handler:
+        micrometer:
+          enabled: true

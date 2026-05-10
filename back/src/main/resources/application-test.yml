@@ -1,0 +1,80 @@
+# Test Profile Configuration
+# Used for integration and unit tests with in-memory H2 database
+# Activate with: spring.profiles.active=test or @ActiveProfiles("test")
+
+spring:
+  application:
+    name: recadero-backend
+  
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: create-drop  # Recreate schema for each test
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: false
+        generate_statistics: false
+  
+  # H2 In-Memory Database
+  datasource:
+    url: jdbc:h2:mem:recadero-test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+    hikari:
+      maximum-pool-size: 2
+      minimum-idle: 1
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  # Flyway disabled for tests (Hibernate handles schema)
+  flyway:
+    enabled: false
+  
+  # Redis with Testcontainers (if available)
+  redis:
+    host: localhost
+    port: 6379
+    password: redis123
+  
+  # Kafka with Testcontainers (if available)
+  kafka:
+    bootstrap-servers: localhost:9092
+  
+  # Spring Cloud Stream for Kafka
+  cloud:
+    stream:
+      kafka:
+        binder:
+          configuration:
+            max.in.flight.requests.per.connection: 1
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+logging:
+  level:
+    root: WARN
+    org.sirantar.recadero: INFO
+    org.springframework.test: INFO
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.springframework.data: WARN
+    org.hibernate: WARN
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: when-authorized
