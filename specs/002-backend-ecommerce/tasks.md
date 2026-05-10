@@ -45,7 +45,7 @@
 
 ### Database & Migrations
 
-- [ ] T008 Create database schemas in Flyway:
+- [x] T008 Create database schemas in Flyway:
   - src/main/resources/db/migration/V1__create_schemas.sql
   - V2__create_catalog_schema.sql
   - V3__create_users_schema.sql
@@ -53,9 +53,9 @@
   - V5__create_orders_schema.sql
   - V6__create_promotions_schema.sql
   - V7__create_templates_schema.sql
-- [ ] T009 [P] Create shared sequence generators and default functions in V1 migration
-- [ ] T010 Setup Flyway config in application.yml (locations, encoding, validation)
-- [ ] T011 Run migrations locally: `./gradlew flywayMigrate` (verify all 7 schemas created)
+- [x] T009 [P] Create shared sequence generators and default functions in V1 migration
+- [x] T010 Setup Flyway config in application.yml (locations, encoding, validation)
+- [x] T011 Run migrations locally: `./gradlew flywayMigrate` (verify all 7 schemas created)
 
 ### Security & Authentication
 
