@@ -141,3 +141,14 @@ modulith:
   events:
     publication-delay: 100  # ms
     republish-on-startup: true
+
+# Application Security Configuration
+app:
+  security:
+    cors:
+      allowed-origins: http://localhost:3000,http://localhost:3001
+    jwt:
+      issuer: http://localhost:8080
+      secret: changeme-this-is-default-secret-key-use-env-var-in-prod
+      access-token-expiry: 900  # 15 minutes in seconds
+      refresh-token-expiry: 604800  # 7 days in seconds
