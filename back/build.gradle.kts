@@ -129,7 +129,7 @@ flyway {
 	password = System.getenv("FLYWAY_PASSWORD") ?: "recadero123"
 	baselineOnMigrate = true
 	cleanDisabled = true
-	locations = arrayOf("classpath:db/migration")
+	locations = arrayOf("filesystem:src/main/resources/db/migration")
 	sqlMigrationPrefix = "V"
 	sqlMigrationSeparator = "__"
 	sqlMigrationSuffixes = arrayOf(".sql")
