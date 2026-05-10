@@ -1,95 +1,98 @@
-# Implementation Plan: Migrate Admin & Front from Svelte to Astro
+# Implementation Plan: [FEATURE]
 
-**Branch**: `001-migrate-svelte-astro` | **Date**: 2026-05-09 | **Spec**: [spec.md](./spec.md)
-**Input**: Feature specification from `specs/001-migrate-svelte-astro/spec.md`
+**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
 ## Summary
 
-Replace existing Svelte-based admin and front projects with new Astro-based implementations. Both projects are currently empty scaffolding without production code, enabling a clean migration. The new projects will maintain i18n support (English/Spanish), development server capabilities, and production build pipelines using Astro's modern build tooling.
+[Extract from feature spec: primary requirement + technical approach from research]
 
 ## Technical Context
 
-**Language/Version**: Node.js 18+ with TypeScript 5.x  
-**Primary Dependencies**: Astro 4.x, @astrojs/react (or framework adapter), Vite (build engine)  
-**Storage**: N/A (frontend projects, data handled by backend API)  
-**Testing**: Vitest for unit tests, Playwright for E2E tests  
-**Target Platform**: Web browsers (desktop + mobile), WASM-capable via Astro  
-**Project Type**: Web application (dual frontend: admin dashboard + public-facing app)  
-**Performance Goals**: First Contentful Paint < 2s, Lighthouse score > 90, build time < 30s  
-**Constraints**: Must maintain existing i18n structure (messages/en.json, messages/es.json), reuse existing authentication from backend  
-**Scale/Scope**: 2 independent Astro projects, ~50+ components total across both, SSR/SSG hybrid rendering
+<!--
+  ACTION REQUIRED: Replace the content in this section with the technical details
+  for the project. The structure here is presented in advisory capacity to guide
+  the iteration process.
+-->
+
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-### Alignment with Project Principles
-
-✅ **Modularidad y Composabilidad**: Astro enforces component-based architecture; each feature will be built as independent, reusable components
-✅ **Documentation Driven**: Both projects will include README.md, component documentation, and Storybook-style component catalog
-✅ **Backwards Compatibility**: Since existing Svelte projects have no production code, migration is clean cut; no breaking changes to preserve
-✅ **Developer Experience**: Astro provides excellent DX with fast dev server, HMR, TypeScript support, and clear file-based routing
-✅ **Semantic Versioning**: Project will follow sem-ver starting from 1.0.0 (initial Astro implementation)
-✅ **Multi-language Support**: Node.js/npm ensures cross-platform support; TypeScript code is language-agnostic
-✅ **Security by Design**: Astro's static/hybrid rendering reduces attack surface; CSP headers will be configured in deployment
-
-**Gate Status**: ✅ PASS - No principle violations detected
+[Gates determined based on constitution file]
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/001-migrate-svelte-astro/
+specs/[###-feature]/
 ├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command) - TBD
-├── data-model.md        # Phase 1 output (/speckit.plan command) - TBD
-├── quickstart.md        # Phase 1 output (/speckit.plan command) - TBD
-├── contracts/           # Phase 1 output (/speckit.plan command) - TBD
+├── research.md          # Phase 0 output (/speckit.plan command)
+├── data-model.md        # Phase 1 output (/speckit.plan command)
+├── quickstart.md        # Phase 1 output (/speckit.plan command)
+├── contracts/           # Phase 1 output (/speckit.plan command)
 └── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
 ```
 
-### Source Code (repository root - Two Independent Astro Projects)
-
-**Option Selected**: Dual Frontend Web Applications (admin + front)
+### Source Code (repository root)
+<!--
+  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+  for this feature. Delete unused options and expand the chosen structure with
+  real paths (e.g., apps/admin, packages/something). The delivered plan must
+  not include Option labels.
+-->
 
 ```text
-admin/                           # Admin dashboard (replaces old Svelte project)
-├── src/
-│   ├── components/             # Reusable Astro components
-│   ├── pages/                  # File-based routing
-│   ├── layouts/                # Layout components
-│   └── lib/                    # Utilities, i18n helpers
-├── public/                     # Static assets
-├── messages/                   # i18n translations (en.json, es.json)
-├── package.json
-├── astro.config.mjs
-├── tsconfig.json
-├── vite.config.ts
-└── tests/
-    ├── unit/                   # Unit tests (Vitest)
-    └── e2e/                    # E2E tests (Playwright)
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+src/
+├── models/
+├── services/
+├── cli/
+└── lib/
 
-front/                           # Public-facing app (replaces old Svelte project)
+tests/
+├── contract/
+├── integration/
+└── unit/
+
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+backend/
 ├── src/
-│   ├── components/             # Reusable Astro components
-│   ├── pages/                  # File-based routing
-│   ├── layouts/                # Layout components
-│   └── lib/                    # Utilities, i18n helpers
-├── public/                     # Static assets
-├── messages/                   # i18n translations (en.json, es.json)
-├── package.json
-├── astro.config.mjs
-├── tsconfig.json
-├── vite.config.ts
+│   ├── models/
+│   ├── services/
+│   └── api/
 └── tests/
-    ├── unit/                   # Unit tests (Vitest)
-    └── e2e/                    # E2E tests (Playwright)
+
+frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   └── services/
+└── tests/
+
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
+
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: Both projects follow identical Astro conventions to ensure consistency across the codebase. Each project is independently deployable and runnable. The `messages/` directory reuses existing i18n files from the previous Svelte setup. Build outputs will be in `dist/` directories for each project.
+**Structure Decision**: [Document the selected structure and reference the real
+directories captured above]
 
 ## Complexity Tracking
 
