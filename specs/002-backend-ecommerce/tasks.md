@@ -27,10 +27,10 @@
 
 - [x] T001 Create Spring Boot 3.3.x project with Java 21 and Gradle 8.x build file
 - [x] T002 [P] Configure build.gradle.kts with dependencies: Spring Modulith, Spring Data JPA, Spring Security, Spring Web
-- [ ] T003 [P] Add Gradle plugins: Modulith module documentation, code coverage (JaCoCo), spotbugs, checkstyle
-- [ ] T004 [P] Create Docker Compose (compose.yaml) with PostgreSQL, Redis, Kafka, Zookeeper containers
-- [ ] T005 [P] Setup Flyway database migration framework in build.gradle.kts
-- [ ] T006 [P] Configure application.yml with Spring profiles (dev, test, prod)
+- [x] T003 [P] Add Gradle plugins: Modulith module documentation, code coverage (JaCoCo), spotbugs, checkstyle
+- [x] T004 [P] Create Docker Compose (compose.yaml) with PostgreSQL, Redis, Kafka, Zookeeper containers
+- [x] T005 [P] Setup Flyway database migration framework in build.gradle.kts
+- [x] T006 [P] Configure application.yml with Spring profiles (dev, test, prod)
 - [ ] T007 Create RecaderoApplication.java main Spring Boot entry point with @SpringBootApplication
 
 **Checkpoint**: Project builds without errors; `./gradlew bootRun` starts successfully on localhost:8080
