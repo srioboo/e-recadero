@@ -100,10 +100,17 @@ tasks.register("codeCoverageReport") {
 	dependsOn(tasks.jacocoTestReport)
 }
 
+// Quality Gate: All Checks
+tasks.register("qualityGate") {
+	dependsOn("check", "codeCoverageReport")
+	description = "Run all quality checks: checkstyle, spotbugs, tests, coverage"
+}
+
 // Checkstyle Configuration
 checkstyle {
 	maxWarnings = 0
 	toolVersion = "10.12.5"
+	configFile = file("config/checkstyle.xml")
 }
 
 // SpotBugs Configuration

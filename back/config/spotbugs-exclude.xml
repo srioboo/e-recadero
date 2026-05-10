@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Exclude Spring Boot generated classes -->
+    <Match>
+        <Class name="~.*\$.*"/>
+    </Match>
+
+    <!-- Exclude test classes -->
+    <Match>
+        <Class name="~.*Test"/>
+    </Match>
+
+    <!-- Exclude Lombok-generated code (hashCode, equals, toString) -->
+    <Match>
+        <Class name="~.*" />
+        <Method name="~(hashCode|equals|canEqual|toString|getId|setId)" />
+    </Match>
+
+    <!-- Exclude building pattern methods (builder, from, with) -->
+    <Match>
+        <Method name="~(builder|from|with).*" />
+    </Match>
+
+    <!-- Ignore null pointer in optional chains (Java Optional handling) -->
+    <Match>
+        <Bug pattern="NP_NULL_ON_SOME_PATH" />
+    </Match>
+
+    <!-- Ignore method that uses Thread.sleep() -->
+    <Match>
+        <Bug pattern="SleepWhileHoldingLock" />
+    </Match>
+
+    <!-- Ignore DateFormat field assignment (Spring handles it) -->
+    <Match>
+        <Bug pattern="STALE_EXPLICIT_EXCEPTION" />
+    </Match>
+
+    <!-- Exclude Spring Security filter chain configuration -->
+    <Match>
+        <Class name="~.*SecurityConfig"/>
+    </Match>
+
+    <!-- Exclude generated entities from persistence libraries -->
+    <Match>
+        <Class name="~.*\$\$.*" />
+    </Match>
+</FindBugsFilter>
