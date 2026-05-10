@@ -31,7 +31,7 @@
 - [x] T004 [P] Create Docker Compose (compose.yaml) with PostgreSQL, Redis, Kafka, Zookeeper containers
 - [x] T005 [P] Setup Flyway database migration framework in build.gradle.kts
 - [x] T006 [P] Configure application.yml with Spring profiles (dev, test, prod)
-- [ ] T007 Create RecaderoApplication.java main Spring Boot entry point with @SpringBootApplication
+- [x] T007 Create RecaderoApplication.java main Spring Boot entry point with @SpringBootApplication
 
 **Checkpoint**: Project builds without errors; `./gradlew bootRun` starts successfully on localhost:8080
 
