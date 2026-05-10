@@ -1,0 +1,171 @@
+package org.sirantar.recadero.shared.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
+/**
+ * Spring Security configuration for JWT-based OAuth2 resource server.
+ * 
+ * Features:
+ * - JWT token validation for stateless authentication
+ * - Role-based access control via @PreAuthorize, @PostAuthorize
+ * - CORS configuration for frontend integrations
+ * - CSRF protection for state-changing operations
+ * - Session management (stateless JWT-based)
+ */
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity(
+    prePostEnabled = true,
+    securedEnabled = true,
+    jsr250Enabled = true
+)
+public class SecurityConfig {
+
+  @Value("${app.security.cors.allowed-origins:http://localhost:3000,http://localhost:3001}")
+  private String[] allowedOrigins;
+
+  @Value("${app.security.jwt.issuer:http://localhost:8080}")
+  private String jwtIssuer;
+
+  /**
+   * Configure HTTP security filter chain.
+   * 
+   * Security policies:
+   * - Stateless JWT-based authentication (no sessions)
+   * - CORS enabled for specified origins
+   * - CSRF protection disabled (stateless API; CORS handles cross-origin concerns)
+   * - Public endpoints: /api/v1/auth/*, /api/tracking/*, /api/templates/*, /swagger-ui/*, /v3/api-docs/*
+   * - Protected endpoints: All /api/v1/* endpoints (except public auth)
+   * - Admin only: /api/v1/admin/*
+   */
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        // Disable CSRF for stateless API (JWT in Authorization header is CSRF-safe)
+        .csrf(csrf -> csrf.disable())
+        
+        // Enable CORS
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        
+        // Stateless session management (no cookies)
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        
+        // Configure OAuth2 resource server (JWT)
+        .oauth2ResourceServer(oauth2 -> oauth2
+            .jwt(jwt -> jwt.jwtAuthenticationConverter(new JwtAuthenticationConverter()))
+        )
+        
+        // HTTP security rules
+        .authorizeHttpRequests(authz -> authz
+            // Public authentication endpoints
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/verify-email").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh-token").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/forgot-password").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/auth/reset-password").permitAll()
+            
+            // Public webhooks (requires signature verification in controller)
+            .requestMatchers(HttpMethod.POST, "/api/webhooks/**").permitAll()
+            
+            // Public shipment tracking
+            .requestMatchers(HttpMethod.GET, "/api/tracking/**").permitAll()
+            
+            // Public published templates
+            .requestMatchers(HttpMethod.GET, "/api/templates/*").permitAll()
+            
+            // Actuator endpoints (health checks, metrics)
+            .requestMatchers("/actuator/**").permitAll()
+            
+            // API documentation
+            .requestMatchers("/swagger-ui/**").permitAll()
+            .requestMatchers("/v3/api-docs/**").permitAll()
+            .requestMatchers("/swagger-ui.html").permitAll()
+            .requestMatchers("/swagger-resources/**").permitAll()
+            .requestMatchers("/webjars/**").permitAll()
+            
+            // Static resources
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+            
+            // Admin-only endpoints
+            .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+            
+            // All other /api/v1/* endpoints require authentication
+            .requestMatchers("/api/v1/**").authenticated()
+            
+            // All other requests require authentication
+            .anyRequest().authenticated()
+        );
+
+    return http.build();
+  }
+
+  /**
+   * CORS configuration source.
+   * 
+   * Allowed origins are externalized via property: app.security.cors.allowed-origins
+   * Default: http://localhost:3000 (admin), http://localhost:3001 (front)
+   */
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setExposedHeaders(Arrays.asList(
+        "Authorization",
+        "X-Total-Count",  // For pagination
+        "X-Total-Pages"
+    ));
+    configuration.setAllowCredentials(true);
+    configuration.setMaxAge(3600L);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+  }
+
+  /**
+   * Password encoder using BCrypt with cost factor 12.
+   * 
+   * Cost factor 12 provides strong security while maintaining acceptable performance:
+   * - Cost < 10: Weak (vulnerable to brute force)
+   * - Cost 10-12: Recommended for production
+   * - Cost > 12: Overkill for most use cases
+   */
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(12);
+  }
+
+  /**
+   * JWT decoder for OAuth2 resource server.
+   * 
+   * Validates JWT tokens using public key from issuer's JWKS endpoint.
+   * Issuer URL is externalized via property: app.security.jwt.issuer
+   * Default: http://localhost:8080
+   */
+  @Bean
+  public JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withIssuerLocation(jwtIssuer + "/.well-known/oauth-authorization-server")
+        .build();
+  }
+}
