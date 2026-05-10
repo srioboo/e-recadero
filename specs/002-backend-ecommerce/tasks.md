@@ -59,7 +59,7 @@
 
 ### Security & Authentication
 
-- [ ] T012 Create SecurityConfig.java in src/main/java/.../recadero/shared/config/ with:
+- [x] T012 Create SecurityConfig.java in src/main/java/.../recadero/shared/config/ with:
   - Security filter chain (CORS, CSRF, session config)
   - JWT authentication filter
   - OAuth2 resource server configuration
