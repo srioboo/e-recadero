@@ -63,11 +63,11 @@
   - Security filter chain (CORS, CSRF, session config)
   - JWT authentication filter
   - OAuth2 resource server configuration
-- [ ] T013 [P] Create JwtTokenProvider.java utility class for token generation/validation (JWT 15-min access + 7-day refresh)
-- [ ] T014 [P] Create GlobalExceptionHandler.java in shared/exception/ with error response formatting
-- [ ] T015 [P] Create ErrorResponse.java DTO in shared/dto/
-- [ ] T016 Create SecurityUser.java in shared/security/ for Spring Security principal
-- [ ] T017 [P] Add role-based access control annotations (@PreAuthorize, @PostAuthorize)
+- [x] T013 [P] Create JwtTokenProvider.java utility class for token generation/validation (JWT 15-min access + 7-day refresh)
+- [x] T014 [P] Create GlobalExceptionHandler.java in shared/exception/ with error response formatting
+- [x] T015 [P] Create ErrorResponse.java DTO in shared/dto/
+- [x] T016 Create SecurityUser.java in shared/security/ for Spring Security principal
+- [x] T017 [P] Add role-based access control annotations (@PreAuthorize, @PostAuthorize)
 
 ### API Infrastructure
 
