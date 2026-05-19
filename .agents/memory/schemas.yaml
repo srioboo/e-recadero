@@ -1,0 +1,20 @@
+# Esquemas de memoria para los agentes
+
+short_term:
+  description: "Contexto de la sesión actual. Se descarta al terminar."
+  fields:
+    - conversation_history: list   # mensajes de la sesión
+    - working_memory: object       # variables temporales del agente
+    - step_results: list           # outputs de cada paso del flujo
+  max_tokens: 8000
+  eviction: sliding_window
+
+long_term:
+  description: "Conocimiento persistente entre sesiones. Usa MCP memory server."
+  backend: mcp                     # ver tools/mcp_servers/memory.yaml
+  fields:
+    - user_preferences: object
+    - past_tasks: list             # resumen de tareas anteriores
+    - learned_facts: list          # entidades y hechos extraídos
+  max_entries: 1000
+  eviction: lru

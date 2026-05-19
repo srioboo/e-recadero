@@ -1,0 +1,66 @@
+# MCP Server: Fetch
+# Documentación: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
+#
+# Descarga páginas web y las convierte a texto/markdown legible.
+# Útil para que research_agent lea artículos completos, no solo snippets.
+#
+# Prerrequisitos:
+#   - Python >= 3.10 y pip (este servidor está en Python, no Node)
+#   - pip install mcp-server-fetch
+
+server:
+  name: fetch
+  description: "Descarga y extrae contenido legible de URLs"
+  transport: stdio
+  command: uvx                             # o: python -m mcp_server_fetch
+  args:
+    - "mcp-server-fetch"
+  env:
+    # Opcional: User-Agent personalizado para evitar bloqueos
+    USER_AGENT: "Mozilla/5.0 (compatible; ResearchBot/1.0)"
+    # Opcional: ignorar robots.txt (usar con responsabilidad)
+    IGNORE_ROBOTS_TXT: "false"
+
+# Tools que expone este servidor
+tools_provided:
+  - name: fetch
+    description: "Descarga una URL y devuelve su contenido en markdown o texto"
+    input_schema:
+      type: object
+      properties:
+        url:
+          type: string
+          description: "URL completa a descargar (https://...)"
+        max_length:
+          type: integer
+          default: 5000
+          description: "Máximo de caracteres a devolver"
+        start_index:
+          type: integer
+          default: 0
+          description: "Índice de inicio para paginar contenido largo"
+        raw:
+          type: boolean
+          default: false
+          description: "Si true, devuelve HTML crudo en lugar de markdown"
+      required: [url]
+
+# Casos de uso típicos
+usage_examples:
+  - description: "Leer un artículo completo para análisis"
+    tool: fetch
+    args:
+      url: "https://example.com/articulo"
+      max_length: 8000
+
+  - description: "Paginar un documento largo"
+    tool: fetch
+    args:
+      url: "https://example.com/documento-largo"
+      start_index: 5000
+      max_length: 5000
+
+# Instalación rápida
+# pip install mcp-server-fetch
+# o con uv (recomendado):
+# uv tool install mcp-server-fetch
