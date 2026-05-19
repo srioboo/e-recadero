@@ -82,7 +82,7 @@
 - [x] T023 [P] Configure HikariCP connection pooling in application.yml (pool size = 9 for 4-core)
 - [x] T024 [P] Setup Redis client and RedisTemplate in PersistenceConfig.java
 - [x] T025 [P] Configure Kafka (Spring Cloud Stream) for event publishing/listening
-- [ ] T026 [P] Create LoggingConfig.java with SLF4J + Logback configuration (debug dev, warn prod)
+- [x] T026 [P] Create LoggingConfig.java with SLF4J + Logback configuration (debug dev, warn prod)
 - [ ] T027 [P] Setup Actuator endpoints (/actuator/health, /actuator/metrics) for monitoring
 
 ### Testing Framework
