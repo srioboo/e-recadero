@@ -86,7 +86,13 @@ spring:
   
   # Cloud Stream Configuration (for Kafka)
   cloud:
+    function:
+      scan:
+        packages: org.sirantar.recadero
     stream:
+      default-binder: kafka
+      default:
+        content-type: application/json
       kafka:
         binder:
           brokers: localhost:9092
@@ -95,10 +101,13 @@ spring:
       bindings:
         user-events-out-0:
           destination: user-events
+          content-type: application/json
         order-events-out-0:
           destination: order-events
+          content-type: application/json
         promotion-events-out-0:
           destination: promotion-events
+          content-type: application/json
 
 # Server Configuration
 server:
