@@ -23,7 +23,7 @@ spring:
     password: recadero123
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 10
+      maximum-pool-size: 9
       minimum-idle: 2
       connection-timeout: 20000
   

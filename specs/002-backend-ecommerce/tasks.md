@@ -79,7 +79,7 @@
 
 ### Shared Infrastructure
 
-- [ ] T023 [P] Configure HikariCP connection pooling in application.yml (pool size = 9 for 4-core)
+- [x] T023 [P] Configure HikariCP connection pooling in application.yml (pool size = 9 for 4-core)
 - [ ] T024 [P] Setup Redis client and RedisTemplate in PersistenceConfig.java
 - [ ] T025 [P] Configure Kafka (Spring Cloud Stream) for event publishing/listening
 - [ ] T026 [P] Create LoggingConfig.java with SLF4J + Logback configuration (debug dev, warn prod)
