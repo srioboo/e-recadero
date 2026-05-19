@@ -1,0 +1,46 @@
+# MCP Server: Brave Search
+# Documentación: https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search
+#
+# Prerrequisitos:
+#   1. Obtén una API key gratuita en https://brave.com/search/api/
+#   2. Define BRAVE_API_KEY en tu .env
+#   3. Instala Node.js >= 18
+#
+# El servidor MCP expone una sola tool: brave_web_search
+# que el agente puede invocar directamente.
+
+server:
+  name: brave-search
+  description: "Búsqueda web en tiempo real a través de Brave Search"
+  transport: stdio                         # comunicación por stdin/stdout
+  command: npx
+  args:
+    - "-y"                                 # instala si no está presente
+    - "@modelcontextprotocol/server-brave-search"
+  env:
+    BRAVE_API_KEY: "${BRAVE_API_KEY}"      # nunca hardcodes la key aquí
+
+# Tool que expone este servidor
+tools_provided:
+  - name: brave_web_search
+    description: "Realiza una búsqueda web y devuelve resultados con título, URL y snippet"
+    input_schema:
+      type: object
+      properties:
+        query:
+          type: string
+          description: "Términos de búsqueda"
+        count:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 20
+        country:
+          type: string
+          default: "ES"
+          description: "Código ISO 3166-1 para resultados localizados"
+      required: [query]
+
+# Ejemplo de invocación (para tests manuales)
+# echo '{"method":"tools/call","params":{"name":"brave_web_search","arguments":{"query":"IA 2025","count":3}}}' \
+#   | npx -y @modelcontextprotocol/server-brave-search

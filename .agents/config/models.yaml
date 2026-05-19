@@ -1,0 +1,44 @@
+# Qué modelo usa cada agente según el entorno.
+# El runtime lee este archivo — cambiar modelo = editar aquí, nada más.
+
+defaults:
+  provider: anthropic
+  temperature: 0.2
+  max_tokens: 4096
+
+environments:
+
+  development:
+    orchestrator:
+      provider: anthropic
+      model: claude-haiku-4-5       # rápido y barato para iterar
+      temperature: 0.1
+    research_agent:
+      provider: anthropic
+      model: claude-haiku-4-5
+    writer_agent:
+      provider: anthropic
+      model: claude-haiku-4-5
+
+  production:
+    orchestrator:
+      provider: anthropic
+      model: claude-sonnet-4-5      # balance coste/capacidad
+      temperature: 0.1
+    research_agent:
+      provider: anthropic
+      model: claude-sonnet-4-5
+      temperature: 0.1
+    writer_agent:
+      provider: anthropic
+      model: claude-sonnet-4-5
+      temperature: 0.4              # más creatividad en redacción
+
+  # Ejemplo de migración a otro proveedor sin tocar nada más:
+  # production_openai:
+  #   orchestrator:
+  #     provider: openai
+  #     model: gpt-4o
+  #   research_agent:
+  #     provider: openai
+  #     model: gpt-4o-mini

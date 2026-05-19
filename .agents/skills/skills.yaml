@@ -1,0 +1,57 @@
+skills:
+  - id: web_search
+    name: "Búsqueda web"
+    description: "Realiza búsquedas en internet y devuelve resultados relevantes"
+    implementation: implementations/web_search.py
+    input:
+      query:    { type: string,  required: true  }
+      max_results: { type: int,  required: false, default: 5 }
+    output:
+      results:  { type: list }   # [{title, url, snippet}]
+    timeout_s: 15
+
+  - id: summarize
+    name: "Resumen"
+    description: "Resume un texto largo extrayendo los puntos más importantes"
+    implementation: implementations/summarize.py
+    input:
+      text:      { type: string, required: true }
+      max_words: { type: int,    required: false, default: 150 }
+      style:     { type: string, required: false, default: bullets }  # bullets | paragraph
+    output:
+      summary:   { type: string }
+      bullets:   { type: list }
+
+  - id: extract_data
+    name: "Extracción de datos"
+    description: "Extrae entidades y datos estructurados de texto no estructurado"
+    implementation: implementations/extract_data.py
+    input:
+      text:   { type: string, required: true }
+      schema: { type: object, required: true }   # JSON Schema del output esperado
+    output:
+      data:   { type: object }
+      confidence: { type: float }
+
+  - id: report_writer
+    name: "Redactor de informes"
+    description: "Genera un informe estructurado a partir de hallazgos y datos"
+    implementation: implementations/report_writer.py
+    input:
+      title:    { type: string, required: true  }
+      findings: { type: list,   required: true  }
+      tone:     { type: string, required: false, default: formal }
+      format:   { type: string, required: false, default: markdown }  # markdown | html
+    output:
+      report:   { type: string }
+
+  - id: translate
+    name: "Traducción"
+    description: "Traduce texto manteniendo tono y formato"
+    implementation: implementations/translate.py
+    input:
+      text:        { type: string, required: true }
+      target_lang: { type: string, required: true }   # ISO 639-1: es, en, fr…
+      preserve_format: { type: bool, required: false, default: true }
+    output:
+      translated:  { type: string }

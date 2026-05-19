@@ -1,0 +1,36 @@
+# Evals para la skill: summarize
+# Ejecutar con: python -m evals.runner summarize
+
+skill: summarize
+version: "1.0"
+
+cases:
+  - id: basic_summary
+    description: "Resumen básico de texto largo"
+    input:
+      text: |
+        La inteligencia artificial ha experimentado avances significativos en los últimos años.
+        Los modelos de lenguaje grande han demostrado capacidades sorprendentes en razonamiento,
+        generación de texto y resolución de problemas. Sin embargo, también plantean desafíos
+        importantes en términos de seguridad, privacidad y uso ético. Las empresas tecnológicas
+        están invirtiendo miles de millones en su desarrollo, mientras los gobiernos buscan
+        marcos regulatorios adecuados.
+      max_words: 50
+      style: bullets
+    assertions:
+      - type: json_keys_exist
+        keys: [summary, bullets]
+      - type: max_words
+        field: summary
+        max: 60               # 20% de tolerancia
+      - type: bullets_count
+        min: 2
+        max: 5
+
+  - id: empty_text
+    description: "Manejo de texto vacío"
+    input:
+      text: ""
+      max_words: 50
+    assertions:
+      - type: no_exception     # debe fallar con gracia, no crash

@@ -1,0 +1,38 @@
+agents:
+  - id: research_agent
+    name: "Investigador"
+    description: "Busca, analiza y sintetiza información de fuentes externas"
+    prompt: prompts/research_agent.md
+    skills:
+      - web_search
+      - summarize
+      - extract_data
+    tools:
+      - brave_search
+      - fetch_url
+    memory: short_term
+    max_steps: 15
+    on_error: retry_once
+
+  - id: writer_agent
+    name: "Redactor"
+    description: "Genera y edita contenido estructurado a partir de un brief"
+    prompt: prompts/writer_agent.md
+    skills:
+      - summarize
+      - report_writer
+      - translate
+    tools: []
+    memory: short_term
+    max_steps: 8
+    on_error: fail_fast
+
+  - id: orchestrator
+    name: "Orquestador"
+    description: "Coordina al resto de agentes y decide el flujo de ejecución"
+    prompt: prompts/orchestrator.md
+    skills: []
+    tools: []
+    memory: long_term
+    max_steps: 30
+    on_error: human_in_the_loop

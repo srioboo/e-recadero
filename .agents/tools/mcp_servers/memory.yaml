@@ -1,0 +1,123 @@
+# MCP Server: Memory (Knowledge Graph)
+# Documentación: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
+#
+# Implementa un grafo de conocimiento persistente en memoria.
+# Los agentes pueden almacenar entidades, relaciones y observaciones
+# entre sesiones. Los datos se guardan en un archivo JSON local.
+#
+# Casos de uso:
+#   - Recordar preferencias del usuario entre conversaciones
+#   - Acumular hechos sobre un dominio a lo largo del tiempo
+#   - Pasar contexto entre agentes de forma persistente
+
+server:
+  name: memory
+  description: "Knowledge graph persistente entre sesiones"
+  transport: stdio
+  command: npx
+  args:
+    - "-y"
+    - "@modelcontextprotocol/server-memory"
+  env:
+    # Ruta donde se persiste el grafo. Default: ~/.mcp-memory/memory.json
+    MEMORY_FILE_PATH: "./.agents/memory/knowledge_graph.json"
+
+# Tools que expone este servidor
+tools_provided:
+
+  - name: create_entities
+    description: "Crea una o más entidades en el grafo de conocimiento"
+    input_schema:
+      type: object
+      properties:
+        entities:
+          type: array
+          items:
+            type: object
+            properties:
+              name:         { type: string, description: "Nombre único de la entidad" }
+              entityType:   { type: string, description: "Tipo: Person, Company, Concept, etc." }
+              observations: { type: array, items: { type: string } }
+            required: [name, entityType, observations]
+      required: [entities]
+
+  - name: create_relations
+    description: "Crea relaciones dirigidas entre entidades existentes"
+    input_schema:
+      type: object
+      properties:
+        relations:
+          type: array
+          items:
+            type: object
+            properties:
+              from:         { type: string, description: "Entidad origen" }
+              to:           { type: string, description: "Entidad destino" }
+              relationType: { type: string, description: "Tipo de relación, e.g. 'works_at'" }
+            required: [from, to, relationType]
+      required: [relations]
+
+  - name: add_observations
+    description: "Añade observaciones nuevas a entidades existentes"
+    input_schema:
+      type: object
+      properties:
+        observations:
+          type: array
+          items:
+            type: object
+            properties:
+              entityName:   { type: string }
+              contents:     { type: array, items: { type: string } }
+            required: [entityName, contents]
+      required: [observations]
+
+  - name: search_nodes
+    description: "Busca entidades en el grafo por nombre o contenido"
+    input_schema:
+      type: object
+      properties:
+        query: { type: string, description: "Término de búsqueda" }
+      required: [query]
+
+  - name: read_graph
+    description: "Devuelve el grafo completo de conocimiento"
+    input_schema:
+      type: object
+      properties: {}
+
+  - name: delete_entities
+    description: "Elimina entidades y sus relaciones del grafo"
+    input_schema:
+      type: object
+      properties:
+        entityNames: { type: array, items: { type: string } }
+      required: [entityNames]
+
+# Ejemplos de uso en este proyecto
+usage_examples:
+
+  - description: "Guardar preferencias del usuario"
+    tool: create_entities
+    args:
+      entities:
+        - name: "usuario_principal"
+          entityType: "User"
+          observations:
+            - "Prefiere informes en formato markdown"
+            - "Idioma preferido: español"
+            - "Tone preferido: técnico"
+
+  - description: "Registrar un hallazgo de investigación para reutilizar"
+    tool: add_observations
+    args:
+      observations:
+        - entityName: "mercado_ia_2025"
+          contents:
+            - "El mercado de IA generativa alcanzó 67B USD en 2024"
+            - "Se espera un CAGR del 37% hasta 2030"
+
+  - description: "Buscar lo que se sabe sobre un tema"
+    tool: search_nodes
+    args:
+      query: "mercado IA"

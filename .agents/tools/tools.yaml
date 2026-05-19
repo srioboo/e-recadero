@@ -1,0 +1,42 @@
+tools:
+  - id: brave_search
+    name: "Brave Search"
+    description: "Búsqueda web a través de la API de Brave"
+    type: mcp
+    mcp_server: mcp_servers/brave_search
+    input:
+      query:       { type: string, required: true }
+      count:       { type: int,    required: false, default: 10 }
+      country:     { type: string, required: false, default: "ES" }
+
+  - id: fetch_url
+    name: "Fetch URL"
+    description: "Descarga y extrae el contenido legible de una URL"
+    type: mcp
+    mcp_server: mcp_servers/fetch
+    input:
+      url:         { type: string, required: true }
+      max_length:  { type: int,    required: false, default: 8000 }
+
+  - id: file_system
+    name: "Sistema de archivos"
+    description: "Lectura y escritura de archivos en rutas permitidas"
+    type: mcp
+    mcp_server: mcp_servers/filesystem
+    allowed_paths:
+      - ./output
+      - ./data
+    input:
+      operation: { type: string, required: true }  # read | write | list
+      path:      { type: string, required: true }
+      content:   { type: string, required: false }
+
+  - id: memory_store
+    name: "Almacén de memoria"
+    description: "Persiste y recupera información entre sesiones"
+    type: mcp
+    mcp_server: mcp_servers/memory
+    input:
+      operation: { type: string, required: true }  # store | retrieve | delete
+      key:       { type: string, required: true }
+      value:     { type: string, required: false }
