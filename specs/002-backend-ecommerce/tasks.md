@@ -71,11 +71,11 @@
 
 ### API Infrastructure
 
-- [ ] T018 Create ApiController base class in shared/api/ with pagination, error handling boilerplate
-- [ ] T019 [P] Create PaginationRequest.java and PaginationResponse.java in shared/dto/
-- [ ] T020 [P] Configure Jackson ObjectMapper for JSON serialization (LocalDateTime format, null handling)
-- [ ] T021 [P] Setup Spring MVC configuration (message converters, interceptors)
-- [ ] T022 Create OpenAPI/Swagger configuration (SpringDoc OpenAPI with @OpenAPIDefinition)
+- [x] T018 Create ApiController base class in shared/api/ with pagination, error handling boilerplate
+- [x] T019 [P] Create PaginationRequest.java and PaginationResponse.java in shared/dto/
+- [x] T020 [P] Configure Jackson ObjectMapper for JSON serialization (LocalDateTime format, null handling)
+- [x] T021 [P] Setup Spring MVC configuration (message converters, interceptors)
+- [x] T022 Create OpenAPI/Swagger configuration (SpringDoc OpenAPI with @OpenAPIDefinition)
 
 ### Shared Infrastructure
 
@@ -904,4 +904,3 @@ Phase 9 Integration (T180-T198)
 **Ready for Implementation**: All tasks sequenced, dependencies mapped, success criteria defined.
 
 Execute via: `./gradlew bootRun` (local testing) → staging deployment → production release
-
