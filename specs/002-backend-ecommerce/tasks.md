@@ -117,7 +117,7 @@
   - findByParentIdOrderBySortOrder(UUID parentId)
   - findBySlug(String slug)
   - findAllActive()
-- [ ] T040 [P] Create ProductRepository.java with:
+- [X] T040 [P] Create ProductRepository.java with:
   - findByCategoryIdAndStatus(UUID categoryId, ProductStatus status)
   - findBySku(String sku)
   - findByStatusOrderByCreatedAtDesc(ProductStatus status)
