@@ -105,7 +105,7 @@
 
 ### Data Models & Repositories
 
-- [ ] T033 [P] Create Category.java entity in back/src/main/java/.../catalog/domain/
+- [x] T033 [P] Create Category.java entity in back/src/main/java/.../catalog/domain/
   - Includes: id, name, slug, description, parent_category_id, image_url, status, created_at, updated_at
   - JPA annotations: @Entity, @Table(schema="catalog"), @Getter, @Setter
 - [ ] T034 [P] Create Product.java entity with: id, sku, name, base_price, cost_price, category_id, status, version (optimistic lock)
