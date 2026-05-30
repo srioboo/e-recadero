@@ -24,4 +24,13 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
       @Param("variantId") Long variantId, @Param("warehouseId") UUID warehouseId);
 
   List<Inventory> findByProductVariant_Id(Long variantId);
+
+  @Query(
+      """
+      select i
+      from Inventory i
+      where coalesce(i.quantityAvailable, 0) < coalesce(i.reorderLevel, 10)
+      order by i.quantityAvailable asc, i.id asc
+      """)
+  List<Inventory> findLowStock();
 }
