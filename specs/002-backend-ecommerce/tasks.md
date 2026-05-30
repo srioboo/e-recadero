@@ -156,7 +156,7 @@
 
 ### Controllers & API Endpoints
 
-- [ ] T048 Create CategoryController.java in catalog/api/ with endpoints (8 total):
+- [X] T048 Create CategoryController.java in catalog/api/ with endpoints (8 total):
   - GET /api/v1/categories (list with pagination)
   - GET /api/v1/categories/{id}
   - POST /api/v1/categories (admin only)
