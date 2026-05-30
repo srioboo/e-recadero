@@ -125,7 +125,7 @@
 - [X] T041 [P] Create ProductVariantRepository.java with:
   - findByProductId(UUID productId)
   - findBySkuOrderByPrice(String sku)
-- [ ] T042 [P] Create InventoryRepository.java with:
+- [X] T042 [P] Create InventoryRepository.java with:
   - findByProductVariantIdAndWarehouseId(UUID variantId, UUID warehouseId)
   - findByProductVariant_Id(UUID variantId)
 
