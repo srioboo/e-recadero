@@ -5,6 +5,18 @@
 spring:
   application:
     name: recadero-backend
+  cloud:
+    function:
+      scan:
+        enabled: false
+    stream:
+      kafka:
+        binder:
+          configuration:
+            max.in.flight.requests.per.connection: 1
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.function.context.config.ContextFunctionCatalogAutoConfiguration
   
   jpa:
     show-sql: false
@@ -44,14 +56,14 @@ spring:
   # Kafka with Testcontainers (if available)
   kafka:
     bootstrap-servers: localhost:9092
-  
-  # Spring Cloud Stream for Kafka
-  cloud:
-    stream:
-      kafka:
-        binder:
-          configuration:
-            max.in.flight.requests.per.connection: 1
+
+app:
+  security:
+    jwt:
+      issuer: http://localhost:8080
+      secret: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=
+      access-token-expiry: 900
+      refresh-token-expiry: 604800
 
 server:
   port: 8080
