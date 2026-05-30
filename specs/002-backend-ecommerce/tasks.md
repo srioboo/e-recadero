@@ -175,7 +175,7 @@
   - POST /api/v1/products/{id}/variants
   - GET /api/v1/products/{id}/variants
   - PATCH /api/v1/products/{id}/price (admin only)
-- [ ] T050 [P] Create InventoryController.java with endpoints (3 total):
+- [X] T050 [P] Create InventoryController.java with endpoints (3 total):
   - GET /api/v1/inventory/{variant_id}
   - POST /api/v1/inventory/{variant_id}/adjust (admin only)
   - GET /api/v1/inventory/low-stock (admin only, list items below reorder_level)

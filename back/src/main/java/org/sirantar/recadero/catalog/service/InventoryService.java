@@ -12,6 +12,7 @@ import org.sirantar.recadero.catalog.domain.ProductVariant;
 import org.sirantar.recadero.catalog.repository.InventoryRepository;
 import org.sirantar.recadero.catalog.repository.ProductRepository;
 import org.sirantar.recadero.catalog.repository.ProductVariantRepository;
+import org.sirantar.recadero.catalog.service.dto.InventoryResponse;
 import org.sirantar.recadero.catalog.service.dto.ProductAvailabilityResponse;
 import org.sirantar.recadero.catalog.service.dto.ProductVariantAvailabilityResponse;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,16 @@ public class InventoryService {
   }
 
   @Transactional(readOnly = true)
+  public InventoryResponse getInventory(Long variantId) {
+    return toResponse(getOrCreateInventory(variantId));
+  }
+
+  @Transactional(readOnly = true)
+  public List<InventoryResponse> listLowStock() {
+    return inventoryRepository.findLowStock().stream().map(this::toResponse).toList();
+  }
+
+  @Transactional(readOnly = true)
   public ProductAvailabilityResponse getProductAvailability(Long productId) {
     Product product = productRepository.findById(productId)
         .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException("Product not found: " + productId));
@@ -108,5 +119,18 @@ public class InventoryService {
         availableQuantity <= 0 ? "OUT_OF_STOCK" : availableQuantity <= reorderLevel ? "LOW_STOCK" : "IN_STOCK";
     return new ProductVariantAvailabilityResponse(
         variant.getId(), availableQuantity, availableQuantity > 0, reorderStatus);
+  }
+
+  private InventoryResponse toResponse(Inventory inventory) {
+    int available = inventory.getQuantityAvailable() == null ? 0 : inventory.getQuantityAvailable();
+    int reserved = inventory.getQuantityReserved() == null ? 0 : inventory.getQuantityReserved();
+    int damaged = inventory.getQuantityDamaged() == null ? 0 : inventory.getQuantityDamaged();
+    return new InventoryResponse(
+        inventory.getProductVariant() != null ? inventory.getProductVariant().getId() : null,
+        available + reserved + damaged,
+        reserved,
+        available,
+        inventory.getReorderLevel(),
+        inventory.getLastRestockDate());
   }
 }
