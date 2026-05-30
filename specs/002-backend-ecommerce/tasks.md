@@ -122,7 +122,7 @@
   - findBySku(String sku)
   - findByStatusOrderByCreatedAtDesc(ProductStatus status)
   - search(String query, UUID categoryId, Pageable pageable)
-- [ ] T041 [P] Create ProductVariantRepository.java with:
+- [X] T041 [P] Create ProductVariantRepository.java with:
   - findByProductId(UUID productId)
   - findBySkuOrderByPrice(String sku)
 - [ ] T042 [P] Create InventoryRepository.java with:
