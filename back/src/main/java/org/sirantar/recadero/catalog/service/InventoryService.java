@@ -1,12 +1,19 @@
 package org.sirantar.recadero.catalog.service;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.sirantar.recadero.catalog.domain.Inventory;
+import org.sirantar.recadero.catalog.domain.Product;
 import org.sirantar.recadero.catalog.domain.ProductVariant;
 import org.sirantar.recadero.catalog.repository.InventoryRepository;
+import org.sirantar.recadero.catalog.repository.ProductRepository;
 import org.sirantar.recadero.catalog.repository.ProductVariantRepository;
+import org.sirantar.recadero.catalog.service.dto.ProductAvailabilityResponse;
+import org.sirantar.recadero.catalog.service.dto.ProductVariantAvailabilityResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +30,7 @@ public class InventoryService {
 
   private final InventoryRepository inventoryRepository;
   private final ProductVariantRepository productVariantRepository;
+  private final ProductRepository productRepository;
 
   @Transactional(readOnly = true)
   public int checkAvailability(Long variantId, int quantity) {
@@ -59,6 +67,16 @@ public class InventoryService {
     return inventory.getQuantityAvailable();
   }
 
+  @Transactional(readOnly = true)
+  public ProductAvailabilityResponse getProductAvailability(Long productId) {
+    Product product = productRepository.findById(productId)
+        .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException("Product not found: " + productId));
+    List<ProductVariantAvailabilityResponse> variants = productVariantRepository.findByProductId(productId).stream()
+        .map(this::toAvailabilityResponse)
+        .toList();
+    return new ProductAvailabilityResponse(product.getId(), variants, Instant.now());
+  }
+
   private java.util.Optional<Inventory> findInventory(Long variantId) {
     return inventoryRepository.findByProductVariantIdAndWarehouseId(variantId, DEFAULT_WAREHOUSE_ID);
   }
@@ -76,5 +94,19 @@ public class InventoryService {
       inventory.setQuantityReserved(0);
       return inventory;
     });
+  }
+
+  private ProductVariantAvailabilityResponse toAvailabilityResponse(ProductVariant variant) {
+    List<Inventory> inventories = inventoryRepository.findByProductVariant_Id(variant.getId());
+    int availableQuantity = inventories.stream().mapToInt(Inventory::getQuantityAvailable).sum();
+    int reorderLevel = inventories.stream()
+        .map(Inventory::getReorderLevel)
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElse(10);
+    String reorderStatus =
+        availableQuantity <= 0 ? "OUT_OF_STOCK" : availableQuantity <= reorderLevel ? "LOW_STOCK" : "IN_STOCK";
+    return new ProductVariantAvailabilityResponse(
+        variant.getId(), availableQuantity, availableQuantity > 0, reorderStatus);
   }
 }
