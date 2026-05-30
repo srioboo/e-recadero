@@ -1,10 +1,8 @@
 package org.sirantar.recadero;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class RecaderoApplicationTests {
+class RecaderoApplicationTests extends AbstractSpringBootTest {
 
 	@Test
 	void contextLoads() {
