@@ -25,8 +25,10 @@ public class CatalogService {
 
   private final CategoryRepository categoryRepository;
   private final ProductRepository productRepository;
+  private final CategoryValidationService categoryValidationService;
 
   public CategoryResponse createCategory(CategoryCreateRequest request) {
+    categoryValidationService.validateForCreate(request.slug(), request.parentCategoryId());
     Category category = new Category();
     applyRequest(category, request.name(), request.slug(), request.description(), request.imageUrl(),
         request.sortOrder(), request.active(), request.parentCategoryId());
@@ -36,6 +38,7 @@ public class CatalogService {
   public CategoryResponse updateCategory(Long id, CategoryUpdateRequest request) {
     Category category = categoryRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Category not found: " + id));
+    categoryValidationService.validateForUpdate(id, request.slug(), request.parentCategoryId());
     applyRequest(category, request.name(), request.slug(), request.description(), request.imageUrl(),
         request.sortOrder(), request.active(), request.parentCategoryId());
     return toResponse(categoryRepository.save(category));
@@ -88,13 +91,6 @@ public class CatalogService {
     }
     category.setParentCategory(resolveParent(category.getId(), parentCategoryId));
 
-    if (category.getId() != null && category.getParentCategory() != null
-        && category.getParentCategory().getId().equals(category.getId())) {
-      throw new IllegalArgumentException("Category cannot be its own parent");
-    }
-    if (category.getId() != null && isDescendant(category.getId(), category.getParentCategory())) {
-      throw new IllegalArgumentException("Category parent creates a cycle");
-    }
   }
 
   private Category resolveParent(Long categoryId, Long parentCategoryId) {
@@ -107,17 +103,6 @@ public class CatalogService {
       throw new IllegalArgumentException("Category cannot be its own parent");
     }
     return parent;
-  }
-
-  private boolean isDescendant(Long categoryId, Category parent) {
-    Category current = parent;
-    while (current != null) {
-      if (categoryId.equals(current.getId())) {
-        return true;
-      }
-      current = current.getParentCategory();
-    }
-    return false;
   }
 
   private void archiveCategoryProducts(Long categoryId) {
