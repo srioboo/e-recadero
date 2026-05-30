@@ -49,6 +49,9 @@ public class Product {
   @Column(nullable = false, unique = true, length = 100)
   private String sku;
 
+  @Column(nullable = false, length = 20)
+  private ProductStatus status = ProductStatus.DRAFT;
+
   @Column(nullable = false, precision = 10, scale = 2)
   private BigDecimal price;
 
