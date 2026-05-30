@@ -113,7 +113,7 @@
 - [X] T036 [P] Create ProductVariant.java entity with: id, product_id, sku (unique), variant_attributes (JSON), price, weight
 - [X] T037 [P] Create Inventory.java entity with: id, product_variant_id, warehouse_id, quantity_on_hand, reserved_quantity, reorder_level
 - [X] T038 [P] Create @ApplicationModule(displayName = "Catalog", allowedDependencies = "shared") in catalog/package-info.java
-- [ ] T039 [P] Create CategoryRepository.java extending JpaRepository with custom methods:
+- [X] T039 [P] Create CategoryRepository.java extending JpaRepository with custom methods:
   - findByParentIdOrderBySortOrder(UUID parentId)
   - findBySlug(String slug)
   - findAllActive()
