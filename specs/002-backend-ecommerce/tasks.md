@@ -136,7 +136,7 @@
   - updateCategory(UUID, CategoryUpdateRequest): CategoryResponse
   - getCategoryWithChildren(UUID): CategoryResponse with nested children
   - deleteCategoryLogical(UUID): cascades to products (mark archived, don't delete)
-- [ ] T044 [P] Create ProductService.java implementing:
+- [X] T044 [P] Create ProductService.java implementing:
   - createProduct(ProductCreateRequest): ProductResponse
   - publishProduct(UUID productId): checks required fields, emits ProductPublishedEvent
   - searchProducts(query, categoryId, minPrice, maxPrice, pageable): uses full-text search
