@@ -9,8 +9,11 @@ import org.sirantar.recadero.catalog.domain.ProductStatus;
 import org.sirantar.recadero.catalog.repository.CategoryRepository;
 import org.sirantar.recadero.catalog.repository.ProductRepository;
 import org.sirantar.recadero.catalog.service.dto.CategoryCreateRequest;
+import org.sirantar.recadero.catalog.service.dto.CategoryMoveRequest;
 import org.sirantar.recadero.catalog.service.dto.CategoryResponse;
 import org.sirantar.recadero.catalog.service.dto.CategoryUpdateRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -45,10 +48,22 @@ public class CatalogService {
   }
 
   @Transactional(readOnly = true)
+  public Page<CategoryResponse> listCategories(Pageable pageable) {
+    return categoryRepository.findAll(pageable).map(this::toResponse);
+  }
+
+  @Transactional(readOnly = true)
   public CategoryResponse getCategoryWithChildren(Long id) {
     Category category = categoryRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Category not found: " + id));
     return toResponseWithChildren(category);
+  }
+
+  @Transactional(readOnly = true)
+  public List<CategoryResponse> getCategoryChildren(Long id) {
+    return categoryRepository.findByParentCategory_IdOrderBySortOrder(id).stream()
+        .map(this::toResponse)
+        .toList();
   }
 
   public void deleteCategoryLogical(Long id) {
@@ -58,6 +73,14 @@ public class CatalogService {
     archiveCategoryProducts(category.getId());
     category.setActive(Boolean.FALSE);
     categoryRepository.save(category);
+  }
+
+  public CategoryResponse moveCategory(Long id, CategoryMoveRequest request) {
+    Category category = categoryRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Category not found: " + id));
+    categoryValidationService.validateForUpdate(id, category.getSlug(), request.parentCategoryId());
+    category.setParentCategory(resolveParent(id, request.parentCategoryId()));
+    return toResponse(categoryRepository.save(category));
   }
 
   private void applyRequest(
