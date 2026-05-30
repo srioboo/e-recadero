@@ -108,7 +108,7 @@
 - [x] T033 [P] Create Category.java entity in back/src/main/java/.../catalog/domain/
   - Includes: id, name, slug, description, parent_category_id, image_url, status, created_at, updated_at
   - JPA annotations: @Entity, @Table(schema="catalog"), @Getter, @Setter
-- [ ] T034 [P] Create Product.java entity with: id, sku, name, base_price, cost_price, category_id, status, version (optimistic lock)
+- [X] T034 [P] Create Product.java entity with: id, sku, name, base_price, cost_price, category_id, status, version (optimistic lock)
 - [ ] T035 [P] Create ProductAttribute.java entity with: id, product_id, name, type (TEXT/SELECT/NUMBER/DATE_RANGE), values (JSON)
 - [ ] T036 [P] Create ProductVariant.java entity with: id, product_id, sku (unique), variant_attributes (JSON), price, weight
 - [ ] T037 [P] Create Inventory.java entity with: id, product_variant_id, warehouse_id, quantity_on_hand, reserved_quantity, reorder_level
