@@ -143,7 +143,7 @@
   - getProductWithVariants(UUID): returns product + all variants + images
   - updateProductPrice(UUID, newPrice): emits ProductPriceChangedEvent, clears cache
   - archiveProduct(UUID): removes from active promotions, carts, templates
-- [ ] T045 [P] Create ProductVariantService.java for variant CRUD and SKU generation
+- [X] T045 [P] Create ProductVariantService.java for variant CRUD and SKU generation
 - [ ] T046 [P] Create InventoryService.java implementing:
   - checkAvailability(UUID variantId, int quantity): returns available_quantity
   - reserveInventory(UUID variantId, int quantity): decrease available; throws OutOfStockException
