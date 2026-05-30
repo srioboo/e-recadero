@@ -131,7 +131,7 @@
 
 ### Services & Business Logic
 
-- [ ] T043 Create CatalogService.java in catalog/service/ implementing:
+- [X] T043 Create CatalogService.java in catalog/service/ implementing:
   - createCategory(CategoryCreateRequest): CategoryResponse
   - updateCategory(UUID, CategoryUpdateRequest): CategoryResponse
   - getCategoryWithChildren(UUID): CategoryResponse with nested children
