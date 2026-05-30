@@ -9,7 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +38,9 @@ public class Inventory {
   @JoinColumn(name = "variant_id")
   private ProductVariant productVariant;
 
+  @Column(name = "warehouse_id", nullable = false)
+  private UUID warehouseId;
+
   @Column(name = "quantity_available", nullable = false)
   private Integer quantityAvailable = 0;
 
@@ -59,4 +64,7 @@ public class Inventory {
 
   @Column(name = "updated_at", nullable = false)
   private LocalDateTime updatedAt;
+
+  @Version
+  private Long version;
 }
