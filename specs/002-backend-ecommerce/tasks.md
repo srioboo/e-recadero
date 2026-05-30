@@ -90,7 +90,7 @@
 - [x] T028 [P] Configure JUnit 5, Mockito, AssertJ, Testcontainers in build.gradle.kts
 - [x] T029 [P] Create TestcontainersConfiguration.java for PostgreSQL + Redis test containers
 - [x] T030 [P] Create @SpringBootTest base test class with common setup
-- [ ] T031 [P] Create JwtTokenTestUtils.java for generating test JWT tokens
+- [x] T031 [P] Create JwtTokenTestUtils.java for generating test JWT tokens
 - [ ] T032 Create test profile configuration (application-test.yml)
 
 **Checkpoint**: `./gradlew test` runs successfully; Testcontainers spin up/down cleanly; 0 test failures on empty classes
