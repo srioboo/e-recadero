@@ -149,7 +149,7 @@
   - reserveInventory(UUID variantId, int quantity): decrease available; throws OutOfStockException
   - releaseReservation(UUID variantId, int quantity): restore available (cart expiration, order cancel)
   - adjustInventory(UUID variantId, int change, reason): admin adjustments
-- [ ] T047 [P] Create CategoryValidationService with constraints:
+- [X] T047 [P] Create CategoryValidationService with constraints:
   - Slug must be unique, URL-safe format
   - No circular parent references (check depth ≤ 5 levels)
   - Parent must exist if parent_id provided
