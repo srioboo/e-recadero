@@ -164,7 +164,7 @@
   - DELETE /api/v1/categories/{id} (admin only, soft delete)
   - GET /api/v1/categories/{id}/children (get subcategories)
   - POST /api/v1/categories/{id}/move (change parent)
-- [ ] T049 Create ProductController.java with endpoints (10 total):
+- [X] T049 Create ProductController.java with endpoints (10 total):
   - GET /api/v1/products (search with filters)
   - GET /api/v1/products/{id}
   - GET /api/v1/products/{id}/availability (for Cart module)
