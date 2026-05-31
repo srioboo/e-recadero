@@ -1,6 +1,5 @@
 package org.sirantar.recadero.shared.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +18,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.sirantar.recadero.shared.config.properties.SecurityProperties;
 import org.sirantar.recadero.shared.security.SecurityExpressionRoot;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -42,11 +44,14 @@ import java.util.Arrays;
 )
 public class SecurityConfig {
 
-  @Value("${app.security.cors.allowed-origins:http://localhost:3000,http://localhost:3001}")
-  private String[] allowedOrigins;
+  private final SecurityProperties securityProperties;
 
-  @Value("${app.security.jwt.issuer:http://localhost:8080}")
-  private String jwtIssuer;
+  public SecurityConfig(SecurityProperties securityProperties) {
+    this.securityProperties = securityProperties;
+  }
+
+  @org.springframework.beans.factory.annotation.Value("${app.security.cors.allowed-origins:http://localhost:3000,http://localhost:3001}")
+  private String[] allowedOrigins;
 
   /**
    * Configure HTTP security filter chain.
@@ -168,8 +173,19 @@ public class SecurityConfig {
    */
   @Bean
   public JwtDecoder jwtDecoder() {
-    return NimbusJwtDecoder.withIssuerLocation(jwtIssuer + "/.well-known/oauth-authorization-server")
+    return NimbusJwtDecoder.withSecretKey(jwtSecretKey())
         .build();
+  }
+
+  private SecretKey jwtSecretKey() {
+    String secret = securityProperties.getJwt().getSecret();
+    byte[] keyBytes;
+    try {
+      keyBytes = io.jsonwebtoken.io.Decoders.BASE64.decode(secret);
+    } catch (RuntimeException ex) {
+      keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+    }
+    return io.jsonwebtoken.security.Keys.hmacShaKeyFor(keyBytes);
   }
 
   /**

@@ -38,14 +38,14 @@ public class ProductAttribute {
   @JoinColumn(name = "product_id", nullable = false)
   private Product product;
 
-  @Column(nullable = false, length = 100)
+  @Column(name = "attribute_name", nullable = false, length = 255)
   private String name;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
   private ProductAttributeType type = ProductAttributeType.TEXT;
 
-  @Column(name = "attribute_values", columnDefinition = "jsonb")
+  @Column(name = "attribute_value", columnDefinition = "TEXT")
   private String values;
 
   @Column(name = "display_order", nullable = false)

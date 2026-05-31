@@ -33,7 +33,7 @@ public class ProductVariant {
   @JoinColumn(name = "product_id", nullable = false)
   private Product product;
 
-  @Column(nullable = false, unique = true, length = 50)
+  @Column(name = "variant_sku", nullable = false, unique = true, length = 100)
   private String sku;
 
   @Column(name = "variant_attributes", columnDefinition = "jsonb")

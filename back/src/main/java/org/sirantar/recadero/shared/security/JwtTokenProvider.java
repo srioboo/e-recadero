@@ -10,6 +10,7 @@ import org.sirantar.recadero.shared.config.properties.SecurityProperties;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +38,15 @@ public class JwtTokenProvider {
 
   public JwtTokenProvider(SecurityProperties securityProperties) {
     this.securityProperties = securityProperties;
-    this.key = Keys.hmacShaKeyFor(
-        Decoders.BASE64.decode(securityProperties.getJwt().getSecret())
-    );
+    this.key = Keys.hmacShaKeyFor(resolveKeyBytes(securityProperties.getJwt().getSecret()));
+  }
+
+  private byte[] resolveKeyBytes(String secret) {
+    try {
+      return Decoders.BASE64.decode(secret);
+    } catch (RuntimeException ex) {
+      return secret.getBytes(StandardCharsets.UTF_8);
+    }
   }
 
   /**

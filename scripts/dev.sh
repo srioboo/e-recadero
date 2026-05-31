@@ -68,7 +68,8 @@ echo -e "${YELLOW}Press Ctrl+C to stop all services${NC}"
 echo ""
 
 # Start backend in the background
-cd "$BACK_DIR" && ./gradlew bootRun &
+cd "$BACK_DIR" && export SPRING_REDIS_HOST=127.0.0.1 &&
+./gradlew bootRun &
 BACK_PID=$!
 
 # Start both frontend servers in the background
