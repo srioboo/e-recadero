@@ -21,10 +21,10 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: create-drop  # Recreate schema for each test
+      ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
         generate_statistics: false
   
@@ -43,9 +43,10 @@ spring:
       enabled: true
       path: /h2-console
   
-  # Flyway disabled for tests (Hibernate handles schema)
+  # Flyway enabled for tests to create schemas properly
   flyway:
-    enabled: false
+    enabled: true
+    locations: classpath:db/migration
   
   # Redis with Testcontainers (if available)
   redis:
