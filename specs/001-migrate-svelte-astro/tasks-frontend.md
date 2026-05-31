@@ -25,31 +25,31 @@
 
 ### UI Components (No Backend Data Required)
 
-- [ ] F001 Create ProductCard.astro component:
+- [x] F001 Create ProductCard.astro component:
   - Image, name, price, rating (stars), "Add to Cart" button
   - Responsive grid layout (mobile-first)
   - Hover effects and loading state
   - Location: `src/components/catalog/ProductCard.astro`
 
-- [ ] F002 Create ProductGrid.astro layout:
+- [x] F002 Create ProductGrid.astro layout:
   - Grid container with configurable columns (1 mobile, 2 tablet, 3-4 desktop)
   - Pagination controls (prev/next + page numbers)
   - Location: `src/components/catalog/ProductGrid.astro`
 
-- [ ] F003 Create PriceDisplay.astro component:
+- [x] F003 Create PriceDisplay.astro component:
   - Format currency (EUR) with thousands separator
   - Show sale price vs base price with discount %
   - Low stock warning badge (qty < 5)
   - Location: `src/components/shared/PriceDisplay.astro`
 
-- [ ] F004 Create RatingStars.astro component:
+- [x] F004 Create RatingStars.astro component:
   - Display 1-5 star rating (filled/empty)
   - Show review count tooltip
   - Location: `src/components/shared/RatingStars.astro`
 
 ### Fetch Utilities & Types
 
-- [ ] F005 Create `src/lib/api.ts` with Astro fetch helpers:
+- [x] F005 Create `src/lib/api.ts` with Astro fetch helpers:
   - `fetchCategories()`: List all categories (paginated, GET /api/v1/categories)
   - `fetchProducts(query, categoryId, minPrice, maxPrice)`: Search products with filters
   - `fetchProductDetail(productId)`: Get single product + variants
@@ -57,7 +57,7 @@
   - Error handling (404, 500, timeout)
   - Caching strategy (HTTP headers, optional Redis in middleware)
 
-- [ ] F006 Create `src/types/catalog.ts` TypeScript interfaces:
+- [x] F006 Create `src/types/catalog.ts` TypeScript interfaces:
   - `Category`: id, name, slug, description, parentId, imageUrl, children[]
   - `Product`: id, sku, name, description, price, salePrice, categoryId, images[], variants[]
   - `ProductVariant`: id, sku, attributes, price (override), weight
@@ -72,19 +72,19 @@
 
 ### Product Listing Page
 
-- [ ] F007 Create `src/pages/catalog/index.astro`:
+- [x] F007 Create `src/pages/catalog/index.astro`:
   - Server: Fetch categories + paginate products (query params: category, q, page)
   - UI: Category sidebar, product grid, search input, filter panel
   - On mount: Show loading skeleton, fetch real data client-side (optional with View Transitions)
   - Location: `/catalog` route
 
-- [ ] F008 Create `src/pages/catalog/[slug].astro` (Category detail):
+- [x] F008 Create `src/pages/catalog/[slug].astro` (Category detail):
   - Server: Fetch category + children + products in category
   - UI: Category title, breadcrumb, product grid filtered by category
   - Pagination: 12 products per page
   - Sort: By name, price, newest
 
-- [ ] F009 Create `src/pages/product/[id].astro` (Product detail):
+- [x] F009 Create `src/pages/product/[id].astro` (Product detail):
   - Server: Fetch product detail + variants + availability
   - UI: Large image gallery, title, price, description, specs table
   - Variant selector: Dropdown/buttons for size/color/etc
@@ -95,12 +95,12 @@
 
 ### Search & Filter
 
-- [ ] F010 Create `src/components/catalog/SearchInput.astro`:
+- [x] F010 Create `src/components/catalog/SearchInput.astro`:
   - Text input with debounced search (500ms)
   - Clear button, search icon
   - Focus state: Show recent searches or category suggestions
 
-- [ ] F011 Create `src/components/catalog/FilterPanel.astro`:
+- [x] F011 Create `src/components/catalog/FilterPanel.astro`:
   - Checkbox filters: Category, Brand, Price range slider, Availability (In stock/Low stock)
   - Apply/Reset buttons
   - Show active filter count badge

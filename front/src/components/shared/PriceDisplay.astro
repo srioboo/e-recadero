@@ -1,0 +1,64 @@
+---
+interface Props {
+  basePrice: number;
+  salePrice?: number;
+  availableQuantity?: number;
+  lowStockThreshold?: number;
+  currency?: string;
+}
+
+const {
+  basePrice,
+  salePrice,
+  availableQuantity = 0,
+  lowStockThreshold = 5,
+  currency = 'EUR',
+} = Astro.props;
+
+const hasSale = salePrice && salePrice < basePrice;
+const discount = hasSale ? Math.round(((basePrice - salePrice) / basePrice) * 100) : 0;
+const isLowStock = availableQuantity > 0 && availableQuantity < lowStockThreshold;
+const isOutOfStock = availableQuantity === 0;
+
+const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+};
+---
+
+<div class="flex flex-col gap-2">
+  <div class="flex items-center gap-2">
+    {
+      hasSale ? (
+        <>
+          <span class="line-through text-gray-500 text-sm">{formatPrice(basePrice)}</span>
+          <span class="text-xl font-bold text-red-600">{formatPrice(salePrice)}</span>
+          <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded">
+            -{discount}%
+          </span>
+        </>
+      ) : (
+        <span class="text-xl font-bold text-gray-900">{formatPrice(basePrice)}</span>
+      )
+    }
+  </div>
+
+  {
+    isOutOfStock && (
+      <div class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded w-fit">
+        Out of Stock
+      </div>
+    )
+  }
+  {
+    isLowStock && !isOutOfStock && (
+      <div class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded w-fit">
+        Low Stock ({availableQuantity})
+      </div>
+    )
+  }
+</div>

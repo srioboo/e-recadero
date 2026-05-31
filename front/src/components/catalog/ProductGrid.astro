@@ -1,0 +1,108 @@
+---
+import ProductCard from './ProductCard.astro';
+import type { Product } from '../../types/catalog';
+
+interface Props {
+  products: Product[];
+  columns?: {
+    mobile?: number;
+    tablet?: number;
+    desktop?: number;
+  };
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
+}
+
+const {
+  products,
+  columns = {
+    mobile: 1,
+    tablet: 2,
+    desktop: 3,
+  },
+  currentPage = 1,
+  totalPages = 1,
+} = Astro.props;
+
+const columnClasses = {
+  mobile: columns.mobile || 1,
+  tablet: columns.tablet || 2,
+  desktop: columns.desktop || 3,
+};
+
+const gridClasses = {
+  mobile: `grid-cols-${columnClasses.mobile}`,
+  tablet: `md:grid-cols-${columnClasses.tablet}`,
+  desktop: `lg:grid-cols-${columnClasses.desktop}`,
+};
+---
+
+<div class="w-full">
+  <!-- Products Grid -->
+  <div
+    class={`grid gap-4 mb-8 grid-cols-${columnClasses.mobile} md:grid-cols-${columnClasses.tablet} lg:grid-cols-${columnClasses.desktop}`}
+  >
+    {
+      products.length > 0 ? (
+        products.map((product) => <ProductCard product={product} />)
+      ) : (
+        <div class="col-span-full py-12 text-center">
+          <p class="text-gray-500 text-lg">No products found</p>
+        </div>
+      )
+    }
+  </div>
+
+  <!-- Pagination -->
+  {
+    totalPages > 1 && (
+      <div class="flex justify-center items-center gap-2 py-8">
+        <a
+          href={`?page=${currentPage - 1}`}
+          class={`px-3 py-2 rounded transition-colors ${
+            currentPage > 1
+              ? 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+          }`}
+          aria-disabled={currentPage === 1}
+        >
+          ← Previous
+        </a>
+
+        <div class="flex gap-1">
+          {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
+            const page = i + 1;
+            const isActive = page === currentPage;
+            return (
+              <a
+                href={`?page=${page}`}
+                class={`px-3 py-2 rounded transition-colors ${
+                  isActive
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {page}
+              </a>
+            );
+          })}
+          {totalPages > 5 && <span class="px-2 py-2">...</span>}
+        </div>
+
+        <a
+          href={`?page=${currentPage + 1}`}
+          class={`px-3 py-2 rounded transition-colors ${
+            currentPage < totalPages
+              ? 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+          }`}
+          aria-disabled={currentPage === totalPages}
+        >
+          Next →
+        </a>
+      </div>
+    )
+  }
+</div>

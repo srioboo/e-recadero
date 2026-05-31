@@ -1,0 +1,48 @@
+---
+interface Props {
+  rating: number;
+  reviewCount?: number;
+  readonly?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { rating, reviewCount = 0, readonly = true, size = 'md' } = Astro.props;
+
+const validRating = Math.min(5, Math.max(0, rating));
+const starCount = 5;
+
+const sizeClasses = {
+  sm: 'w-4 h-4',
+  md: 'w-5 h-5',
+  lg: 'w-6 h-6',
+};
+---
+
+<div class="flex items-center gap-2">
+  <div class="flex gap-0.5" aria-label={`Rating: ${validRating} out of 5 stars`}>
+    {
+      Array.from({ length: starCount }).map((_, index) => (
+        <svg
+          class={`${sizeClasses[size]} ${
+            index < Math.floor(validRating)
+              ? 'fill-yellow-400 text-yellow-400'
+              : index < validRating
+                ? 'fill-yellow-400 text-yellow-400'
+                : 'fill-gray-300 text-gray-300'
+          }`}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+        >
+          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+        </svg>
+      ))
+    }
+  </div>
+  {
+    reviewCount > 0 && (
+      <span class="text-sm text-gray-600" title={`${reviewCount} reviews`}>
+        ({reviewCount})
+      </span>
+    )
+  }
+</div>

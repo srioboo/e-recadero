@@ -1,0 +1,105 @@
+---
+import RatingStars from '../shared/RatingStars.astro';
+import PriceDisplay from '../shared/PriceDisplay.astro';
+import type { Product } from '../../types/catalog';
+
+interface Props {
+  product: Product;
+  variant?: any;
+  href?: string;
+}
+
+const { product, variant, href = `/product/${product.id}` } = Astro.props;
+
+const primaryImage = product.images?.[0];
+const displayPrice = variant?.price || product.base_price;
+const availableQty = variant?.available_quantity || product.available_quantity || 0;
+
+// Mock rating for now (would come from reviews table in backend)
+const rating = 4.5;
+const reviewCount = 12;
+---
+
+<a
+  href={href}
+  class="group flex flex-col h-full bg-white rounded-lg shadow hover:shadow-lg transition-all duration-200 overflow-hidden"
+>
+  <!-- Image Container -->
+  <div class="relative w-full h-48 bg-gray-100 overflow-hidden">
+    {
+      primaryImage?.url ? (
+        <img
+          src={primaryImage.url}
+          alt={primaryImage.alt || product.name}
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+          loading="lazy"
+        />
+      ) : (
+        <div class="w-full h-full flex items-center justify-center text-gray-400">
+          <span class="text-sm">No image</span>
+        </div>
+      )
+    }
+    {
+      availableQty > 0 && availableQty < 5 && (
+        <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
+          Low Stock
+        </div>
+      )
+    }
+    {
+      availableQty === 0 && (
+        <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <span class="text-white font-bold text-lg">Out of Stock</span>
+        </div>
+      )
+    }
+  </div>
+
+  <!-- Content Container -->
+  <div class="flex flex-col flex-1 p-4 gap-3">
+    <!-- Product Name -->
+    <h3 class="font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
+      {product.name}
+    </h3>
+
+    <!-- Description -->
+    {
+      product.description && (
+        <p class="text-sm text-gray-600 line-clamp-1">{product.description}</p>
+      )
+    }
+
+    <!-- Rating -->
+    <div class="mt-auto pt-2">
+      <RatingStars rating={rating} reviewCount={reviewCount} size="sm" />
+    </div>
+
+    <!-- Price -->
+    <div class="pt-1">
+      <PriceDisplay
+        basePrice={displayPrice}
+        availableQuantity={availableQty}
+        lowStockThreshold={5}
+      />
+    </div>
+
+    <!-- Add to Cart Button -->
+    <button
+      class={`w-full py-2 px-3 rounded font-medium text-sm transition-colors mt-auto ${
+        availableQty > 0
+          ? 'bg-blue-600 text-white hover:bg-blue-700'
+          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+      }`}
+      disabled={availableQty === 0}
+      onclick={(e) => {
+        e.preventDefault();
+        // Placeholder for add to cart logic
+        alert(`Add to cart: ${product.name}`);
+      }}
+      aria-label={`Add ${product.name} to cart`}
+    >
+      {availableQty > 0 ? 'Add to Cart' : 'Out of Stock'}
+    </button>
+  </div>
+</a>

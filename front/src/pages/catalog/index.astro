@@ -1,0 +1,123 @@
+---
+import ProductGrid from '../../components/catalog/ProductGrid.astro';
+import SearchBar from '../../components/catalog/SearchBar.astro';
+import CategorySidebar from '../../components/catalog/CategorySidebar.astro';
+import { fetchCategories, fetchProducts } from '../../lib/api';
+
+// Get query parameters
+const query = Astro.url.searchParams.get('q') || '';
+const categoryId = Astro.url.searchParams.get('categoryId') || '';
+const page = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const minPrice = Astro.url.searchParams.get('minPrice');
+const maxPrice = Astro.url.searchParams.get('maxPrice');
+const sortBy = Astro.url.searchParams.get('sort') as any;
+const inStockOnly = Astro.url.searchParams.get('inStockOnly') === 'true';
+
+const limit = 12;
+
+// Fetch data
+let categories = [];
+let products = [];
+let totalPages = 1;
+let error = null;
+
+try {
+  // Fetch categories for sidebar
+  const categoriesResponse = await fetchCategories(undefined, 50, 0);
+  categories = categoriesResponse.data || [];
+
+  // Fetch products with filters
+  const productsResponse = await fetchProducts({
+    query: query || undefined,
+    categoryId: categoryId || undefined,
+    minPrice: minPrice ? parseFloat(minPrice) : undefined,
+    maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
+    sortBy: sortBy as any,
+    page,
+    limit,
+    inStockOnly,
+  });
+
+  products = productsResponse.data || [];
+  totalPages = Math.ceil((productsResponse.pagination?.total || 0) / limit);
+} catch (err) {
+  console.error('Failed to load catalog:', err);
+  error = 'Failed to load products. Please try again later.';
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catalog | E-Recadero</title>
+    <meta
+      name="description"
+      content="Browse our complete product catalog with advanced search and filtering."
+    />
+  </head>
+  <body>
+    <div class="min-h-screen bg-gray-50">
+      <!-- Header -->
+      <div class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+          <h1 class="text-4xl font-bold text-gray-900">Product Catalog</h1>
+          <p class="text-gray-600 mt-2">
+            {
+              query
+                ? `Search results for "${query}"`
+                : 'Browse our complete collection of products'
+            }
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="max-w-7xl mx-auto px-4 py-8">
+        {
+          error && (
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-700">
+              {error}
+            </div>
+          )
+        }
+
+        <!-- Search Bar -->
+        <SearchBar initialQuery={query} />
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <!-- Sidebar -->
+          <div class="lg:col-span-1">
+            <CategorySidebar categories={categories} selectedCategoryId={categoryId} />
+          </div>
+
+          <!-- Products Section -->
+          <div class="lg:col-span-3">
+            {
+              products.length === 0 && !error ? (
+                <div class="bg-white rounded-lg shadow p-8 text-center">
+                  <p class="text-gray-500 text-lg mb-4">No products found</p>
+                  <p class="text-gray-400 text-sm">
+                    Try adjusting your search or filters
+                  </p>
+                </div>
+              ) : (
+                <ProductGrid
+                  products={products}
+                  currentPage={page}
+                  totalPages={totalPages}
+                  columns={{ mobile: 1, tablet: 2, desktop: 3 }}
+                />
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style is:global>
+      /* Tailwind CSS will handle this via astro.config.mjs */
+    </style>
+  </body>
+</html>
