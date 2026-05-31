@@ -103,6 +103,11 @@
 
 **Independent Test**: `./gradlew test --tests "*catalog*"` passes all unit, integration, and contract tests
 
+**Frontend Integration**: See `/specs/001-migrate-svelte-astro/tasks-frontend.md`
+- Phase 2 (F007-F011) blocks on T056-T058 ✅
+- Phase 3 (F012-F014) blocks on T061+ (Cart backend)
+- Phase 4-5 (Polish + i18n) can start after F012 complete
+
 ### Data Models & Repositories
 
 - [x] T033 [P] Create Category.java entity in back/src/main/java/.../catalog/domain/
@@ -219,6 +224,10 @@
   - Variant price override affecting cart calculations
 
 **Checkpoint**: All Catalog tests pass; Coverage ≥80%; No contract violations
+
+**Version Tag**: `v0.1.0-catalog-services` (T034-T058 complete)
+- APIs ready for frontend consumption (F007-F011)
+- Next version: `v0.2.0-catalog-complete` (after T059-T060)
 
 ---
 
