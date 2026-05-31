@@ -23,7 +23,7 @@ repositories {
 	maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
-extra["springCloudVersion"] = "2023.0.0"
+extra["springCloudVersion"] = "2024.0.0"
 extra["springModulithVersion"] = "1.1.5"
 
 dependencyManagement {

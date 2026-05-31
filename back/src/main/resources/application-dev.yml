@@ -5,7 +5,7 @@
 spring:
   application:
     name: recadero-backend
-  
+
   jpa:
     show-sql: true
     hibernate:
@@ -16,7 +16,7 @@ spring:
         generate_statistics: true
         format_sql: true
         use_sql_comments: true
-  
+
   datasource:
     url: jdbc:postgresql://localhost:5432/recadero
     username: recadero
@@ -26,23 +26,24 @@ spring:
       maximum-pool-size: 9
       minimum-idle: 2
       connection-timeout: 20000
-  
+
   flyway:
     enabled: true
     baseline-on-migrate: true
     validate-on-migrate: true
     out-of-order: false
     locations: classpath:db/migration
-  
-  redis:
-    host: localhost
-    port: 6379
-    password: redis123
-    timeout: 2000
-  
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: redis123
+      timeout: 2000
+
   kafka:
     bootstrap-servers: localhost:9092
-  
+
   devtools:
     restart:
       enabled: true
@@ -81,4 +82,4 @@ management:
       show-details: always
     env:
       enabled: true
-  endpoints.web.base-path: /api/v1/actuator
+  endpoints.web.base-path: /actuator

@@ -47,17 +47,18 @@ spring:
     sql-migration-suffixes: .sql
   
   # Redis Configuration
-  redis:
-    host: localhost
-    port: 6379
-    password: redis123
-    timeout: 2000
-    lettuce:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
-        max-wait: -1
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: redis123
+      timeout: 2000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1
   
   # Cache Configuration
   cache:
@@ -86,9 +87,6 @@ spring:
   
   # Cloud Stream Configuration (for Kafka)
   cloud:
-    function:
-      scan:
-        packages: org.sirantar.recadero
     stream:
       default-binder: kafka
       default:
