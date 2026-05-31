@@ -182,11 +182,11 @@
 
 ### Domain Events
 
-- [ ] T051 [P] Create ProductPublishedEvent.java in catalog/events/
-- [ ] T052 [P] Create ProductPriceChangedEvent.java
-- [ ] T053 [P] Create ProductArchivedEvent.java
-- [ ] T054 [P] Create InventoryUpdatedEvent.java
-- [ ] T055 Create CatalogEventPublisher.java to emit events via ApplicationEventPublisher
+- [x] T051 [P] Create ProductPublishedEvent.java in catalog/events/
+- [x] T052 [P] Create ProductPriceChangedEvent.java
+- [x] T053 [P] Create ProductArchivedEvent.java
+- [x] T054 [P] Create InventoryUpdatedEvent.java
+- [x] T055 Create CatalogEventPublisher.java to emit events via ApplicationEventPublisher
 
 ### Unit Tests (80%+ coverage target)
 
