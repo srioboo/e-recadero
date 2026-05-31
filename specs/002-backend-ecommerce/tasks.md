@@ -190,16 +190,16 @@
 
 ### Unit Tests (80%+ coverage target)
 
-- [ ] T056 [P] Create CategoryServiceTest.java with tests for:
+- [x] T056 [P] Create CategoryServiceTest.java with tests for:
   - createCategory with valid/invalid input
   - getCategory hierarchy traversal
   - deleteCategory cascade behavior
-- [ ] T057 [P] Create ProductServiceTest.java with tests for:
+- [x] T057 [P] Create ProductServiceTest.java with tests for:
   - publishProduct (requires category, price)
   - searchProducts filtering
   - updateProductPrice event emission
   - archiveProduct cascade
-- [ ] T058 [P] Create InventoryServiceTest.java with tests for:
+- [x] T058 [P] Create InventoryServiceTest.java with tests for:
   - checkAvailability with in-stock/out-of-stock scenarios
   - reserveInventory (success + OutOfStockException)
   - releaseReservation (cart expiration case)
