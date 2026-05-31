@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.sirantar.recadero.catalog.domain.Inventory;
 import org.sirantar.recadero.catalog.domain.Product;
 import org.sirantar.recadero.catalog.domain.ProductVariant;
+import org.sirantar.recadero.catalog.events.InventoryUpdatedEvent;
 import org.sirantar.recadero.catalog.repository.InventoryRepository;
 import org.sirantar.recadero.catalog.repository.ProductRepository;
 import org.sirantar.recadero.catalog.repository.ProductVariantRepository;
 import org.sirantar.recadero.catalog.service.dto.InventoryResponse;
 import org.sirantar.recadero.catalog.service.dto.ProductAvailabilityResponse;
 import org.sirantar.recadero.catalog.service.dto.ProductVariantAvailabilityResponse;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ public class InventoryService {
   private final InventoryRepository inventoryRepository;
   private final ProductVariantRepository productVariantRepository;
   private final ProductRepository productRepository;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional(readOnly = true)
   public int checkAvailability(Long variantId, int quantity) {
@@ -46,6 +49,9 @@ public class InventoryService {
     inventory.setQuantityAvailable(inventory.getQuantityAvailable() - quantity);
     inventory.setQuantityReserved(inventory.getQuantityReserved() + quantity);
     inventoryRepository.save(inventory);
+    eventPublisher.publishEvent(
+        new InventoryUpdatedEvent(variantId, inventory.getWarehouseId(), -quantity, "RESERVATION")
+    );
     return inventory.getQuantityAvailable();
   }
 
@@ -54,6 +60,9 @@ public class InventoryService {
     inventory.setQuantityReserved(Math.max(0, inventory.getQuantityReserved() - quantity));
     inventory.setQuantityAvailable(inventory.getQuantityAvailable() + quantity);
     inventoryRepository.save(inventory);
+    eventPublisher.publishEvent(
+        new InventoryUpdatedEvent(variantId, inventory.getWarehouseId(), quantity, "RELEASE")
+    );
     return inventory.getQuantityAvailable();
   }
 
@@ -65,6 +74,9 @@ public class InventoryService {
     }
     inventory.setQuantityAvailable(newAvailable);
     inventoryRepository.save(inventory);
+    eventPublisher.publishEvent(
+        new InventoryUpdatedEvent(variantId, inventory.getWarehouseId(), change, reason)
+    );
     return inventory.getQuantityAvailable();
   }
 
