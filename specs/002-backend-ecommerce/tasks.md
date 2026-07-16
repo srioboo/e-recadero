@@ -211,14 +211,14 @@
 
 ### Contract Tests (Module Boundaries)
 
-- [ ] T059 Create CatalogApplicationModuleTest.java using @ApplicationModuleTest:
+- [x] T059 Create CatalogApplicationModuleTest.java using @ApplicationModuleTest:
   - Verify Catalog module doesn't import from other domain modules (users, cart, orders, etc.)
   - Verify only `catalog`, `shared` imports allowed
   - Verify REST API contract matches OpenAPI spec
 
 ### Integration Tests (E2E within module)
 
-- [ ] T060 Create CatalogIntegrationTest.java testing:
+- [x] T060 Create CatalogIntegrationTest.java testing:
   - Create category → Create product → Publish product → Search products flow
   - Inventory reservation → release flow
   - Variant price override affecting cart calculations

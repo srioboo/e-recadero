@@ -6,6 +6,7 @@ const STORAGE_KEYS = {
   LOCALE: 'user_locale',
   THEME: 'user_theme',
   PREFERENCES: 'user_preferences',
+  ACCESS_TOKEN: 'access_token',
 } as const;
 
 /**
@@ -66,6 +67,15 @@ export function clearStorage(): void {
   } catch (error) {
     console.warn('Failed to clear localStorage', error);
   }
+}
+
+/**
+ * Read the admin's JWT access token (set by the login flow, not yet
+ * implemented — see the Users/Auth backend module). Only available
+ * client-side; server-rendered pages will get `null`.
+ */
+export function getAccessToken(): string | null {
+  return getStorage<string | null>(STORAGE_KEYS.ACCESS_TOKEN, null);
 }
 
 export { STORAGE_KEYS };

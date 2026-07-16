@@ -1,0 +1,208 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import BlockEditor from '@/components/templates/BlockEditor';
+import TemplatePreview from '@/components/templates/TemplatePreview.astro';
+import SeoMetaForm from '@/components/templates/SeoMetaForm.astro';
+import EntityMappingPanel from '@/components/templates/EntityMappingPanel.astro';
+import { getTemplate, publishTemplate, unpublishTemplate } from '@/lib/api';
+
+export const prerender = false;
+
+const { templateId } = Astro.params;
+
+if (!templateId) {
+  return Astro.redirect('/templates');
+}
+
+let publishError: string | null = null;
+let publishMessage: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  const action = formData.get('action');
+
+  try {
+    if (action === 'publish') {
+      const hasNoBlocksConfirmed = formData.get('confirm_empty') === 'true';
+      const currentTemplate = await getTemplate(templateId);
+      const blockCount = currentTemplate.blocks?.length ?? 0;
+
+      if (blockCount === 0 && !hasNoBlocksConfirmed) {
+        // Edge Case: publishing an empty template — warn but don't block.
+        publishError = 'EMPTY_TEMPLATE_CONFIRM';
+      } else {
+        const changeNote = String(formData.get('change_note') || '');
+        await publishTemplate(templateId, changeNote || undefined);
+        publishMessage = 'Template published.';
+      }
+    } else if (action === 'unpublish') {
+      await unpublishTemplate(templateId);
+      publishMessage = 'Template unpublished. It reverted to draft.';
+    }
+  } catch (err) {
+    console.error('Publish/unpublish action failed:', err);
+    publishError = 'Action failed. Please try again.';
+  }
+}
+
+let template;
+try {
+  template = await getTemplate(templateId);
+} catch (err) {
+  console.error('Failed to load template:', err);
+  return Astro.redirect('/templates');
+}
+---
+
+<MainLayout title={`Edit: ${template.name}`}>
+  <div class="edit-template">
+    <div class="edit-template__status">
+      <span class={`edit-template__badge edit-template__badge--${template.status.toLowerCase()}`}>
+        {template.status}
+      </span>
+      <span>v{template.version}{template.published_version ? ` (published v${template.published_version})` : ''}</span>
+      <a href={`/templates/${templateId}/versions`}>Version history →</a>
+    </div>
+
+    {publishMessage && <div class="edit-template__notice edit-template__notice--success">{publishMessage}</div>}
+    {publishError === 'EMPTY_TEMPLATE_CONFIRM' && (
+      <form method="POST" class="edit-template__confirm-empty">
+        <input type="hidden" name="action" value="publish" />
+        <input type="hidden" name="confirm_empty" value="true" />
+        <span>This template has no content blocks — publish anyway?</span>
+        <button type="submit">Publish anyway</button>
+      </form>
+    )}
+    {publishError && publishError !== 'EMPTY_TEMPLATE_CONFIRM' && (
+      <div class="edit-template__notice edit-template__notice--error">{publishError}</div>
+    )}
+
+    <div class="edit-template__publish-actions">
+      {template.status === 'DRAFT' ? (
+        <form method="POST">
+          <input type="hidden" name="action" value="publish" />
+          <input type="text" name="change_note" placeholder="Change note (optional)" />
+          <button type="submit">Publish</button>
+        </form>
+      ) : (
+        <form method="POST">
+          <input type="hidden" name="action" value="unpublish" />
+          <button type="submit">Unpublish</button>
+        </form>
+      )}
+    </div>
+
+    <section class="edit-template__section">
+      <h2>Content blocks</h2>
+      <BlockEditor client:load templateId={templateId} initialBlocks={template.blocks || []} />
+    </section>
+
+    <section class="edit-template__section">
+      <h2>Preview</h2>
+      <TemplatePreview template={template} />
+    </section>
+
+    <section class="edit-template__section">
+      <h2>SEO metadata</h2>
+      <SeoMetaForm templateId={templateId} initialMeta={template.meta} />
+    </section>
+
+    <section class="edit-template__section">
+      <h2>Entity mapping</h2>
+      <EntityMappingPanel templateId={templateId} />
+    </section>
+  </div>
+</MainLayout>
+
+<style>
+  .edit-template {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 60rem;
+  }
+
+  .edit-template__status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #555;
+  }
+
+  .edit-template__badge {
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+  }
+
+  .edit-template__badge--draft {
+    background: #e5e7eb;
+    color: #374151;
+  }
+
+  .edit-template__badge--published {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .edit-template__badge--archived {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .edit-template__notice {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+  }
+
+  .edit-template__notice--success {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .edit-template__notice--error {
+    background: #fdecea;
+    color: #b91c1c;
+  }
+
+  .edit-template__confirm-empty {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fff7ed;
+    border: 1px solid #fdba74;
+    color: #9a3412;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+  }
+
+  .edit-template__publish-actions form {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .edit-template__publish-actions input[type='text'] {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .edit-template__publish-actions button,
+  .edit-template__confirm-empty button {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .edit-template__section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+</style>

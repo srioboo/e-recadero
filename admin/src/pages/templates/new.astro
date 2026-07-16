@@ -1,0 +1,148 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { createTemplate, DuplicateSlugError } from '@/lib/api';
+import type { TemplateType } from '@/lib/types';
+
+export const prerender = false;
+
+let nameValue = '';
+let typeValue: TemplateType = 'CATEGORY_PAGE';
+let slugValue = '';
+let slugError: string | null = null;
+let generalError: string | null = null;
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  nameValue = String(formData.get('name') || '');
+  typeValue = String(formData.get('type') || 'CATEGORY_PAGE') as TemplateType;
+  slugValue = String(formData.get('slug') || '');
+
+  if (!nameValue || !slugValue) {
+    generalError = 'Name and slug are required.';
+  } else {
+    try {
+      const template = await createTemplate({
+        name: nameValue,
+        type: typeValue,
+        slug: slugValue,
+      });
+      return Astro.redirect(`/templates/${template.template_id}/edit`);
+    } catch (err) {
+      if (err instanceof DuplicateSlugError) {
+        slugError = `Slug "${err.providedSlug || slugValue}" is already in use. Choose a different slug.`;
+      } else {
+        console.error('Failed to create template:', err);
+        generalError = 'Failed to create template. Please try again.';
+      }
+    }
+  }
+}
+---
+
+<MainLayout title="New Template">
+  <div class="new-template">
+    <p class="new-template__hint">
+      For category/product templates, set the slug to match that category's slug or
+      that product's ID exactly, so the storefront can find it (see the entity/template
+      slug convention).
+    </p>
+
+    {generalError && <div class="new-template__error">{generalError}</div>}
+
+    <form method="POST" class="new-template__form">
+      <label class="new-template__field">
+        <span>Name</span>
+        <input type="text" name="name" required value={nameValue} />
+      </label>
+
+      <label class="new-template__field">
+        <span>Type</span>
+        <select name="type">
+          <option value="LANDING_PAGE" selected={typeValue === 'LANDING_PAGE'}>Landing Page</option>
+          <option value="CATEGORY_PAGE" selected={typeValue === 'CATEGORY_PAGE'}>Category Page</option>
+          <option value="PRODUCT_PAGE" selected={typeValue === 'PRODUCT_PAGE'}>Product Page</option>
+          <option value="CUSTOM" selected={typeValue === 'CUSTOM'}>Custom</option>
+        </select>
+      </label>
+
+      <label class="new-template__field">
+        <span>Slug</span>
+        <input type="text" name="slug" required value={slugValue} aria-invalid={slugError ? 'true' : undefined} />
+        {slugError && <span class="new-template__field-error">{slugError}</span>}
+      </label>
+
+      <button type="submit" class="new-template__submit">Create template</button>
+    </form>
+  </div>
+</MainLayout>
+
+<style>
+  .new-template {
+    max-width: 32rem;
+  }
+
+  .new-template__hint {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .new-template__error {
+    background: #fdecea;
+    color: #b91c1c;
+    border: 1px solid #f5b5b0;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .new-template__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .new-template__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-weight: 500;
+  }
+
+  .new-template__field input,
+  .new-template__field select {
+    font: inherit;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .new-template__field input[aria-invalid='true'] {
+    border-color: #b91c1c;
+  }
+
+  .new-template__field-error {
+    color: #b91c1c;
+    font-size: 0.85rem;
+    font-weight: normal;
+  }
+
+  .new-template__submit {
+    align-self: flex-start;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .new-template__submit:hover {
+    background: #1d4ed8;
+  }
+</style>

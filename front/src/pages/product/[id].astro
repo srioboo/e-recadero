@@ -1,7 +1,10 @@
 ---
 import ProductDetailsPanel from '../../components/catalog/ProductDetailsPanel.astro';
 import ProductGrid from '../../components/catalog/ProductGrid.astro';
-import { fetchProductDetail, fetchProductAvailability, fetchProducts } from '../../lib/api';
+import TemplateRenderer from '../../components/templates/TemplateRenderer.astro';
+import TemplateSeoHead from '../../components/templates/TemplateSeoHead.astro';
+import { fetchProductDetail, fetchProductAvailability, fetchProducts, fetchTemplateBySlug } from '../../lib/api';
+import type { Template } from '../../types/templates';
 
 export const prerender = false;
 
@@ -16,6 +19,16 @@ let product = null;
 let availability = null;
 let relatedProducts = [];
 let error = null;
+
+// FR-001/FR-004: a product's mapped template is looked up by the product's own
+// ID (see spec.md Assumptions — template slug === entity slug/ID convention).
+let template: Template | null = null;
+try {
+  template = await fetchTemplateBySlug(id);
+} catch (err) {
+  console.error('Failed to load template for product:', err);
+  template = null;
+}
 
 try {
   // Fetch product details
@@ -52,137 +65,148 @@ const reorderStatus = primaryVariantAvailability?.reorder_status || 'OUT_OF_STOC
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {
-      product && (
-        <>
-          <title>{product.name} | E-Recadero</title>
-          <meta name="description" content={product.description || product.name} />
-          <meta property="og:title" content={product.name} />
-          <meta
-            property="og:description"
-            content={product.description || product.name}
-          />
-          {product.images?.[0]?.url && (
-            <meta property="og:image" content={product.images[0].url} />
-          )}
-        </>
+      template ? (
+        <TemplateSeoHead meta={template.meta} />
+      ) : (
+        product && (
+          <>
+            <title>{product.name} | E-Recadero</title>
+            <meta name="description" content={product.description || product.name} />
+            <meta property="og:title" content={product.name} />
+            <meta
+              property="og:description"
+              content={product.description || product.name}
+            />
+            {product.images?.[0]?.url && (
+              <meta property="og:image" content={product.images[0].url} />
+            )}
+          </>
+        )
       )
     }
   </head>
   <body>
-    <div class="min-h-screen bg-gray-50">
-      <!-- Breadcrumb -->
-      <div class="bg-white border-b">
-        <div class="max-w-7xl mx-auto px-4 py-4">
-          <nav class="flex gap-2 text-sm">
-            <a href="/catalog" class="text-blue-600 hover:text-blue-700">
-              Catalog
-            </a>
-            <span class="text-gray-400">/</span>
+    {
+      template ? (
+        // FR-001: render the mapped, published template instead of the default layout
+        <TemplateRenderer template={template} />
+      ) : (
+        <div class="min-h-screen bg-gray-50">
+          <!-- Breadcrumb -->
+          <div class="bg-white border-b">
+            <div class="max-w-7xl mx-auto px-4 py-4">
+              <nav class="flex gap-2 text-sm">
+                <a href="/catalog" class="text-blue-600 hover:text-blue-700">
+                  Catalog
+                </a>
+                <span class="text-gray-400">/</span>
+                {
+                  product && (
+                    <>
+                      <a
+                        href={`/catalog?categoryId=${product.category_id}`}
+                        class="text-blue-600 hover:text-blue-700"
+                      >
+                        Category
+                      </a>
+                      <span class="text-gray-400">/</span>
+                      <span class="text-gray-600">{product.name}</span>
+                    </>
+                  )
+                }
+              </nav>
+            </div>
+          </div>
+
+          <!-- Main Content -->
+          <div class="max-w-7xl mx-auto px-4 py-8">
+            {
+              error && (
+                <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+                  <p class="text-red-700 font-semibold">{error}</p>
+                  <a
+                    href="/catalog"
+                    class="text-red-600 hover:text-red-700 text-sm mt-4 inline-block"
+                  >
+                    ← Back to Catalog
+                  </a>
+                </div>
+              )
+            }
+
             {
               product && (
                 <>
-                  <a
-                    href={`/catalog?categoryId=${product.category_id}`}
-                    class="text-blue-600 hover:text-blue-700"
-                  >
-                    Category
-                  </a>
-                  <span class="text-gray-400">/</span>
-                  <span class="text-gray-600">{product.name}</span>
+                  <!-- Product Detail Section -->
+                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                    <!-- Product Images -->
+                    <div class="lg:col-span-1">
+                      <div class="bg-white rounded-lg shadow overflow-hidden">
+                        {product.images && product.images.length > 0 ? (
+                          <div class="aspect-square bg-gray-100 flex items-center justify-center">
+                            <img
+                              src={product.images[0].url}
+                              alt={product.images[0].alt || product.name}
+                              class="w-full h-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div class="aspect-square bg-gray-100 flex items-center justify-center">
+                            <span class="text-gray-400">No image</span>
+                          </div>
+                        )}
+                        {product.images && product.images.length > 1 && (
+                          <div class="p-4 grid grid-cols-4 gap-2 bg-white">
+                            {product.images.map((img, idx) => (
+                              <button
+                                type="button"
+                                class={`aspect-square rounded overflow-hidden border-2 ${
+                                  idx === 0
+                                    ? 'border-blue-600'
+                                    : 'border-gray-200 hover:border-gray-300'
+                                }`}
+                                aria-label={`View image ${idx + 1}`}
+                              >
+                                <img
+                                  src={img.url}
+                                  alt={img.alt || `Product image ${idx + 1}`}
+                                  class="w-full h-full object-cover"
+                                />
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <!-- Product Details Panel -->
+                    <div class="lg:col-span-2">
+                      <ProductDetailsPanel
+                        product={product}
+                        availableQuantity={availableQuantity}
+                        reorderStatus={reorderStatus}
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Related Products -->
+                  {relatedProducts.length > 0 && (
+                    <div class="border-t pt-8">
+                      <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                        Related Products
+                      </h2>
+                      <ProductGrid
+                        products={relatedProducts}
+                        columns={{ mobile: 1, tablet: 2, desktop: 4 }}
+                      />
+                    </div>
+                  )}
                 </>
               )
             }
-          </nav>
+          </div>
         </div>
-      </div>
-
-      <!-- Main Content -->
-      <div class="max-w-7xl mx-auto px-4 py-8">
-        {
-          error && (
-            <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-              <p class="text-red-700 font-semibold">{error}</p>
-              <a
-                href="/catalog"
-                class="text-red-600 hover:text-red-700 text-sm mt-4 inline-block"
-              >
-                ← Back to Catalog
-              </a>
-            </div>
-          )
-        }
-
-        {
-          product && (
-            <>
-              <!-- Product Detail Section -->
-              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-                <!-- Product Images -->
-                <div class="lg:col-span-1">
-                  <div class="bg-white rounded-lg shadow overflow-hidden">
-                    {product.images && product.images.length > 0 ? (
-                      <div class="aspect-square bg-gray-100 flex items-center justify-center">
-                        <img
-                          src={product.images[0].url}
-                          alt={product.images[0].alt || product.name}
-                          class="w-full h-full object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div class="aspect-square bg-gray-100 flex items-center justify-center">
-                        <span class="text-gray-400">No image</span>
-                      </div>
-                    )}
-                    {product.images && product.images.length > 1 && (
-                      <div class="p-4 grid grid-cols-4 gap-2 bg-white">
-                        {product.images.map((img, idx) => (
-                          <button
-                            type="button"
-                            class={`aspect-square rounded overflow-hidden border-2 ${
-                              idx === 0
-                                ? 'border-blue-600'
-                                : 'border-gray-200 hover:border-gray-300'
-                            }`}
-                            aria-label={`View image ${idx + 1}`}
-                          >
-                            <img
-                              src={img.url}
-                              alt={img.alt || `Product image ${idx + 1}`}
-                              class="w-full h-full object-cover"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <!-- Product Details Panel -->
-                <div class="lg:col-span-2">
-                  <ProductDetailsPanel
-                    product={product}
-                    availableQuantity={availableQuantity}
-                    reorderStatus={reorderStatus}
-                  />
-                </div>
-              </div>
-
-              <!-- Related Products -->
-              {relatedProducts.length > 0 && (
-                <div class="border-t pt-8">
-                  <h2 class="text-2xl font-bold text-gray-900 mb-6">
-                    Related Products
-                  </h2>
-                  <ProductGrid
-                    products={relatedProducts}
-                    columns={{ mobile: 1, tablet: 2, desktop: 4 }}
-                  />
-                </div>
-              )}
-            </>
-          )
-        }
-      </div>
-    </div>
+      )
+    }
   </body>
 </html>

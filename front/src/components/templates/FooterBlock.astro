@@ -1,0 +1,63 @@
+---
+import type { FooterContent } from '../../types/templates';
+
+interface Props {
+  content: FooterContent;
+}
+
+const { content } = Astro.props;
+const links = content.links || [];
+const socialLinks = content.social_links || [];
+---
+
+<footer class="footer-block">
+  {content.company_info && <p class="footer-block__info">{content.company_info}</p>}
+  {links.length > 0 && (
+    <nav class="footer-block__links">
+      <ul>
+        {links.map((link) => (
+          <li><a href={link.link}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  )}
+  {socialLinks.length > 0 && (
+    <ul class="footer-block__social">
+      {socialLinks.map((social) => (
+        <li><a href={social.url} aria-label={social.platform}>{social.platform}</a></li>
+      ))}
+    </ul>
+  )}
+</footer>
+
+<style>
+  .footer-block {
+    padding: 2rem 1.5rem;
+    background: #111827;
+    color: #d1d5db;
+    text-align: center;
+  }
+
+  .footer-block__info {
+    margin: 0 0 1rem;
+  }
+
+  .footer-block__links ul,
+  .footer-block__social {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    margin: 0 0 1rem;
+    padding: 0;
+  }
+
+  .footer-block a {
+    color: #d1d5db;
+    text-decoration: none;
+  }
+
+  .footer-block a:hover {
+    color: #fff;
+  }
+</style>

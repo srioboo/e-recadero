@@ -1,0 +1,25 @@
+---
+import type { TemplateMeta } from '../../types/templates';
+
+interface Props {
+  meta?: TemplateMeta;
+}
+
+const { meta } = Astro.props;
+---
+
+{meta && (
+  <Fragment>
+    {meta.page_title && <title>{meta.page_title}</title>}
+    {meta.page_description && <meta name="description" content={meta.page_description} />}
+    {meta.robots_directive && <meta name="robots" content={meta.robots_directive} />}
+    {meta.canonical_url && <link rel="canonical" href={meta.canonical_url} />}
+    {meta.og_title && <meta property="og:title" content={meta.og_title} />}
+    {meta.og_description && <meta property="og:description" content={meta.og_description} />}
+    {meta.og_image_url && <meta property="og:image" content={meta.og_image_url} />}
+    {meta.keywords && <meta name="keywords" content={meta.keywords} />}
+    {meta.structured_data_json && (
+      <script type="application/ld+json" set:html={JSON.stringify(meta.structured_data_json)} />
+    )}
+  </Fragment>
+)}

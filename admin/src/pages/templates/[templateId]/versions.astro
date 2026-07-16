@@ -1,0 +1,54 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import VersionHistory from '@/components/templates/VersionHistory.astro';
+import { getTemplate, revertTemplate } from '@/lib/api';
+
+export const prerender = false;
+
+const { templateId } = Astro.params;
+
+if (!templateId) {
+  return Astro.redirect('/templates');
+}
+
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  if (formData.get('action') === 'revert') {
+    const versionNumber = parseInt(String(formData.get('version_number') || ''), 10);
+    const changeNote = String(formData.get('change_note') || '');
+
+    try {
+      // Revert creates a new draft from the snapshot; it does not alter the
+      // live published version in place (see FR-017).
+      await revertTemplate(templateId, versionNumber, changeNote || undefined);
+      return Astro.redirect(`/templates/${templateId}/edit`);
+    } catch (err) {
+      console.error('Failed to revert template:', err);
+    }
+  }
+}
+
+let template;
+try {
+  template = await getTemplate(templateId);
+} catch (err) {
+  console.error('Failed to load template:', err);
+  return Astro.redirect('/templates');
+}
+---
+
+<MainLayout title={`Version history: ${template.name}`}>
+  <div class="versions-page">
+    <a href={`/templates/${templateId}/edit`}>← Back to editor</a>
+    <VersionHistory templateId={templateId} />
+  </div>
+</MainLayout>
+
+<style>
+  .versions-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 48rem;
+  }
+</style>

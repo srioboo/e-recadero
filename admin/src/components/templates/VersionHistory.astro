@@ -1,0 +1,100 @@
+---
+import { listTemplateVersions } from '@/lib/api';
+
+interface Props {
+  templateId: string;
+}
+
+const { templateId } = Astro.props;
+
+let versions: Awaited<ReturnType<typeof listTemplateVersions>>['data'] = [];
+try {
+  const result = await listTemplateVersions(templateId);
+  versions = result.data;
+} catch (err) {
+  console.error('Failed to load version history:', err);
+}
+---
+
+<div class="version-history">
+  {versions.length === 0 && <p class="version-history__empty">No published versions yet.</p>}
+
+  <ul class="version-history__list">
+    {versions.map((version) => (
+      <li class="version-history__item">
+        <div class="version-history__meta">
+          <strong>v{version.version_number}</strong>
+          <span>{new Date(version.published_at).toLocaleString()}</span>
+          {version.change_note && <span class="version-history__note">"{version.change_note}"</span>}
+        </div>
+        <form method="POST" class="version-history__revert-form">
+          <input type="hidden" name="action" value="revert" />
+          <input type="hidden" name="version_number" value={version.version_number} />
+          <input
+            type="text"
+            name="change_note"
+            placeholder="Why revert to this version?"
+          />
+          <button type="submit">Revert to this version</button>
+        </form>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .version-history__empty {
+    color: #6b7280;
+  }
+
+  .version-history__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .version-history__item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .version-history__meta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    color: #374151;
+  }
+
+  .version-history__note {
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .version-history__revert-form {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .version-history__revert-form input[type='text'] {
+    flex: 1;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .version-history__revert-form button {
+    background: #e5e7eb;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+  }
+</style>

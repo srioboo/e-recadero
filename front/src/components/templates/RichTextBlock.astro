@@ -1,0 +1,29 @@
+---
+import type { RichTextContent } from '../../types/templates';
+
+interface Props {
+  content: RichTextContent;
+}
+
+const { content } = Astro.props;
+const alignment = content.text_alignment || 'left';
+---
+
+<section
+  class="rich-text-block"
+  style={`text-align: ${alignment}; background-color: ${content.background_color || 'transparent'}`}
+>
+  <div class="rich-text-block__content" set:html={content.html_content} />
+</section>
+
+<style>
+  .rich-text-block {
+    padding: 2rem 1.5rem;
+  }
+
+  .rich-text-block__content {
+    max-width: 48rem;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+</style>

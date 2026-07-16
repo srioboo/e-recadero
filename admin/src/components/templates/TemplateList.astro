@@ -1,0 +1,177 @@
+---
+import { listTemplates } from '@/lib/api';
+import type { TemplateType, TemplateStatus } from '@/lib/types';
+
+interface Props {
+  type?: TemplateType;
+  status?: TemplateStatus;
+  page?: number;
+}
+
+const { type, status, page = 1 } = Astro.props;
+const limit = 20;
+const offset = (page - 1) * limit;
+
+let templates: Awaited<ReturnType<typeof listTemplates>>['data'] = [];
+let total = 0;
+let loadError = false;
+
+try {
+  const result = await listTemplates({ type, status, limit, offset });
+  templates = result.data;
+  total = result.pagination.total;
+} catch (err) {
+  console.error('Failed to load templates:', err);
+  loadError = true;
+}
+
+const totalPages = Math.max(1, Math.ceil(total / limit));
+
+function buildQuery(overrides: Record<string, string | number | undefined>) {
+  const params = new URLSearchParams();
+  const merged = { type, status, page, ...overrides };
+  if (merged.type) params.append('type', String(merged.type));
+  if (merged.status) params.append('status', String(merged.status));
+  if (merged.page && merged.page !== 1) params.append('page', String(merged.page));
+  const query = params.toString();
+  return query ? `?${query}` : '';
+}
+---
+
+<div class="template-list">
+  <form method="GET" class="template-list__filters">
+    <select name="type">
+      <option value="">All types</option>
+      {(['LANDING_PAGE', 'CATEGORY_PAGE', 'PRODUCT_PAGE', 'CUSTOM'] as const).map((t) => (
+        <option value={t} selected={type === t}>{t}</option>
+      ))}
+    </select>
+    <select name="status">
+      <option value="">All statuses</option>
+      {(['DRAFT', 'PUBLISHED', 'ARCHIVED'] as const).map((s) => (
+        <option value={s} selected={status === s}>{s}</option>
+      ))}
+    </select>
+    <button type="submit">Filter</button>
+  </form>
+
+  {loadError && <p class="template-list__error">Could not load templates.</p>}
+
+  {!loadError && templates.length === 0 && <p class="template-list__empty">No templates found.</p>}
+
+  {!loadError && templates.length > 0 && (
+    <table class="template-list__table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Slug</th>
+          <th>Status</th>
+          <th>Version</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {templates.map((template) => (
+          <tr>
+            <td>{template.name}</td>
+            <td>{template.type}</td>
+            <td><code>{template.slug}</code></td>
+            <td>
+              <span class={`template-list__badge template-list__badge--${template.status.toLowerCase()}`}>
+                {template.status}
+              </span>
+            </td>
+            <td>{template.version}</td>
+            <td><a href={`/templates/${template.template_id}/edit`}>Edit →</a></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+
+  {totalPages > 1 && (
+    <div class="template-list__pagination">
+      <a href={buildQuery({ page: Math.max(1, page - 1) })} aria-disabled={page === 1}>← Previous</a>
+      <span>Page {page} of {totalPages}</span>
+      <a href={buildQuery({ page: Math.min(totalPages, page + 1) })} aria-disabled={page === totalPages}>Next →</a>
+    </div>
+  )}
+</div>
+
+<style>
+  .template-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .template-list__filters {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .template-list__filters select {
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .template-list__filters button {
+    background: #e5e7eb;
+    border: none;
+    border-radius: 6px;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+  }
+
+  .template-list__table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .template-list__table th,
+  .template-list__table td {
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .template-list__badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+  }
+
+  .template-list__badge--draft {
+    background: #e5e7eb;
+    color: #374151;
+  }
+
+  .template-list__badge--published {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .template-list__badge--archived {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .template-list__pagination {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .template-list__error,
+  .template-list__empty {
+    color: #6b7280;
+  }
+</style>

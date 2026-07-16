@@ -1,0 +1,68 @@
+---
+import type { HeroContent } from '@/lib/types';
+
+interface Props {
+  content: HeroContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section
+  class="hero-block"
+  style={content.background_image_url ? `background-image: url(${content.background_image_url})` : undefined}
+>
+  <div class="hero-block__overlay">
+    <h1 class="hero-block__title">{content.title}</h1>
+    {content.subtitle && <p class="hero-block__subtitle">{content.subtitle}</p>}
+    {content.cta_text && content.cta_link && (
+      <a href={content.cta_link} class="hero-block__cta">{content.cta_text}</a>
+    )}
+  </div>
+</section>
+
+<style>
+  .hero-block {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-color: #1f2937;
+    color: #fff;
+    padding: 4rem 1.5rem;
+    text-align: center;
+  }
+
+  .hero-block__overlay {
+    max-width: 48rem;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 0.5rem;
+    padding: 2rem;
+  }
+
+  .hero-block__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+  }
+
+  .hero-block__subtitle {
+    font-size: 1.125rem;
+    margin: 0 0 1.5rem;
+    opacity: 0.9;
+  }
+
+  .hero-block__cta {
+    display: inline-block;
+    background: #2563eb;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .hero-block__cta:hover {
+    background: #1d4ed8;
+  }
+</style>

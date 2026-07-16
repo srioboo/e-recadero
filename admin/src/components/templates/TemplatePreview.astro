@@ -1,0 +1,117 @@
+---
+import HeroBlock from './preview/HeroBlock.astro';
+import ProductGridBlock from './preview/ProductGridBlock.astro';
+import CategoryListBlock from './preview/CategoryListBlock.astro';
+import FeaturedProductsBlock from './preview/FeaturedProductsBlock.astro';
+import RichTextBlock from './preview/RichTextBlock.astro';
+import ImageBannerBlock from './preview/ImageBannerBlock.astro';
+import TestimonialsBlock from './preview/TestimonialsBlock.astro';
+import CtaBlock from './preview/CtaBlock.astro';
+import HeaderBlock from './preview/HeaderBlock.astro';
+import FooterBlock from './preview/FooterBlock.astro';
+import { previewTemplate, UnauthorizedError } from '@/lib/api';
+import type {
+  Template,
+  TemplateBlock,
+  HeroContent,
+  ProductGridContent,
+  CategoryListContent,
+  FeaturedProductsContent,
+  RichTextContent,
+  ImageBannerContent,
+  TestimonialsContent,
+  CtaContent,
+  HeaderContent,
+  FooterContent,
+} from '@/lib/types';
+
+interface Props {
+  // Render an already-loaded draft directly (current in-progress editor state)...
+  template?: Template;
+  // ...or fetch a specific (possibly unpublished) version via the preview endpoint.
+  templateId?: string;
+  version?: number;
+}
+
+const { template: providedTemplate, templateId, version } = Astro.props;
+
+let template: Template | null = providedTemplate ?? null;
+let accessDenied = false;
+let loadError: string | null = null;
+
+if (!template && templateId) {
+  try {
+    template = await previewTemplate(templateId, version);
+  } catch (err) {
+    if (err instanceof UnauthorizedError) {
+      // Edge Case: preview requested without admin permissions — deny access
+      // rather than silently falling back to the public template.
+      accessDenied = true;
+    } else {
+      loadError = 'Could not load the preview.';
+    }
+  }
+}
+
+const visibleBlocks: TemplateBlock[] = template
+  ? [...(template.blocks || [])].filter((b) => b.is_visible).sort((a, b) => a.block_order - b.block_order)
+  : [];
+---
+
+{accessDenied ? (
+  <div class="template-preview__denied">You don't have permission to preview this template. Please log in as an admin.</div>
+) : loadError ? (
+  <div class="template-preview__denied">{loadError}</div>
+) : (
+  <div class="template-preview">
+    {visibleBlocks.map((block) => {
+      switch (block.block_type) {
+        case 'HERO':
+          return <HeroBlock content={block.content as HeroContent} />;
+        case 'PRODUCT_GRID':
+          return <ProductGridBlock content={block.content as ProductGridContent} />;
+        case 'CATEGORY_LIST':
+          return <CategoryListBlock content={block.content as CategoryListContent} />;
+        case 'FEATURED_PRODUCTS':
+          return <FeaturedProductsBlock content={block.content as FeaturedProductsContent} />;
+        case 'RICH_TEXT':
+          return <RichTextBlock content={block.content as RichTextContent} />;
+        case 'IMAGE_BANNER':
+          return <ImageBannerBlock content={block.content as ImageBannerContent} />;
+        case 'TESTIMONIALS':
+          return <TestimonialsBlock content={block.content as TestimonialsContent} />;
+        case 'CTA':
+          return <CtaBlock content={block.content as CtaContent} />;
+        case 'HEADER':
+          return <HeaderBlock content={block.content as HeaderContent} />;
+        case 'FOOTER':
+          return <FooterBlock content={block.content as FooterContent} />;
+        default:
+          return null;
+      }
+    })}
+    {visibleBlocks.length === 0 && <p class="template-preview__empty">No visible blocks yet.</p>}
+  </div>
+)}
+
+<style>
+  .template-preview {
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .template-preview__empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem;
+  }
+
+  .template-preview__denied {
+    background: #fdecea;
+    color: #b91c1c;
+    border: 1px solid #f5b5b0;
+    border-radius: 6px;
+    padding: 1rem;
+  }
+</style>

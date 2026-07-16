@@ -1,0 +1,66 @@
+---
+import HeroBlock from './HeroBlock.astro';
+import ProductGridBlock from './ProductGridBlock.astro';
+import CategoryListBlock from './CategoryListBlock.astro';
+import FeaturedProductsBlock from './FeaturedProductsBlock.astro';
+import RichTextBlock from './RichTextBlock.astro';
+import ImageBannerBlock from './ImageBannerBlock.astro';
+import TestimonialsBlock from './TestimonialsBlock.astro';
+import CtaBlock from './CtaBlock.astro';
+import HeaderBlock from './HeaderBlock.astro';
+import FooterBlock from './FooterBlock.astro';
+import type {
+  Template,
+  TemplateBlock,
+  HeroContent,
+  ProductGridContent,
+  CategoryListContent,
+  FeaturedProductsContent,
+  RichTextContent,
+  ImageBannerContent,
+  TestimonialsContent,
+  CtaContent,
+  HeaderContent,
+  FooterContent,
+} from '../../types/templates';
+
+interface Props {
+  template: Template;
+}
+
+const { template } = Astro.props;
+
+// FR-001/FR-005: render visible blocks only, in configured order
+const visibleBlocks: TemplateBlock[] = (template.blocks || [])
+  .filter((block) => block.is_visible)
+  .sort((a, b) => a.block_order - b.block_order);
+---
+
+<div class="template-renderer">
+  {visibleBlocks.map((block) => {
+    switch (block.block_type) {
+      case 'HERO':
+        return <HeroBlock content={block.content as HeroContent} />;
+      case 'PRODUCT_GRID':
+        return <ProductGridBlock content={block.content as ProductGridContent} />;
+      case 'CATEGORY_LIST':
+        return <CategoryListBlock content={block.content as CategoryListContent} />;
+      case 'FEATURED_PRODUCTS':
+        return <FeaturedProductsBlock content={block.content as FeaturedProductsContent} />;
+      case 'RICH_TEXT':
+        return <RichTextBlock content={block.content as RichTextContent} />;
+      case 'IMAGE_BANNER':
+        return <ImageBannerBlock content={block.content as ImageBannerContent} />;
+      case 'TESTIMONIALS':
+        return <TestimonialsBlock content={block.content as TestimonialsContent} />;
+      case 'CTA':
+        return <CtaBlock content={block.content as CtaContent} />;
+      case 'HEADER':
+        return <HeaderBlock content={block.content as HeaderContent} />;
+      case 'FOOTER':
+        return <FooterBlock content={block.content as FooterContent} />;
+      default:
+        return null;
+    }
+  })}
+</div>

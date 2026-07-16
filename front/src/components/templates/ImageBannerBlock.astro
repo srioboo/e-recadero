@@ -1,0 +1,54 @@
+---
+import type { ImageBannerContent } from '../../types/templates';
+
+interface Props {
+  content: ImageBannerContent;
+}
+
+const { content } = Astro.props;
+const overlayColor = content.overlay_color || '#000000';
+const overlayOpacity = content.overlay_opacity ?? 0;
+---
+
+<section class="image-banner-block">
+  {content.link_url ? (
+    <a href={content.link_url} class="image-banner-block__link">
+      <img src={content.image_url} alt={content.alt_text || ''} class="image-banner-block__image" />
+      <div
+        class="image-banner-block__overlay"
+        style={`background-color: ${overlayColor}; opacity: ${overlayOpacity}`}
+      />
+    </a>
+  ) : (
+    <div class="image-banner-block__link">
+      <img src={content.image_url} alt={content.alt_text || ''} class="image-banner-block__image" />
+      <div
+        class="image-banner-block__overlay"
+        style={`background-color: ${overlayColor}; opacity: ${overlayOpacity}`}
+      />
+    </div>
+  )}
+</section>
+
+<style>
+  .image-banner-block {
+    padding: 0;
+  }
+
+  .image-banner-block__link {
+    position: relative;
+    display: block;
+  }
+
+  .image-banner-block__image {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .image-banner-block__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+</style>
