@@ -140,13 +140,13 @@ description: "Task list for Templates Frontend Rendering & Admin Editor"
 
 **Purpose**: Test coverage, accessibility, and end-to-end validation across all stories
 
-- [ ] T042 [P] Add unit tests for graceful catalog-reference degradation in `front/tests/unit/templates.test.ts` (covers T009-T011's "omit unresolved IDs" behavior)
-- [ ] T043 [P] Add unit tests for the admin templates API client (error mapping for `DuplicateSlugError`/`InvalidBlockContentError`) in `admin/tests/unit/templates-api.test.ts`
-- [ ] T044 [P] Add Playwright e2e test `front/tests/e2e/template-rendering.spec.ts` covering: published template renders, fallback renders for unmapped entity, hidden block excluded, and a 404 for an unpublished landing slug
-- [ ] T045 [P] Add Playwright e2e test `admin/tests/e2e/template-editor.spec.ts` covering: create template → add/reorder/hide blocks → publish → revert
-- [ ] T046 Accessibility pass on `BlockEditor.tsx`/`BlockForm.tsx` (T026, T027): ARIA labels on reorder/visibility controls, keyboard-operable move-up/down as alternative to drag-and-drop
+- [X] T042 [P] Add unit tests for graceful catalog-reference degradation in `front/tests/unit/templates.test.ts` (covers T009-T011's "omit unresolved IDs" behavior)
+- [X] T043 [P] Add unit tests for the admin templates API client (error mapping for `DuplicateSlugError`/`InvalidBlockContentError`) in `admin/tests/unit/templates-api.test.ts`
+- [X] T044 [P] Add Playwright e2e test `front/tests/e2e/template-rendering.spec.ts` covering: published template renders, fallback renders for unmapped entity, hidden block excluded, and a 404 for an unpublished landing slug
+- [X] T045 [P] Add Playwright e2e test `admin/tests/e2e/template-editor.spec.ts` covering: create template → add/reorder/hide blocks → publish → revert
+- [X] T046 Accessibility pass on `BlockEditor.tsx`/`BlockForm.tsx` (T026, T027): ARIA labels on reorder/visibility controls, keyboard-operable move-up/down as alternative to drag-and-drop
 - [ ] T047 Run the full manual verification flow in `quickstart.md` end-to-end and record any deviations, including timing the template-authoring flow against SC-002 (under 10 minutes) and the template-lookup flow against SC-004 (under 15 seconds)
-- [ ] T048 [P] Add a preview/render parity test (unit or snapshot, e.g. `admin/tests/unit/template-preview-parity.test.ts`) that renders each of the 10 block types through both `admin`'s `TemplatePreview.astro` (T029) and `front`'s matching block component (T008-T017) with identical sample content, and asserts the resulting markup structure is equivalent (SC-003)
+- [X] T048 [P] Add a preview/render parity test (unit or snapshot, e.g. `admin/tests/unit/template-preview-parity.test.ts`) that renders each of the 10 block types through both `admin`'s `TemplatePreview.astro` (T029) and `front`'s matching block component (T008-T017) with identical sample content, and asserts the resulting markup structure is equivalent (SC-003)
 
 ---
 

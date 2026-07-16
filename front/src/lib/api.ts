@@ -84,7 +84,7 @@ export async function fetchProducts(
   if (filters.inStockOnly) params.append('in_stock_only', 'true');
 
   params.append('limit', (filters.limit || 20).toString());
-  params.append('offset', ((filters.page || 1) - 1) * (filters.limit || 20));
+  params.append('offset', (((filters.page || 1) - 1) * (filters.limit || 20)).toString());
 
   const response = await fetchAPI<any>(`/products?${params.toString()}`);
   return {

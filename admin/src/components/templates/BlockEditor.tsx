@@ -95,7 +95,7 @@ export default function BlockEditor({ templateId, initialBlocks }: Props) {
   function handleSaved(saved: {
     block_id: string;
     block_type: BlockType;
-    block_name: string;
+    block_name?: string;
     block_order: number;
     is_visible: boolean;
     content: TemplateBlock['content'];
