@@ -1,0 +1,41 @@
+---
+// Astro renders this page automatically both for genuinely unmatched routes
+// and whenever any route sets `Astro.response.status = 404` (e.g.
+// `landing/[slug].astro` for an unpublished/unmapped landing slug, per FR-004).
+Astro.response.status = 404;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page not found | E-Recadero</title>
+  </head>
+  <body>
+    <div class="landing-not-found">
+      <h1>Page not found</h1>
+      <p>This page doesn't exist or is no longer published.</p>
+      <a href="/">← Back to home</a>
+    </div>
+  </body>
+</html>
+
+<style>
+  .landing-not-found {
+    max-width: 32rem;
+    margin: 6rem auto;
+    text-align: center;
+    padding: 0 1.5rem;
+  }
+
+  .landing-not-found h1 {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .landing-not-found a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+</style>
