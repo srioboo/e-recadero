@@ -1,0 +1,76 @@
+---
+import { resolveProducts } from '@/lib/catalog';
+import type { FeaturedProductsContent } from '@/lib/types';
+
+interface Props {
+  content: FeaturedProductsContent;
+}
+
+const { content } = Astro.props;
+
+// Mirrors front/src/components/templates/FeaturedProductsBlock.astro's
+// graceful omission of unresolved product IDs (FR-006) — see T048 parity test.
+const products = await resolveProducts(content.products || []);
+const layout = content.layout || 'grid';
+---
+
+<section class="featured-products-block">
+  {content.title && <h2 class="featured-products-block__title">{content.title}</h2>}
+  {products.length > 0 ? (
+    <div class={`featured-products-block__items featured-products-block__items--${layout}`}>
+      {products.map((product) => (
+        <div class="featured-products-block__item">
+          {product.images?.[0]?.url && <img src={product.images[0].url} alt={product.name} />}
+          <span>{product.name}</span>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p class="featured-products-block__empty">No featured products available.</p>
+  )}
+</section>
+
+<style>
+  .featured-products-block {
+    padding: 2rem 1.5rem;
+  }
+
+  .featured-products-block__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+
+  .featured-products-block__items--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .featured-products-block__items--carousel {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+  }
+
+  .featured-products-block__item {
+    background: #f9fafb;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  .featured-products-block__item img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-products-block__empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem 0;
+  }
+</style>

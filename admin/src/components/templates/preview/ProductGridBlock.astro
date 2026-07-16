@@ -1,0 +1,65 @@
+---
+import { resolveProducts } from '@/lib/catalog';
+import type { ProductGridContent } from '@/lib/types';
+
+interface Props {
+  content: ProductGridContent;
+}
+
+const { content } = Astro.props;
+
+// Mirrors front/src/components/templates/ProductGridBlock.astro's graceful
+// omission of unresolved product IDs (FR-006) — see T048 parity test.
+const products = await resolveProducts(content.products || []);
+---
+
+<section class="product-grid-block">
+  {products.length > 0 ? (
+    <div class="product-grid-block__preview-grid">
+      {products.map((product) => (
+        <div class="product-grid-block__preview-card">
+          {product.images?.[0]?.url && (
+            <img src={product.images[0].url} alt={product.name} />
+          )}
+          <span>{product.name}</span>
+          <strong>{product.base_price} €</strong>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p class="product-grid-block__empty">No products available.</p>
+  )}
+</section>
+
+<style>
+  .product-grid-block {
+    padding: 2rem 1.5rem;
+  }
+
+  .product-grid-block__empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem 0;
+  }
+
+  .product-grid-block__preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .product-grid-block__preview-card {
+    background: #f9fafb;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  .product-grid-block__preview-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+</style>

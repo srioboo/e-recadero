@@ -1,0 +1,42 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import TemplateList from '@/components/templates/TemplateList.astro';
+import type { TemplateType, TemplateStatus } from '@/lib/types';
+
+export const prerender = false;
+
+const type = (Astro.url.searchParams.get('type') || undefined) as TemplateType | undefined;
+const status = (Astro.url.searchParams.get('status') || undefined) as TemplateStatus | undefined;
+const page = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+---
+
+<MainLayout title="Templates">
+  <div class="templates-index">
+    <div class="templates-index__header">
+      <a href="/templates/new" class="templates-index__new">+ New template</a>
+    </div>
+    <TemplateList type={type} status={status} page={page} />
+  </div>
+</MainLayout>
+
+<style>
+  .templates-index {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .templates-index__header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .templates-index__new {
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.1rem;
+    font-weight: 600;
+  }
+</style>

@@ -2,7 +2,10 @@
 import ProductGrid from '../../components/catalog/ProductGrid.astro';
 import CategorySidebar from '../../components/catalog/CategorySidebar.astro';
 import SearchBar from '../../components/catalog/SearchBar.astro';
-import { fetchCategoryDetail, fetchCategories, fetchProducts } from '../../lib/api';
+import TemplateRenderer from '../../components/templates/TemplateRenderer.astro';
+import TemplateSeoHead from '../../components/templates/TemplateSeoHead.astro';
+import { fetchCategoryDetail, fetchCategories, fetchProducts, fetchTemplateBySlug } from '../../lib/api';
+import type { Template } from '../../types/templates';
 
 export const prerender = false;
 
@@ -21,6 +24,18 @@ let products = [];
 let categories = [];
 let totalPages = 1;
 let error = null;
+
+// FR-001/FR-004: a category's mapped template is looked up by the category's
+// own slug (see spec.md Assumptions — template slug === entity slug convention).
+// A resolved template takes precedence; the default category layout below is
+// the fallback when no published template is mapped.
+let template: Template | null = null;
+try {
+  template = await fetchTemplateBySlug(slug);
+} catch (err) {
+  console.error('Failed to load template for category:', err);
+  template = null;
+}
 
 try {
   // Fetch all categories for sidebar
@@ -57,86 +72,97 @@ try {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {
-      category && (
-        <>
-          <title>{category.name} | E-Recadero</title>
-          <meta name="description" content={category.description || category.name} />
-          <meta property="og:title" content={category.name} />
-          {category.description && (
-            <meta property="og:description" content={category.description} />
-          )}
-          {category.image_url && (
-            <meta property="og:image" content={category.image_url} />
-          )}
-        </>
+      template ? (
+        <TemplateSeoHead meta={template.meta} />
+      ) : (
+        category && (
+          <>
+            <title>{category.name} | E-Recadero</title>
+            <meta name="description" content={category.description || category.name} />
+            <meta property="og:title" content={category.name} />
+            {category.description && (
+              <meta property="og:description" content={category.description} />
+            )}
+            {category.image_url && (
+              <meta property="og:image" content={category.image_url} />
+            )}
+          </>
+        )
       )
     }
   </head>
   <body>
-    <div class="min-h-screen bg-gray-50">
-      <!-- Header -->
-      {
-        category && (
-          <div class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 py-8">
-              <h1 class="text-4xl font-bold text-gray-900">{category.name}</h1>
-              {category.description && (
-                <p class="text-gray-600 mt-2">{category.description}</p>
-              )}
-            </div>
-          </div>
-        )
-      }
-
-      <!-- Main Content -->
-      <div class="max-w-7xl mx-auto px-4 py-8">
-        {
-          error && (
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-700">
-              {error}
-            </div>
-          )
-        }
-
-        {
-          !error && category && (
-            <>
-              <!-- Search Bar -->
-              <SearchBar />
-
-              <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <!-- Sidebar -->
-                <div class="lg:col-span-1">
-                  <CategorySidebar
-                    categories={categories}
-                    selectedCategoryId={category.id}
-                  />
-                </div>
-
-                <!-- Products Section -->
-                <div class="lg:col-span-3">
-                  {
-                    products.length === 0 ? (
-                      <div class="bg-white rounded-lg shadow p-8 text-center">
-                        <p class="text-gray-500 text-lg mb-4">
-                          No products in this category yet
-                        </p>
-                      </div>
-                    ) : (
-                      <ProductGrid
-                        products={products}
-                        currentPage={page}
-                        totalPages={totalPages}
-                        columns={{ mobile: 1, tablet: 2, desktop: 3 }}
-                      />
-                    )
-                  }
+    {
+      template ? (
+        // FR-001: render the mapped, published template instead of the default layout
+        <TemplateRenderer template={template} />
+      ) : (
+        <div class="min-h-screen bg-gray-50">
+          <!-- Header -->
+          {
+            category && (
+              <div class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 py-8">
+                  <h1 class="text-4xl font-bold text-gray-900">{category.name}</h1>
+                  {category.description && (
+                    <p class="text-gray-600 mt-2">{category.description}</p>
+                  )}
                 </div>
               </div>
-            </>
-          )
-        }
-      </div>
-    </div>
+            )
+          }
+
+          <!-- Main Content -->
+          <div class="max-w-7xl mx-auto px-4 py-8">
+            {
+              error && (
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-700">
+                  {error}
+                </div>
+              )
+            }
+
+            {
+              !error && category && (
+                <>
+                  <!-- Search Bar -->
+                  <SearchBar />
+
+                  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Sidebar -->
+                    <div class="lg:col-span-1">
+                      <CategorySidebar
+                        categories={categories}
+                        selectedCategoryId={category.id}
+                      />
+                    </div>
+
+                    <!-- Products Section -->
+                    <div class="lg:col-span-3">
+                      {
+                        products.length === 0 ? (
+                          <div class="bg-white rounded-lg shadow p-8 text-center">
+                            <p class="text-gray-500 text-lg mb-4">
+                              No products in this category yet
+                            </p>
+                          </div>
+                        ) : (
+                          <ProductGrid
+                            products={products}
+                            currentPage={page}
+                            totalPages={totalPages}
+                            columns={{ mobile: 1, tablet: 2, desktop: 3 }}
+                          />
+                        )
+                      }
+                    </div>
+                  </div>
+                </>
+              )
+            }
+          </div>
+        </div>
+      )
+    }
   </body>
 </html>

@@ -1,0 +1,173 @@
+---
+import { getTemplateEntities } from '@/lib/api';
+
+interface Props {
+  templateId: string;
+}
+
+const { templateId } = Astro.props;
+
+let mappings: Awaited<ReturnType<typeof getTemplateEntities>>['data'] = [];
+try {
+  const result = await getTemplateEntities(templateId);
+  mappings = result.data;
+} catch (err) {
+  console.error('Failed to load entity mappings:', err);
+}
+---
+
+<div class="entity-mapping-panel" data-template-id={templateId}>
+  <ul class="entity-mapping-panel__list">
+    {mappings.length === 0 && <li class="entity-mapping-panel__empty">No entities use this template yet.</li>}
+    {mappings.map((mapping) => (
+      <li class="entity-mapping-panel__item">
+        <span>{mapping.entity_name || mapping.entity_id}</span>
+        <span class="entity-mapping-panel__type">{mapping.entity_type}</span>
+        <button type="button" class="entity-mapping-panel__remove" data-entity-id={mapping.entity_id}>
+          Remove
+        </button>
+      </li>
+    ))}
+  </ul>
+
+  <form class="entity-mapping-panel__add">
+    <select name="entity_type">
+      <option value="CATEGORY">Category</option>
+      <option value="PRODUCT">Product</option>
+      <option value="LANDING_PAGE">Landing page</option>
+    </select>
+    <input type="text" name="entity_id" placeholder="Entity ID" required />
+    <button type="submit">Assign</button>
+  </form>
+
+  <div class="entity-mapping-panel__status" role="status"></div>
+</div>
+
+<style>
+  .entity-mapping-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .entity-mapping-panel__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .entity-mapping-panel__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.5rem 0.9rem;
+  }
+
+  .entity-mapping-panel__type {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+  }
+
+  .entity-mapping-panel__remove {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #b91c1c;
+    color: #b91c1c;
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    cursor: pointer;
+  }
+
+  .entity-mapping-panel__empty {
+    color: #6b7280;
+  }
+
+  .entity-mapping-panel__add {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .entity-mapping-panel__add select,
+  .entity-mapping-panel__add input {
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .entity-mapping-panel__add button {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .entity-mapping-panel__status {
+    font-size: 0.85rem;
+  }
+
+  .entity-mapping-panel__status[data-state='error'] {
+    color: #b91c1c;
+  }
+</style>
+
+<script>
+  import { mapTemplateToEntity, unmapTemplateEntity } from '@/lib/api';
+  import type { EntityType } from '@/lib/types';
+
+  document.querySelectorAll<HTMLElement>('.entity-mapping-panel').forEach((panel) => {
+    const templateId = panel.dataset.templateId!;
+    const status = panel.querySelector<HTMLElement>('.entity-mapping-panel__status')!;
+    const addForm = panel.querySelector<HTMLFormElement>('.entity-mapping-panel__add')!;
+
+    addForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(addForm);
+      const entityId = String(data.get('entity_id') || '').trim();
+      const entityType = String(data.get('entity_type') || 'CATEGORY') as EntityType;
+
+      if (!entityId) return;
+
+      // Acceptance Scenario US4.2: confirm before reassigning an entity that
+      // may already be mapped to a different template.
+      const confirmed = window.confirm(
+        `Assign this template to ${entityType} "${entityId}"? If it already uses a different template, that mapping will be replaced.`
+      );
+      if (!confirmed) return;
+
+      try {
+        await mapTemplateToEntity(templateId, { entityId, entityType, status: 'PUBLISHED' });
+        window.location.reload();
+      } catch (err) {
+        console.error('Failed to assign entity mapping:', err);
+        status.textContent = 'Failed to assign entity. Please try again.';
+        status.setAttribute('data-state', 'error');
+      }
+    });
+
+    panel.querySelectorAll<HTMLButtonElement>('.entity-mapping-panel__remove').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const entityId = button.dataset.entityId!;
+        if (!window.confirm('Remove this entity mapping? The page will fall back to its default layout.')) return;
+
+        try {
+          await unmapTemplateEntity(templateId, entityId);
+          window.location.reload();
+        } catch (err) {
+          console.error('Failed to remove entity mapping:', err);
+          status.textContent = 'Failed to remove mapping. Please try again.';
+          status.setAttribute('data-state', 'error');
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,84 @@
+---
+import type { TestimonialsContent } from '../../types/templates';
+
+interface Props {
+  content: TestimonialsContent;
+}
+
+const { content } = Astro.props;
+const layout = content.layout || 'grid';
+const testimonials = content.testimonials || [];
+---
+
+<section class="testimonials-block">
+  {testimonials.length > 0 ? (
+    <div class={`testimonials-block__items testimonials-block__items--${layout}`}>
+      {testimonials.map((testimonial) => (
+        <blockquote class="testimonials-block__item">
+          {testimonial.rating && (
+            <div class="testimonials-block__rating" aria-label={`${testimonial.rating} out of 5 stars`}>
+              {'★'.repeat(testimonial.rating)}{'☆'.repeat(Math.max(0, 5 - testimonial.rating))}
+            </div>
+          )}
+          <p class="testimonials-block__content">"{testimonial.content}"</p>
+          <cite class="testimonials-block__author">{testimonial.author}</cite>
+        </blockquote>
+      ))}
+    </div>
+  ) : (
+    <p class="testimonials-block__empty">No testimonials yet.</p>
+  )}
+</section>
+
+<style>
+  .testimonials-block {
+    padding: 2rem 1.5rem;
+  }
+
+  .testimonials-block__items--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .testimonials-block__items--carousel {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .testimonials-block__items--carousel .testimonials-block__item {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+  }
+
+  .testimonials-block__item {
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 0;
+  }
+
+  .testimonials-block__rating {
+    color: #f59e0b;
+    margin-bottom: 0.5rem;
+  }
+
+  .testimonials-block__content {
+    font-style: italic;
+    color: #374151;
+    margin: 0 0 0.75rem;
+  }
+
+  .testimonials-block__author {
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .testimonials-block__empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem 0;
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+import { resolveCategories } from '../../lib/templates';
+import type { CategoryListContent } from '../../types/templates';
+
+interface Props {
+  content: CategoryListContent;
+}
+
+const { content } = Astro.props;
+
+// FR-006: omit any category IDs that no longer resolve instead of failing the page
+const categories = await resolveCategories(content.category_ids || []);
+const itemsPerRow = content.items_per_row || 3;
+---
+
+<section class="category-list-block">
+  {categories.length > 0 ? (
+    <div class="category-list-block__grid" style={`--items-per-row: ${itemsPerRow}`}>
+      {categories.map((category) => (
+        <a href={`/catalog/${category.slug}`} class="category-list-block__item">
+          {category.image_url && (
+            <img src={category.image_url} alt={category.name} class="category-list-block__image" />
+          )}
+          <span class="category-list-block__name">{category.name}</span>
+          {content.show_subcategories && category.children && category.children.length > 0 && (
+            <ul class="category-list-block__children">
+              {category.children.map((child) => (
+                <li><a href={`/catalog/${child.slug}`}>{child.name}</a></li>
+              ))}
+            </ul>
+          )}
+        </a>
+      ))}
+    </div>
+  ) : (
+    <p class="category-list-block__empty">No categories available.</p>
+  )}
+</section>
+
+<style>
+  .category-list-block {
+    padding: 2rem 1.5rem;
+  }
+
+  .category-list-block__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--items-per-row, 3), minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .category-list-block__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    transition: box-shadow 0.15s;
+  }
+
+  .category-list-block__item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .category-list-block__image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .category-list-block__name {
+    font-weight: 600;
+  }
+
+  .category-list-block__children {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .category-list-block__empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .category-list-block__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

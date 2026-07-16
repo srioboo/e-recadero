@@ -1,0 +1,55 @@
+---
+import type { HeaderContent } from '../../types/templates';
+
+interface Props {
+  content: HeaderContent;
+}
+
+const { content } = Astro.props;
+const links = content.navigation_links || [];
+---
+
+<header class="header-block">
+  {content.logo_url && <img src={content.logo_url} alt="Logo" class="header-block__logo" />}
+  {links.length > 0 && (
+    <nav class="header-block__nav">
+      <ul>
+        {links.map((link) => (
+          <li><a href={link.link}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  )}
+</header>
+
+<style>
+  .header-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .header-block__logo {
+    height: 2.5rem;
+  }
+
+  .header-block__nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header-block__nav a {
+    color: #111827;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .header-block__nav a:hover {
+    color: #2563eb;
+  }
+</style>

@@ -1,0 +1,161 @@
+---
+import type { TemplateMeta } from '@/lib/types';
+
+interface Props {
+  templateId: string;
+  initialMeta?: TemplateMeta;
+}
+
+const { templateId, initialMeta = {} } = Astro.props;
+---
+
+<form class="seo-meta-form" data-template-id={templateId}>
+  <label class="seo-meta-form__field">
+    <span>Page title</span>
+    <input type="text" name="page_title" value={initialMeta.page_title || ''} />
+  </label>
+
+  <label class="seo-meta-form__field">
+    <span>Page description</span>
+    <textarea name="page_description" rows={3}>{initialMeta.page_description || ''}</textarea>
+  </label>
+
+  <label class="seo-meta-form__field">
+    <span>OG title</span>
+    <input type="text" name="og_title" value={initialMeta.og_title || ''} />
+  </label>
+
+  <label class="seo-meta-form__field">
+    <span>OG description</span>
+    <textarea name="og_description" rows={2}>{initialMeta.og_description || ''}</textarea>
+  </label>
+
+  <label class="seo-meta-form__field">
+    <span>OG image URL</span>
+    <input type="text" name="og_image_url" value={initialMeta.og_image_url || ''} />
+  </label>
+
+  <label class="seo-meta-form__field">
+    <span>Keywords</span>
+    <input type="text" name="keywords" value={initialMeta.keywords || ''} />
+  </label>
+
+  <label class="seo-meta-form__field">
+    <span>Canonical URL</span>
+    <input type="text" name="canonical_url" value={initialMeta.canonical_url || ''} />
+  </label>
+
+  <label class="seo-meta-form__field">
+    <span>Robots directive</span>
+    <input type="text" name="robots_directive" value={initialMeta.robots_directive || 'index,follow'} />
+  </label>
+
+  <label class="seo-meta-form__field">
+    <span>Structured data (JSON-LD)</span>
+    <textarea name="structured_data_json" rows={4}>{initialMeta.structured_data_json ? JSON.stringify(initialMeta.structured_data_json, null, 2) : ''}</textarea>
+  </label>
+
+  <div class="seo-meta-form__status" role="status"></div>
+
+  <button type="submit">Save SEO metadata</button>
+</form>
+
+<style>
+  .seo-meta-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.25rem;
+    max-width: 40rem;
+  }
+
+  .seo-meta-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .seo-meta-form__field input,
+  .seo-meta-form__field textarea {
+    font: inherit;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .seo-meta-form__status {
+    font-size: 0.85rem;
+  }
+
+  .seo-meta-form__status[data-state='success'] {
+    color: #065f46;
+  }
+
+  .seo-meta-form__status[data-state='error'] {
+    color: #b91c1c;
+  }
+
+  .seo-meta-form button {
+    align-self: flex-start;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  import { updateTemplateMeta } from '@/lib/api';
+
+  document.querySelectorAll<HTMLFormElement>('.seo-meta-form').forEach((form) => {
+    const templateId = form.dataset.templateId!;
+    const status = form.querySelector<HTMLElement>('.seo-meta-form__status')!;
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      status.textContent = '';
+      status.removeAttribute('data-state');
+
+      let structuredData: Record<string, unknown> | undefined;
+      const structuredRaw = String(data.get('structured_data_json') || '').trim();
+      if (structuredRaw) {
+        try {
+          structuredData = JSON.parse(structuredRaw);
+        } catch {
+          status.textContent = 'Structured data must be valid JSON.';
+          status.setAttribute('data-state', 'error');
+          return;
+        }
+      }
+
+      try {
+        await updateTemplateMeta(templateId, {
+          page_title: String(data.get('page_title') || '') || undefined,
+          page_description: String(data.get('page_description') || '') || undefined,
+          og_title: String(data.get('og_title') || '') || undefined,
+          og_description: String(data.get('og_description') || '') || undefined,
+          og_image_url: String(data.get('og_image_url') || '') || undefined,
+          keywords: String(data.get('keywords') || '') || undefined,
+          canonical_url: String(data.get('canonical_url') || '') || undefined,
+          robots_directive: String(data.get('robots_directive') || '') || undefined,
+          structured_data_json: structuredData,
+        });
+        status.textContent = 'Saved.';
+        status.setAttribute('data-state', 'success');
+      } catch (err) {
+        console.error('Failed to save SEO metadata:', err);
+        status.textContent = 'Failed to save. Please try again.';
+        status.setAttribute('data-state', 'error');
+      }
+    });
+  });
+</script>

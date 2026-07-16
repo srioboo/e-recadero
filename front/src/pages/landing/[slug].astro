@@ -1,0 +1,74 @@
+---
+import TemplateRenderer from '../../components/templates/TemplateRenderer.astro';
+import TemplateSeoHead from '../../components/templates/TemplateSeoHead.astro';
+import { fetchTemplateBySlug } from '../../lib/api';
+import type { Template } from '../../types/templates';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/');
+}
+
+let template: Template | null = null;
+let error = false;
+
+try {
+  template = await fetchTemplateBySlug(slug);
+} catch (err) {
+  console.error('Failed to load landing page template:', err);
+  error = true;
+}
+
+// FR-004 (landing pages): no pre-existing default layout exists for landing
+// pages, so an unmapped/unpublished slug renders a standard 404 instead of a
+// fallback layout (see spec.md Assumptions, Acceptance Scenario US1.5).
+if (!template) {
+  Astro.response.status = 404;
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {template ? (
+      <TemplateSeoHead meta={template.meta} />
+    ) : (
+      <title>Page not found | E-Recadero</title>
+    )}
+  </head>
+  <body>
+    {template ? (
+      <TemplateRenderer template={template} />
+    ) : (
+      <div class="landing-not-found">
+        <h1>Page not found</h1>
+        <p>{error ? 'This page could not be loaded right now.' : "This page doesn't exist or is no longer published."}</p>
+        <a href="/">← Back to home</a>
+      </div>
+    )}
+  </body>
+</html>
+
+<style>
+  .landing-not-found {
+    max-width: 32rem;
+    margin: 6rem auto;
+    text-align: center;
+    padding: 0 1.5rem;
+  }
+
+  .landing-not-found h1 {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .landing-not-found a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+</style>

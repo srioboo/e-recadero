@@ -1,0 +1,42 @@
+---
+import ProductGrid from '../catalog/ProductGrid.astro';
+import { resolveProducts } from '../../lib/templates';
+import type { ProductGridContent } from '../../types/templates';
+
+interface Props {
+  content: ProductGridContent;
+}
+
+const { content } = Astro.props;
+
+// FR-006: omit any product IDs that no longer resolve instead of failing the page
+const products = await resolveProducts(content.products || []);
+
+const columnsByLayout = {
+  '2-columns': { mobile: 1, tablet: 2, desktop: 2 },
+  '3-columns': { mobile: 1, tablet: 2, desktop: 3 },
+  '4-columns': { mobile: 1, tablet: 2, desktop: 4 },
+} as const;
+
+const columns = columnsByLayout[content.layout || '3-columns'];
+---
+
+<section class="product-grid-block">
+  {products.length > 0 ? (
+    <ProductGrid products={products} columns={columns} />
+  ) : (
+    <p class="product-grid-block__empty">No products available.</p>
+  )}
+</section>
+
+<style>
+  .product-grid-block {
+    padding: 2rem 1.5rem;
+  }
+
+  .product-grid-block__empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 2rem 0;
+  }
+</style>
