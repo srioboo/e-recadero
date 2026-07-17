@@ -139,7 +139,9 @@ public class OrderService {
     transaction.setCreatedAt(now);
     orderTransactionRepository.save(transaction);
 
-    eventPublisher.publishConfirmed(savedOrder.getId(), savedOrder.getOrderNumber(), savedOrder.getUserId(), savedOrder.getGrandTotal());
+    eventPublisher.publishConfirmed(
+        savedOrder.getId(), savedOrder.getOrderNumber(), savedOrder.getUserId(), savedOrder.getGrandTotal(),
+        event.couponCode(), event.discountAmount());
     log.info("Created order {} from cart {}", savedOrder.getOrderNumber(), event.cartId());
 
     return savedOrder;

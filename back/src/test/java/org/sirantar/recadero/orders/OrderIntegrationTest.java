@@ -98,7 +98,7 @@ class OrderIntegrationTest {
     CheckoutCompletedEvent event = new CheckoutCompletedEvent(
         1L, 10L,
         List.of(new CheckoutCompletedEvent.LineItem(50L, 1, BigDecimal.valueOf(19.99), BigDecimal.ZERO)),
-        1L, 2L, "STANDARD", "CREDIT_CARD", "txn-1", BigDecimal.valueOf(19.99), "checkout-token");
+        1L, 2L, "STANDARD", "CREDIT_CARD", "txn-1", BigDecimal.valueOf(19.99), "checkout-token", null, null);
 
     Order created = orderService.createOrderFromCart(event);
     assertThat(created.getStatus()).isEqualTo(OrderStatus.CONFIRMED);

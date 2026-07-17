@@ -19,7 +19,9 @@ public record CheckoutCompletedEvent(
     String paymentMethod,
     String transactionId,
     BigDecimal grandTotal,
-    String checkoutToken) {
+    String checkoutToken,
+    String couponCode,
+    BigDecimal discountAmount) {
 
   public record LineItem(Long productVariantId, int quantity, BigDecimal priceAtTime, BigDecimal discountApplied) {}
 }
