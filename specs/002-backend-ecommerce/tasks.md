@@ -358,50 +358,50 @@
 
 ### Data Models & Repositories
 
-- [ ] T087 [P] Create Cart.java entity in cart/domain/ with:
+- [X] T087 [P] Create Cart.java entity in cart/domain/ with:
   - id, user_id (nullable for anonymous), session_id, status (ACTIVE/ABANDONED/CHECKED_OUT), created_at, expires_at
   - Unique constraint: (user_id, status) where status='ACTIVE' (one active cart per user)
-- [ ] T088 [P] Create CartItem.java entity with: id, cart_id, product_variant_id, quantity, price_at_time, discount_applied
-- [ ] T089 [P] Create Reservation.java entity with: id, cart_item_id, product_variant_id, quantity, created_at, expires_at
-- [ ] T090 [P] Create CartPromotion.java entity with: id, cart_id, promotion_id, coupon_code,discount_amount
-- [ ] T091 [P] Create @ApplicationModule(displayName = "Cart") in cart/package-info.java
-- [ ] T092 [P] Create CartRepository.java with:
+- [X] T088 [P] Create CartItem.java entity with: id, cart_id, product_variant_id, quantity, price_at_time, discount_applied
+- [X] T089 [P] Create Reservation.java entity with: id, cart_item_id, product_variant_id, quantity, created_at, expires_at
+- [X] T090 [P] Create CartPromotion.java entity with: id, cart_id, promotion_id, coupon_code,discount_amount
+- [X] T091 [P] Create @ApplicationModule(displayName = "Cart") in cart/package-info.java
+- [X] T092 [P] Create CartRepository.java with:
   - findActiveByUserId(UUID userId)
   - findBySessionId(String sessionId)
   - findExpiredCarts(LocalDateTime threshold)
-- [ ] T093 [P] Create CartItemRepository.java with:
+- [X] T093 [P] Create CartItemRepository.java with:
   - findByCartId(UUID cartId)
   - findByCartIdAndProductVariantId(UUID cartId, UUID variantId)
-- [ ] T094 [P] Create ReservationRepository.java with:
+- [X] T094 [P] Create ReservationRepository.java with:
   - findExpiredReservations(LocalDateTime threshold)
   - findByProductVariantId(UUID variantId) (for available qty calculation)
 
 ### Services & Business Logic
 
-- [ ] T095 Create CartService.java implementing:
+- [X] T095 Create CartService.java implementing:
   - getOrCreateCart(userId, sessionId): Cart (returns active or creates new)
   - addItem(cartId, variantId, quantity): calls InventoryService.reserveInventory, creates Reservation
   - updateItemQuantity(cartItemId, newQuantity): adjusts reservation
   - removeItem(cartItemId): calls InventoryService.releaseReservation
   - clearCart(cartId): void
   - calculateTotals(cartId): returns {subtotal, discount_total, tax_total, shipping_total, grand_total}
-- [ ] T096 [P] Create CartPromotionService.java implementing:
+- [X] T096 [P] Create CartPromotionService.java implementing:
   - applyCoupon(cartId, couponCode): calls Promotions module POST /coupons/validate, creates CartPromotion
   - removeCoupon(cartId, couponCode): void
   - validateCoupon(cartId, couponCode): returns validation result with discount preview
-- [ ] T097 [P] Create CheckoutService.java implementing:
+- [X] T097 [P] Create CheckoutService.java implementing:
   - prepareCheckout(cartId, shippingMethod, billingAddr, shippingAddr): verifies inventory availability, recalculates prices (flash sale corner case), locks cart
   - confirmCheckout(cartId, paymentToken, transactionId): creates Order via Orders module, clears cart, publishes CheckoutCompleted event
-- [ ] T098 [P] Create CartExpirationService.java with scheduled task:
+- [X] T098 [P] Create CartExpirationService.java with scheduled task:
   - cleanupExpiredCarts(): every 1 hour, find carts expired >24h, release reservations, mark ABANDONED, publish CartAbandoned event
-- [ ] T099 [P] Create CartValidationService validating:
+- [X] T099 [P] Create CartValidationService validating:
   - Item quantity between 1-1000
   - Product variant exists and is in stock
   - Product price hasn't changed >10% since added (warn user on checkout)
 
 ### Controllers & API Endpoints
 
-- [ ] T100 Create CartController.java with endpoints (12 total):
+- [X] T100 Create CartController.java with endpoints (12 total):
   - GET /api/v1/cart (get current user's active cart or create)
   - POST /api/v1/cart/items (add item, returns updated cart)
   - PUT /api/v1/cart/items/{id} (update quantity)
@@ -417,32 +417,32 @@
 
 ### Domain Events
 
-- [ ] T101 [P] Create CartItemAddedEvent.java
-- [ ] T102 [P] Create CartAbandonedEvent.java (triggers email recovery)
-- [ ] T103 [P] Create CheckoutStartedEvent.java
-- [ ] T104 Create CartEventPublisher.java
+- [X] T101 [P] Create CartItemAddedEvent.java
+- [X] T102 [P] Create CartAbandonedEvent.java (triggers email recovery)
+- [X] T103 [P] Create CheckoutStartedEvent.java
+- [X] T104 Create CartEventPublisher.java
 
 ### Unit Tests (80%+ coverage)
 
-- [ ] T105 [P] Create CartServiceTest.java with tests for:
+- [X] T105 [P] Create CartServiceTest.java with tests for:
   - addItem with successful reservation
   - addItem with OutOfStockException
   - updateQuantity with inventory adjustment
   - calculateTotals with discounts/taxes
-- [ ] T106 [P] Create CartPromotionServiceTest.java with tests for:
+- [X] T106 [P] Create CartPromotionServiceTest.java with tests for:
   - applyCoupon (valid, invalid, expired coupons)
   - calculateDiscount edge cases (max discount cap)
-- [ ] T107 [P] Create CheckoutServiceTest.java with tests for:
+- [X] T107 [P] Create CheckoutServiceTest.java with tests for:
   - prepareCheckout price verification (flash sale detection)
   - confirmCheckout order creation
 
 ### Contract Tests
 
-- [ ] T108 Create CartApplicationModuleTest.java validating module boundaries
+- [X] T108 Create CartApplicationModuleTest.java validating module boundaries
 
 ### Integration Tests
 
-- [ ] T109 Create CartIntegrationTest.java testing:
+- [X] T109 Create CartIntegrationTest.java testing:
   - Add product → add quantity → apply coupon → prepare checkout → confirm checkout flow
   - Cart expiration and recovery
 
