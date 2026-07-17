@@ -49,6 +49,14 @@ public class ErrorResponse implements Serializable {
   @JsonProperty("errors")
   private List<FieldError> fieldErrors;
 
+  // Machine-readable code for programmatic client handling (e.g. "DUPLICATE_SLUG"),
+  // distinct from `error` above which is a broader category (e.g. "RESOURCE_CONFLICT").
+  @JsonProperty("error_code")
+  private String errorCode;
+
+  @JsonProperty("details")
+  private Map<String, Object> details;
+
   @JsonProperty("trace_id")
   private String traceId;
 
@@ -168,6 +176,22 @@ public class ErrorResponse implements Serializable {
 
   public void setFieldErrors(List<FieldError> fieldErrors) {
     this.fieldErrors = fieldErrors;
+  }
+
+  public String getErrorCode() {
+    return errorCode;
+  }
+
+  public void setErrorCode(String errorCode) {
+    this.errorCode = errorCode;
+  }
+
+  public Map<String, Object> getDetails() {
+    return details;
+  }
+
+  public void setDetails(Map<String, Object> details) {
+    this.details = details;
   }
 
   public String getTraceId() {

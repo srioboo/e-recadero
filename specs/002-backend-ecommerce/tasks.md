@@ -658,63 +658,63 @@
 
 ### Data Models & Repositories
 
-- [ ] T156 [P] Create Template.java entity in templates/domain/ with:
+- [X] T156 [P] Create Template.java entity in templates/domain/ with:
   - id, name, type (LANDING_PAGE/CATEGORY_PAGE/PRODUCT_PAGE/CUSTOM)
   - slug (unique, URL-safe), status (DRAFT/PUBLISHED/ARCHIVED)
   - version, published_version, created_by, published_at
-- [ ] T157 [P] Create TemplateBlock.java entity with:
+- [X] T157 [P] Create TemplateBlock.java entity with:
   - id, template_id, block_type (HERO/PRODUCT_GRID/CATEGORY_LIST/RICH_TEXT/etc)
   - block_order (position in template), content_json (flexible block content)
   - is_visible (can toggle without deleting)
-- [ ] T158 [P] Create TemplateMeta.java entity with:
+- [X] T158 [P] Create TemplateMeta.java entity with:
   - id, template_id, page_title (SEO), page_description, og_title, og_image_url
   - keywords, canonical_url, robots_directive, structured_data_json (JSON-LD)
-- [ ] T159 [P] Create TemplateVersion.java entity with:
+- [X] T159 [P] Create TemplateVersion.java entity with:
   - id, template_id, version_number, content_snapshot_json (immutable snapshot)
   - created_at, created_by, change_note
-- [ ] T160 [P] Create PageContent.java entity with:
+- [X] T160 [P] Create PageContent.java entity with:
   - id, template_id, entity_id, entity_type (PRODUCT/CATEGORY/LANDING_PAGE)
   - Maps templates to products/categories (1-to-many)
-- [ ] T161 [P] Create @ApplicationModule(displayName = "Templates") in templates/package-info.java
-- [ ] T162 [P] Create TemplateRepository.java with:
+- [X] T161 [P] Create @ApplicationModule(displayName = "Templates") in templates/package-info.java
+- [X] T162 [P] Create TemplateRepository.java with:
   - findBySlug(String slug)
   - findByType(TemplateType type)
   - findByStatus(TemplateStatus status)
-- [ ] T163 [P] Create TemplateBlockRepository.java with:
+- [X] T163 [P] Create TemplateBlockRepository.java with:
   - findByTemplateIdOrderByBlockOrder(UUID templateId)
-- [ ] T164 [P] Create TemplateVersionRepository.java with:
+- [X] T164 [P] Create TemplateVersionRepository.java with:
   - findByTemplateIdAndVersionNumber(UUID templateId, int version)
   - findByTemplateIdOrderByVersionNumberDesc(UUID templateId) (history)
 
 ### Services & Business Logic
 
-- [ ] T165 Create TemplateService.java implementing:
+- [X] T165 Create TemplateService.java implementing:
   - createTemplate(TemplateRequest): Template (admin)
   - updateTemplate(templateId, UpdateRequest): Template (admin)
   - publishTemplate(templateId, changeNote): version++, snapshot blocks/meta, emits TemplatePublishedEvent
   - unpublishTemplate(templateId): revert to DRAFT
   - archiveTemplate(templateId): ARCHIVED (not deletable)
   - revertToVersion(templateId, versionNumber): create new DRAFT from historical snapshot
-- [ ] T166 [P] Create TemplateBlockService.java implementing:
+- [X] T166 [P] Create TemplateBlockService.java implementing:
   - addBlock(templateId, blockRequest): TemplateBlock
   - updateBlock(blockId, updateRequest): TemplateBlock
   - toggleVisibility(blockId, isVisible): update without delete (preserve order)
   - deleteBlock(blockId): remove block
   - reorderBlocks(templateId, blockOrders): reorder all blocks
   - Validates block_content_json matches block_type schema
-- [ ] T167 [P] Create TemplateMetaService.java implementing:
+- [X] T167 [P] Create TemplateMetaService.java implementing:
   - updateMeta(templateId, metaRequest): TemplateMeta
   - Validates SEO title length (50-60 chars), description (120-160 chars)
   - Ensures canonical URL is valid
-- [ ] T168 [P] Create PageContentService.java implementing:
+- [X] T168 [P] Create PageContentService.java implementing:
   - mapTemplateToEntity(templateId, entityId, entityType): link template to product/category
   - unmapTemplateFromEntity(templateId, entityId, entityType): unlink
   - getTemplateForEntity(entityId, entityType): fetch template for rendering
-- [ ] T169 [P] Create TemplateContentProvider.java (support class for retrieving product/category data for template rendering)
+- [X] T169 [P] Create TemplateContentProvider.java (support class for retrieving product/category data for template rendering)
 
 ### Controllers & API Endpoints
 
-- [ ] T170 Create TemplateAdminController.java with endpoints (14 total, admin only):
+- [X] T170 Create TemplateAdminController.java with endpoints (14 total, admin only):
   - GET /api/v1/templates (list with pagination + filtering)
   - POST /api/v1/templates (create)
   - GET /api/v1/templates/{id}
@@ -729,35 +729,35 @@
   - POST /api/v1/templates/{id}/publish (publish version)
   - POST /api/v1/templates/{id}/unpublish (revert to draft)
   - GET /api/v1/templates/{id}/versions (version history)
-- [ ] T171 Create TemplateVersionController.java with endpoints (3 total, admin only):
+- [X] T171 Create TemplateVersionController.java with endpoints (3 total, admin only):
   - GET /api/v1/templates/{id}/versions/{versionNumber}
   - POST /api/v1/templates/{id}/revert/{versionNumber}
   - GET /api/v1/templates/{id}/entities (list templates mapped to entities)
-- [ ] T172 Create 템platPublicController.java with endpoint (1 total, public):
+- [X] T172 Create 템platPublicController.java with endpoint (1 total, public):
   - GET /api/templates/{slug} (fetch published template for frontend rendering, no auth, highly cached)
 
 ### Domain Events
 
-- [ ] T173 [P] Create TemplatePublishedEvent.java
-- [ ] T174 [P] Create TemplateArchivedEvent.java
-- [ ] T175 Create TemplateEventPublisher.java
+- [X] T173 [P] Create TemplatePublishedEvent.java
+- [X] T174 [P] Create TemplateArchivedEvent.java
+- [X] T175 Create TemplateEventPublisher.java
 
 ### Unit Tests
 
-- [ ] T176 [P] Create TemplateBlockServiceTest.java with tests for:
+- [X] T176 [P] Create TemplateBlockServiceTest.java with tests for:
   - Block content validation per block_type
   - reorderBlocks maintains order consistency
-- [ ] T177 [P] Create TemplateVersionServiceTest.java with tests for:
+- [X] T177 [P] Create TemplateVersionServiceTest.java with tests for:
   - publishTemplate snapshot creation
   - revertToVersion generates new draft
 
 ### Contract Tests
 
-- [ ] T178 Create TemplatesApplicationModuleTest.java
+- [X] T178 Create TemplatesApplicationModuleTest.java
 
 ### Integration Tests
 
-- [ ] T179 Create TemplateIntegrationTest.java testing:
+- [X] T179 Create TemplateIntegrationTest.java testing:
   - Create template → add blocks → add meta → publish → map to category flow
 
 **Checkpoint**: Page builder complete; template versioning working
