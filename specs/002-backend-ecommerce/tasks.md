@@ -239,49 +239,49 @@
 
 ### Data Models & Repositories
 
-- [ ] T061 [P] Create User.java entity in users/domain/ with:
+- [X] T061 [P] Create User.java entity in users/domain/ with:
   - id, email (unique, indexed), password_hash, username (unique), status, email_verified, last_login_at
   - @Version field for optimistic locking on concurrent updates
-- [ ] T062 [P] Create UserProfile.java entity with: id, user_id, first_name, last_name, phone, avatar_url, preferred_locale, newsletter_subscribed
-- [ ] T063 [P] Create Address.java entity with: id, user_id, type (BILLING/SHIPPING/OTHER), street_address, city, state_province, postal_code, country_code, is_primary
-- [ ] T064 [P] Create UserRole.java entity with: id, user_id, role_name (CUSTOMER/ADMIN/VENDOR/SUPPORT/ANALYST), granted_at, granted_by
-- [ ] T065 [P] Create @ApplicationModule(displayName = "Users") in users/package-info.java
-- [ ] T066 [P] Create UserRepository.java with:
+- [X] T062 [P] Create UserProfile.java entity with: id, user_id, first_name, last_name, phone, avatar_url, preferred_locale, newsletter_subscribed
+- [X] T063 [P] Create Address.java entity with: id, user_id, type (BILLING/SHIPPING/OTHER), street_address, city, state_province, postal_code, country_code, is_primary
+- [X] T064 [P] Create UserRole.java entity with: id, user_id, role_name (CUSTOMER/ADMIN/VENDOR/SUPPORT/ANALYST), granted_at, granted_by
+- [X] T065 [P] Create @ApplicationModule(displayName = "Users") in users/package-info.java
+- [X] T066 [P] Create UserRepository.java with:
   - findByEmail(String email)
   - findByUsernamne(String username)
   - findByStatusOrderByCreatedAtDesc(UserStatus status)
-- [ ] T067 [P] Create AddressRepository.java with:
+- [X] T067 [P] Create AddressRepository.java with:
   - findByUserIdAndType(UUID userId, AddressType type)
   - findByUserIdAndIsPrimaryAndType(UUID userId, boolean isPrimary, AddressType type)
-- [ ] T068 [P] Create UserRoleRepository.java with:
+- [X] T068 [P] Create UserRoleRepository.java with:
   - findByUserId(UUID userId)
   - findByUserIdAndRoleName(UUID userId, String roleName)
 
 ### Services & Business Logic
 
-- [ ] T069 Create UserAuthenticationService.java implementing:
+- [X] T069 Create UserAuthenticationService.java implementing:
   - registerUser(RegisterRequest): UserResponse (generate email verification token)
   - verifyEmail(token): activate account
   - login(email, password): generate JWT access + refresh tokens (validates bcrypt password)
   - refreshToken(refreshToken): generate new access token
   - logout(refreshToken): revoke token in Redis
-- [ ] T070 [P] Create UserProfileService.java implementing:
+- [X] T070 [P] Create UserProfileService.java implementing:
   - createProfile(userId, ProfileRequest): UserProfile
   - updateProfile(userId, ProfileRequest): updated profile
   - getProfile(userId): UserProfile with addresses
   - changePassword(userId, oldPassword, newPassword): validates current password
   - deactivateAccount(userId): mark INACTIVE (soft delete with 90-day retention)
-- [ ] T071 [P] Create AddressService.java implementing:
+- [X] T071 [P] Create AddressService.java implementing:
   - createAddress(userId, AddressRequest): Address
   - updateAddress(userId, addressId, AddressRequest): Address
   - deleteAddress(userId, addressId): void
   - setPrimaryAddress(userId, addressId, type): ensure only one primary per type
   - getPrimaryAddress(userId, type): fetch default address for checkout
-- [ ] T072 [P] Create UserRoleService.java implementing:
+- [X] T072 [P] Create UserRoleService.java implementing:
   - grantRole(userId, roleName): add role (admin only)
   - revokeRole(userId, roleName): remove role
   - hasRole(userId, roleName): boolean check
-- [ ] T073 [P] Create UserValidationService with constraints:
+- [X] T073 [P] Create UserValidationService with constraints:
   - Email: valid RFC 5322 + unique + lowercase
   - Password: min 12 chars, 1 uppercase, 1 digit, 1 special char
   - Username: 3-50 chars, alphanumeric + underscore
@@ -289,7 +289,7 @@
 
 ### Controllers & API Endpoints
 
-- [ ] T074 Create AuthController.java with endpoints (7 total):
+- [X] T074 Create AuthController.java with endpoints (7 total):
   - POST /api/v1/auth/register (public)
   - POST /api/v1/auth/verify-email (public, token in body)
   - POST /api/v1/auth/login (public, email + password)
@@ -297,20 +297,20 @@
   - POST /api/v1/auth/logout (authenticated, revoke refresh token)
   - POST /api/v1/auth/forgot-password (public, send email to addr on file)
   - POST /api/v1/auth/reset-password (public, token + new password)
-- [ ] T075 Create UserProfileController.java with endpoints (5 total):
+- [X] T075 Create UserProfileController.java with endpoints (5 total):
   - GET /api/v1/users/me (current user profile)
   - PUT /api/v1/users/me (update profile)
   - PUT /api/v1/users/me/password (change password)
   - DELETE /api/v1/users/me (deactivate account, requires password confirmation)
   - GET /api/v1/users/me/addresses (list user addresses)
-- [ ] T076 Create AddressController.java with endpoints (6 total):
+- [X] T076 Create AddressController.java with endpoints (6 total):
   - GET /api/v1/users/me/addresses (list, filterable by type)
   - POST /api/v1/users/me/addresses (create)
   - PUT /api/v1/users/me/addresses/{id} (update)
   - DELETE /api/v1/users/me/addresses/{id} (delete)
   - PUT /api/v1/users/me/addresses/{id}/set-primary (set as default for type)
   - GET /api/v1/users/me/addresses/primary/{type} (get default address)
-- [ ] T077 Create AdminUserController.java with endpoints (5 total, admin only):
+- [X] T077 Create AdminUserController.java with endpoints (5 total, admin only):
   - GET /api/v1/admin/users (list all users with filters)
   - GET /api/v1/admin/users/{id} (get user details)
   - PATCH /api/v1/admin/users/{id}/status (change status: ACTIVE/INACTIVE/SUSPENDED)
@@ -319,30 +319,30 @@
 
 ### Domain Events
 
-- [ ] T078 [P] Create UserRegisteredEvent.java
-- [ ] T079 [P] Create UserEmailVerifiedEvent.java
-- [ ] T080 [P] Create UserProfileUpdatedEvent.java
-- [ ] T081 Create UserEventPublisher.java
+- [X] T078 [P] Create UserRegisteredEvent.java
+- [X] T079 [P] Create UserEmailVerifiedEvent.java
+- [X] T080 [P] Create UserProfileUpdatedEvent.java
+- [X] T081 Create UserEventPublisher.java
 
 ### Unit Tests (80%+ coverage)
 
-- [ ] T082 [P] Create UserAuthenticationServiceTest.java with tests for:
+- [X] T082 [P] Create UserAuthenticationServiceTest.java with tests for:
   - registerUser validation
   - login with valid/invalid credentials
   - JWT token generation/refresh
   - password hashing (bcrypt)
-- [ ] T083 [P] Create AddressServiceTest.java with tests for:
+- [X] T083 [P] Create AddressServiceTest.java with tests for:
   - setPrimaryAddress prevents conflicts
   - address type filtering
-- [ ] T084 [P] Create UserValidationServiceTest.java for email/password/username validators
+- [X] T084 [P] Create UserValidationServiceTest.java for email/password/username validators
 
 ### Contract Tests
 
-- [ ] T085 Create UsersApplicationModuleTest.java with @ApplicationModuleTest
+- [X] T085 Create UsersApplicationModuleTest.java with @ApplicationModuleTest
 
 ### Integration Tests
 
-- [ ] T086 Create UserIntegrationTest.java testing:
+- [X] T086 Create UserIntegrationTest.java testing:
   - Register → Verify email → Login → Get profile flow
   - Add addresses → Set primary flow
 
