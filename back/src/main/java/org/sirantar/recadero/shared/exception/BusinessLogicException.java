@@ -20,18 +20,29 @@ public class BusinessLogicException extends RuntimeException {
   private static final long serialVersionUID = 1L;
 
   private final String errorCode;
+  private final java.util.Map<String, Object> details;
 
   public BusinessLogicException(String errorCode, String message) {
-    super(message);
-    this.errorCode = errorCode;
+    this(errorCode, message, (java.util.Map<String, Object>) null);
   }
 
   public BusinessLogicException(String errorCode, String message, Throwable cause) {
     super(message, cause);
     this.errorCode = errorCode;
+    this.details = null;
+  }
+
+  public BusinessLogicException(String errorCode, String message, java.util.Map<String, Object> details) {
+    super(message);
+    this.errorCode = errorCode;
+    this.details = details;
   }
 
   public String getErrorCode() {
     return errorCode;
+  }
+
+  public java.util.Map<String, Object> getDetails() {
+    return details;
   }
 }
