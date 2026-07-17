@@ -561,49 +561,49 @@
 
 ### Data Models & Repositories
 
-- [ ] T134 [P] Create Promotion.java entity in promotions/domain/ with:
+- [X] T134 [P] Create Promotion.java entity in promotions/domain/ with:
   - id, name, type (PERCENTAGE_DISCOUNT/FIXED_DISCOUNT/FREE_SHIPPING/BOGO)
   - discount_value (0-100 for % or absolute amount), max_discount_amount (cap)
   - start_date, end_date, usage_limit, current_usage_count
   - priority, status (DRAFT/ACTIVE/PAUSED/EXPIRED/ARCHIVED)
-- [ ] T135 [P] Create PromotionRule.java entity with: id, promotion_id, rule_type (PRODUCT_INCLUDE/CATEGORY_INCLUDE/USER_SEGMENT), condition_json (flexible structure)
-- [ ] T136 [P] Create CouponCode.java entity with: id, promotion_id, code (unique, case-insensitive), usage_limit, current_usage, expiry_date, is_active
-- [ ] T137 [P] Create PromotionUsage.java entity with: id, promotion_id, coupon_code_id, order_id, user_id, discount_amount, used_at
-- [ ] T138 [P] Create @ApplicationModule(displayName = "Promotions") in promotions/package-info.java
-- [ ] T139 [P] Create PromotionRepository.java with:
+- [X] T135 [P] Create PromotionRule.java entity with: id, promotion_id, rule_type (PRODUCT_INCLUDE/CATEGORY_INCLUDE/USER_SEGMENT), condition_json (flexible structure)
+- [X] T136 [P] Create CouponCode.java entity with: id, promotion_id, code (unique, case-insensitive), usage_limit, current_usage, expiry_date, is_active
+- [X] T137 [P] Create PromotionUsage.java entity with: id, promotion_id, coupon_code_id, order_id, user_id, discount_amount, used_at
+- [X] T138 [P] Create @ApplicationModule(displayName = "Promotions") in promotions/package-info.java
+- [X] T139 [P] Create PromotionRepository.java with:
   - findByStatusAndBetweenDates(status, startDate, endDate)
   - findAllActive(LocalDateTime now)
   - findByPriorityDescAndStatus(status)
-- [ ] T140 [P] Create CouponCodeRepository.java with:
+- [X] T140 [P] Create CouponCodeRepository.java with:
   - findByCode(String code) (case-insensitive)
   - findExpiredCoupons(LocalDateTime threshold)
 
 ### Services & Business Logic
 
-- [ ] T141 Create PromotionService.java implementing:
+- [X] T141 Create PromotionService.java implementing:
   - createPromotion(PromotionRequest): Promotion (admin only)
   - updatePromotion(promotionId, UpdateRequest): Promotion
   - changeStatus(promotionId, newStatus): validate state transitions
   - deletePromotion (archive, not hard delete)
-- [ ] T142 [P] Create PromotionRulesEngine.java implementing:
+- [X] T142 [P] Create PromotionRulesEngine.java implementing:
   - evaluatePromotion(promotion, cartItems, user): boolean (does promotion apply to this cart?)
   - Handles all rule types: PRODUCT_INCLUDE, CATEGORY_INCLUDE, USER_SEGMENT, NEW_CUSTOMER_ONLY
   - Handles rule combinations (AND/OR operators)
   - calculateDiscount(promotion, cartSubtotal): returns discount amount respecting max_discount_amount cap
-- [ ] T143 [P] Create CouponCodeService.java implementing:
+- [X] T143 [P] Create CouponCodeService.java implementing:
   - generateCoupons(promotionId, count, prefix): bulk generation for campaign distribution
   - validateCoupon(code, cart): returns validation result (valid? applicable? reasons if not)
   - applyCoupon(code, orderId, userId, discountAmount): increment usage, mark as used
-- [ ] T144 [P] Create PromotionExpirationService.java with scheduled task:
+- [X] T144 [P] Create PromotionExpirationService.java with scheduled task:
   - expirePromotions(): every hour, auto-expire promotions past end_date, publish PromotionExpiredEvent
-- [ ] T145 [P] Create PromotionValidationService with constraints:
+- [X] T145 [P] Create PromotionValidationService with constraints:
   - start_date < end_date
   - discount_value logically valid for type
   - usage_limit > 0 if set
 
 ### Controllers & API Endpoints
 
-- [ ] T146 Create PromotionAdminController.java with endpoints (9 total, admin only):
+- [X] T146 Create PromotionAdminController.java with endpoints (9 total, admin only):
   - GET /api/v1/promotions (list with filtering)
   - POST /api/v1/promotions (create)
   - GET /api/v1/promotions/{id}
@@ -613,7 +613,7 @@
   - POST /api/v1/promotions/{id}/rules (add rule)
   - DELETE /api/v1/promotions/{id}/rules/{ruleId} (remove rule)
   - POST /api/v1/promotions/{id}/coupons (bulk generate codes)
-- [ ] T147 Create CouponController.java with endpoints (5 total):
+- [X] T147 Create CouponController.java with endpoints (5 total):
   - POST /api/v1/coupons/validate (called by Cart module, public with rate limiting)
   - POST /api/v1/coupons/{code}/apply (called by Orders module post-confirmation)
   - GET /api/v1/promotions/{id}/coupons (admin, list codes for campaign)
@@ -622,28 +622,28 @@
 
 ### Domain Events
 
-- [ ] T148 [P] Create PromotionActivatedEvent.java
-- [ ] T149 [P] Create PromotionExpiredEvent.java
-- [ ] T150 [P] Create CouponUsedEvent.java
-- [ ] T151 Create PromotionEventPublisher.java
+- [X] T148 [P] Create PromotionActivatedEvent.java
+- [X] T149 [P] Create PromotionExpiredEvent.java
+- [X] T150 [P] Create CouponUsedEvent.java
+- [X] T151 Create PromotionEventPublisher.java
 
 ### Unit Tests
 
-- [ ] T152 [P] Create PromotionRulesEngineTest.java with tests for:
+- [X] T152 [P] Create PromotionRulesEngineTest.java with tests for:
   - evaluatePromotion with product inclusion rules
   - evaluatePromotion with new customer segment
   - calculateDiscount with max_discount_amount cap
   - Rule combination (AND/OR) logic
-- [ ] T153 [P] Create CouponCodeServiceTest.java with tests for:
+- [X] T153 [P] Create CouponCodeServiceTest.java with tests for:
   - validateCoupon (valid, invalid, expired, usage limit exceeded)
 
 ### Contract Tests
 
-- [ ] T154 Create PromotionsApplicationModuleTest.java
+- [X] T154 Create PromotionsApplicationModuleTest.java
 
 ### Integration Tests
 
-- [ ] T155 Create PromotionIntegrationTest.java testing:
+- [X] T155 Create PromotionIntegrationTest.java testing:
   - Create promotion → generate coupons → validate coupon → apply to order flow
 
 **Checkpoint**: Promotion engine fully functional; rules engine tested thoroughly

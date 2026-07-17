@@ -15,8 +15,9 @@ public class OrderEventPublisher {
 
   private final ApplicationEventPublisher eventPublisher;
 
-  public void publishConfirmed(Long orderId, String orderNumber, Long userId, BigDecimal grandTotal) {
-    eventPublisher.publishEvent(new OrderConfirmedEvent(orderId, orderNumber, userId, grandTotal));
+  public void publishConfirmed(
+      Long orderId, String orderNumber, Long userId, BigDecimal grandTotal, String couponCode, BigDecimal discountAmount) {
+    eventPublisher.publishEvent(new OrderConfirmedEvent(orderId, orderNumber, userId, grandTotal, couponCode, discountAmount));
   }
 
   public void publishShipped(

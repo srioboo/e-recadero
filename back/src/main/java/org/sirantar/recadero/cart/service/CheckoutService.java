@@ -109,6 +109,7 @@ public class CheckoutService {
 
     List<CartItem> items = cartItemRepository.findByCartId(cart.getId());
     var totals = cartService.calculateTotals(cart.getId());
+    var appliedPromotion = cartPromotionRepository.findByCartId(cart.getId()).stream().findFirst();
 
     List<CheckoutCompletedEvent.LineItem> eventItems = items.stream()
         .map(i -> new CheckoutCompletedEvent.LineItem(
@@ -134,14 +135,18 @@ public class CheckoutService {
         request.paymentMethod(),
         request.transactionId(),
         totals.grandTotal(),
-        cart.getCheckoutToken());
+        cart.getCheckoutToken(),
+        appliedPromotion.map(org.sirantar.recadero.cart.domain.CartPromotion::getCouponCode).orElse(null),
+        appliedPromotion.map(org.sirantar.recadero.cart.domain.CartPromotion::getDiscountAmount).orElse(null));
 
+    // The order itself is created asynchronously by the Orders module's
+    // CartCheckoutEventListener, after this transaction commits.
     return new ConfirmCheckoutResponse(
         null,
         null,
         cart.getId(),
         totals.grandTotal(),
-        "Checkout received. Order confirmation is pending — the Orders module isn't available yet.",
+        "Checkout received. Your order confirmation will be available shortly.",
         null);
   }
 }

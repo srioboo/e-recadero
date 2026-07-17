@@ -72,7 +72,7 @@ class OrderServiceTest {
     CheckoutCompletedEvent event = new CheckoutCompletedEvent(
         1L, 10L,
         List.of(new CheckoutCompletedEvent.LineItem(50L, 2, BigDecimal.valueOf(20), BigDecimal.ZERO)),
-        1L, 2L, "STANDARD", "CREDIT_CARD", "txn-1", BigDecimal.valueOf(40), "checkout-token");
+        1L, 2L, "STANDARD", "CREDIT_CARD", "txn-1", BigDecimal.valueOf(40), "checkout-token", null, null);
 
     Order created = orderService.createOrderFromCart(event);
 
@@ -80,7 +80,7 @@ class OrderServiceTest {
     assertThat(created.getGrandTotal()).isEqualByComparingTo("40");
     org.mockito.Mockito.verify(inventoryService).checkAvailability(50L, 2);
     org.mockito.Mockito.verify(eventPublisher).publishConfirmed(
-        org.mockito.ArgumentMatchers.eq(1L), any(), org.mockito.ArgumentMatchers.eq(10L), any());
+        org.mockito.ArgumentMatchers.eq(1L), any(), org.mockito.ArgumentMatchers.eq(10L), any(), any(), any());
   }
 
   @Test
