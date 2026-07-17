@@ -458,28 +458,28 @@
 
 ### Data Models & Repositories
 
-- [ ] T110 [P] Create Order.java entity in orders/domain/ with:
+- [X] T110 [P] Create Order.java entity in orders/domain/ with:
   - id, order_number (unique, human-readable), user_id, status (PENDING/CONFIRMED/SHIPPED/DELIVERED/CANCELLED/REFUNDED)
   - Totals: subtotal, tax_total, shipping_total, discount_total, grand_total
   - Dates: order_date, confirmed_date, shipped_date, delivered_date
   - Addresses: billing_address_id, shipping_address_id (snapshots, not FK to prevent cascade issues)
-- [ ] T111 [P] Create OrderItem.java entity with: id, order_id, product_variant_id, product_sku (snapshot), quantity, unit_price, line_discount, line_total
-- [ ] T112 [P] Create OrderShipment.java entity with: id, order_id, carrier, tracking_number, status (PENDING/IN_TRANSIT/OUT_FOR_DELIVERY/DELIVERED), shipped_at, estimated_delivery, delivered_at
-- [ ] T113 [P] Create OrderPayment.java entity with: id, order_id, payment_method, amount, status (PENDING/AUTHORIZED/CAPTURED/FAILED/REFUNDED), transaction_id (external processor ID), processor_response (JSON)
-- [ ] T114 [P] Create @ApplicationModule(displayName = "Orders") in orders/package-info.java
-- [ ] T115 [P] Create OrderRepository.java with:
+- [X] T111 [P] Create OrderItem.java entity with: id, order_id, product_variant_id, product_sku (snapshot), quantity, unit_price, line_discount, line_total
+- [X] T112 [P] Create OrderShipment.java entity with: id, order_id, carrier, tracking_number, status (PENDING/IN_TRANSIT/OUT_FOR_DELIVERY/DELIVERED), shipped_at, estimated_delivery, delivered_at
+- [X] T113 [P] Create OrderPayment.java entity with: id, order_id, payment_method, amount, status (PENDING/AUTHORIZED/CAPTURED/FAILED/REFUNDED), transaction_id (external processor ID), processor_response (JSON)
+- [X] T114 [P] Create @ApplicationModule(displayName = "Orders") in orders/package-info.java
+- [X] T115 [P] Create OrderRepository.java with:
   - findByOrderNumber(String orderNumber)
   - findByUserId(UUID userId, Pageable)
   - findByStatus(OrderStatus status, Pageable)
-- [ ] T116 [P] Create OrderShipmentRepository.java with:
+- [X] T116 [P] Create OrderShipmentRepository.java with:
   - findByTrackingNumber(String tracking)
   - findByOrderId(UUID orderId)
-- [ ] T117 [P] Create OrderPaymentRepository.java with:
+- [X] T117 [P] Create OrderPaymentRepository.java with:
   - findByTransactionId(String transactionId) (external idempotency key)
 
 ### Services & Business Logic
 
-- [ ] T118 Create OrderService.java implementing:
+- [X] T118 Create OrderService.java implementing:
   - createOrderFromCart(cartId, checkoutToken, paymentInfo): called by Cart module post-checkout
     - Verify cart items still in stock (final check before order creation)
     - Create Order + OrderItems (snapshots of product info for historical record)
@@ -489,22 +489,22 @@
   - getOrder(orderId, userId): return full order details with items + shipment
   - cancelOrder(orderId, reason): only if PENDING or CONFIRMED; trigger refund if payment captured
   - refundOrder(orderId, amount, reason): partial or full refund
-- [ ] T119 [P] Create OrderShipmentService.java implementing:
+- [X] T119 [P] Create OrderShipmentService.java implementing:
   - createShipment(orderId, carrier, tracking): admin creates shipment post-pickup
   - updateShipmentStatus(tracking, status, location): webhook handler for carrier updates → emits OrderShippedEvent
   - getShipmentTracking(tracking): public endpoint for tracking (no auth required)
-- [ ] T120 [P] Create OrderReturnService.java implementing:
+- [X] T120 [P] Create OrderReturnService.java implementing:
   - initiateReturn(orderId, itemId, reason, description): creates return record, generates RMA number, generates return shipping label
   - approveReturn(returnId): admin approves, enables refund processing
   - processReturnRefund(returnId, amount): execute refund API call
-- [ ] T121 [P] Create OrderValidationService with constraints:
+- [X] T121 [P] Create OrderValidationService with constraints:
   - Order totals = cart totals ± rounding tolerance (< 0.01)
   - Status transitions enforce business rules (no PENDING → DELIVERED direct)
   - Refunds only allowed within 30 days of delivery
 
 ### Controllers & API Endpoints
 
-- [ ] T122 Create OrderController.java with endpoints (10 total):
+- [X] T122 Create OrderController.java with endpoints (10 total):
   - GET /api/v1/orders (list user's orders with filtering + pagination)
   - GET /api/v1/orders/{id} (full order details)
   - PATCH /api/v1/orders/{id}/cancel (cancel if PENDING/CONFIRMED)
@@ -515,38 +515,38 @@
   - GET /api/v1/orders/{id}/returns (list returns for order)
   - POST /api/v1/orders/{id}/shipment/webhook (carrier webhook handler)
   - GET /api/tracking/{tracking_number} (public shipment tracking, no auth)
-- [ ] T123 Create AdminOrderController.java with endpoints (3 total, admin only):
+- [X] T123 Create AdminOrderController.java with endpoints (3 total, admin only):
   - GET /api/v1/admin/orders (list all orders with admin filters)
   - PATCH /api/v1/admin/orders/{id}/status (force status change, admin override)
   - POST /api/v1/admin/orders/{id}/shipment (manually create shipment record)
 
 ### Domain Events
 
-- [ ] T124 [P] Create OrderConfirmedEvent.java (payment success)
-- [ ] T125 [P] Create OrderShippedEvent.java (tracking available)
-- [ ] T126 [P] Create OrderDeliveredEvent.java (delivery confirmed)
-- [ ] T127 [P] Create OrderRefundedEvent.java
-- [ ] T128 Create OrderEventPublisher.java
+- [X] T124 [P] Create OrderConfirmedEvent.java (payment success)
+- [X] T125 [P] Create OrderShippedEvent.java (tracking available)
+- [X] T126 [P] Create OrderDeliveredEvent.java (delivery confirmed)
+- [X] T127 [P] Create OrderRefundedEvent.java
+- [X] T128 Create OrderEventPublisher.java
 
 ### Unit Tests (80%+ coverage)
 
-- [ ] T129 [P] Create OrderServiceTest.java with tests for:
+- [X] T129 [P] Create OrderServiceTest.java with tests for:
   - createOrderFromCart inventory verification
   - cancelOrder status transition validation
   - refundOrder 30-day window check
-- [ ] T130 [P] Create OrderShipmentServiceTest.java with tests for:
+- [X] T130 [P] Create OrderShipmentServiceTest.java with tests for:
   - updateShipmentStatus event emission
-- [ ] T131 [P] Create OrderReturnServiceTest.java with tests for:
+- [X] T131 [P] Create OrderReturnServiceTest.java with tests for:
   - initiateReturn RMA generation
   - approveReturn refund trigger
 
 ### Contract Tests
 
-- [ ] T132 Create OrdersApplicationModuleTest.java
+- [X] T132 Create OrdersApplicationModuleTest.java
 
 ### Integration Tests
 
-- [ ] T133 Create OrderIntegrationTest.java testing:
+- [X] T133 Create OrderIntegrationTest.java testing:
   - Create → Confirm → Ship → Deliver → Return flow (end-to-end)
 
 **Checkpoint**: Order system complete; payment webhook integration tested
