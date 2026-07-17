@@ -258,13 +258,15 @@ public class GlobalExceptionHandler {
         ex.getMessage(),
         request.getRequestURI()
     );
+    errorResponse.setErrorCode(ex.getErrorCode());
+    errorResponse.setDetails(ex.getDetails());
     errorResponse.setTraceId(traceId);
 
     if (isDevEnvironment()) {
       errorResponse.setExceptionClass(ex.getClass().getSimpleName());
     }
 
-    log.warn("Business logic error [trace_id={}] [code={}]: {}", 
+    log.warn("Business logic error [trace_id={}] [code={}]: {}",
         traceId, ex.getErrorCode(), ex.getMessage());
     return ResponseEntity.badRequest().body(errorResponse);
   }
@@ -284,10 +286,12 @@ public class GlobalExceptionHandler {
     
     ErrorResponse errorResponse = new ErrorResponse(
         HttpStatus.CONFLICT.value(),
-        "RESOURCE_CONFLICT",
+        ex.getErrorCode() != null ? ex.getErrorCode() : "RESOURCE_CONFLICT",
         ex.getMessage(),
         request.getRequestURI()
     );
+    errorResponse.setErrorCode(ex.getErrorCode());
+    errorResponse.setDetails(ex.getDetails());
     errorResponse.setTraceId(traceId);
 
     if (isDevEnvironment()) {

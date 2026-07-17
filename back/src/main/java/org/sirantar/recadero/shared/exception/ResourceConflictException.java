@@ -18,11 +18,32 @@ public class ResourceConflictException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 
+  private final String errorCode;
+  private final java.util.Map<String, Object> details;
+
   public ResourceConflictException(String message) {
     super(message);
+    this.errorCode = null;
+    this.details = null;
   }
 
   public ResourceConflictException(String message, Throwable cause) {
     super(message, cause);
+    this.errorCode = null;
+    this.details = null;
+  }
+
+  public ResourceConflictException(String errorCode, String message, java.util.Map<String, Object> details) {
+    super(message);
+    this.errorCode = errorCode;
+    this.details = details;
+  }
+
+  public String getErrorCode() {
+    return errorCode;
+  }
+
+  public java.util.Map<String, Object> getDetails() {
+    return details;
   }
 }
