@@ -1,17 +1,18 @@
 package org.sirantar.recadero.cart.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
- * Port for validating a coupon code against the Promotions module. Phase 7
- * (Promotions) is not yet implemented, so {@link NoOpCouponValidator} is the
- * only implementation for now — swap it for a real client once Promotions
- * exposes its coupon-validation endpoint (see cart-contract.md's
- * "Cross-Module Dependencies": Promotions Module).
+ * Port for validating a coupon code against the Promotions module.
+ * Implemented by {@code promotions.service.PromotionsCouponValidator} (Cart
+ * owns this interface and depends on nothing from Promotions directly —
+ * Promotions provides the adapter, per the dependency-inversion pattern).
  */
 public interface CouponValidator {
 
-  CouponValidationResult validate(String couponCode, BigDecimal cartSubtotal);
+  CouponValidationResult validate(
+      String couponCode, BigDecimal cartSubtotal, List<Long> productVariantIds, Long userId);
 
   record CouponValidationResult(
       boolean valid,

@@ -2,6 +2,7 @@ package org.sirantar.recadero.cart.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.sirantar.recadero.cart.domain.Cart;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Coupon application to a cart, delegating actual validation to
- * {@link CouponValidator} (currently a placeholder — see {@link NoOpCouponValidator}).
+ * {@link CouponValidator} (implemented by the Promotions module).
  */
 @Service
 @RequiredArgsConstructor
@@ -32,8 +33,9 @@ public class CartPromotionService {
   public ApplyCouponResponse applyCoupon(Long userId, String couponCode) {
     Cart cart = cartService.getOrCreateCart(userId);
     BigDecimal subtotal = cartService.calculateTotals(cart.getId()).subtotal();
+    List<Long> variantIds = itemVariantIds(userId);
 
-    CouponValidator.CouponValidationResult result = couponValidator.validate(couponCode, subtotal);
+    CouponValidator.CouponValidationResult result = couponValidator.validate(couponCode, subtotal, variantIds, userId);
     if (!result.valid()) {
       if (Boolean.FALSE.equals(result.minimumOrderAmountMet())) {
         throw new ResourceConflictException(
@@ -78,7 +80,8 @@ public class CartPromotionService {
   public ValidateCouponResponse validateCoupon(Long userId, String couponCode) {
     Cart cart = cartService.getOrCreateCart(userId);
     BigDecimal subtotal = cartService.calculateTotals(cart.getId()).subtotal();
-    CouponValidator.CouponValidationResult result = couponValidator.validate(couponCode, subtotal);
+    List<Long> variantIds = itemVariantIds(userId);
+    CouponValidator.CouponValidationResult result = couponValidator.validate(couponCode, subtotal, variantIds, userId);
 
     if (!result.valid()) {
       return new ValidateCouponResponse(false, couponCode, null, null, null, false, null);
@@ -95,5 +98,11 @@ public class CartPromotionService {
             Boolean.TRUE.equals(result.minimumOrderAmountMet()),
             Boolean.TRUE.equals(result.usageLimitNotExceeded()),
             Boolean.TRUE.equals(result.expiryValid())));
+  }
+
+  private List<Long> itemVariantIds(Long userId) {
+    return cartService.getCart(userId).items().stream()
+        .map(org.sirantar.recadero.cart.service.dto.CartItemDetail::productVariantId)
+        .toList();
   }
 }

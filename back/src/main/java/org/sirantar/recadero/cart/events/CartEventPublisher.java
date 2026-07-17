@@ -38,9 +38,11 @@ public class CartEventPublisher {
       String paymentMethod,
       String transactionId,
       BigDecimal grandTotal,
-      String checkoutToken) {
+      String checkoutToken,
+      String couponCode,
+      BigDecimal discountAmount) {
     eventPublisher.publishEvent(new CheckoutCompletedEvent(
         cartId, userId, items, billingAddressId, shippingAddressId, shippingMethodId,
-        paymentMethod, transactionId, grandTotal, checkoutToken));
+        paymentMethod, transactionId, grandTotal, checkoutToken, couponCode, discountAmount));
   }
 }

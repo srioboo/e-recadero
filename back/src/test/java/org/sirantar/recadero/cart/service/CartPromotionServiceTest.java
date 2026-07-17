@@ -62,8 +62,10 @@ class CartPromotionServiceTest {
   }
 
   @Test
-  void applyCouponRejectsUnknownCodeViaNoOpValidator() {
-    CartPromotionService service = new CartPromotionService(cartPromotionRepository, cartService, new NoOpCouponValidator());
+  void applyCouponRejectsUnknownCode() {
+    CouponValidator alwaysInvalid = (code, subtotal, variantIds, userId) ->
+        CouponValidator.CouponValidationResult.invalid("Coupon code " + code + " not found or expired");
+    CartPromotionService service = new CartPromotionService(cartPromotionRepository, cartService, alwaysInvalid);
 
     assertThatThrownBy(() -> service.applyCoupon(10L, "MISSING10"))
         .isInstanceOf(BusinessLogicException.class)
@@ -72,7 +74,7 @@ class CartPromotionServiceTest {
 
   @Test
   void applyCouponPersistsPromotionWhenValidatorAccepts() {
-    CouponValidator validator = (code, subtotal) -> new CouponValidator.CouponValidationResult(
+    CouponValidator validator = (code, subtotal, variantIds, userId) -> new CouponValidator.CouponValidationResult(
         true, null, 7L, "PERCENTAGE", BigDecimal.TEN, BigDecimal.valueOf(15), true, true, true);
     CartPromotionService service = new CartPromotionService(cartPromotionRepository, cartService, validator);
     when(cartPromotionRepository.save(any(CartPromotion.class))).thenAnswer(inv -> inv.getArgument(0));
@@ -85,7 +87,7 @@ class CartPromotionServiceTest {
 
   @Test
   void applyCouponRejectsWhenMinimumOrderNotMet() {
-    CouponValidator validator = (code, subtotal) -> new CouponValidator.CouponValidationResult(
+    CouponValidator validator = (code, subtotal, variantIds, userId) -> new CouponValidator.CouponValidationResult(
         false, "Coupon HIGHMINIMUM requires minimum order of $500", null, null, null, null, false, true, true);
     CartPromotionService service = new CartPromotionService(cartPromotionRepository, cartService, validator);
 

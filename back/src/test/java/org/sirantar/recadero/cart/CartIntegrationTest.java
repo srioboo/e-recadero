@@ -74,7 +74,7 @@ class CartIntegrationTest {
     cartService = new CartService(
         cartRepository, cartItemRepository, cartPromotionRepository, reservationRepository,
         productVariantRepository, inventoryService, cartValidationService, eventPublisher, objectMapper);
-    CouponValidator acceptingValidator = (code, subtotal) -> new CouponValidator.CouponValidationResult(
+    CouponValidator acceptingValidator = (code, subtotal, variantIds, userId) -> new CouponValidator.CouponValidationResult(
         true, null, 1L, "PERCENTAGE", BigDecimal.TEN, subtotal.multiply(BigDecimal.valueOf(0.10)), true, true, true);
     cartPromotionService = new CartPromotionService(cartPromotionRepository, cartService, acceptingValidator);
     checkoutService = new CheckoutService(

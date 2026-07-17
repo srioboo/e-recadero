@@ -96,6 +96,9 @@ public class SecurityConfig {
             
             // Public shipment tracking
             .requestMatchers(HttpMethod.GET, "/api/tracking/**").permitAll()
+
+            // Public coupon validation (rate-limited by IP at the gateway, not here)
+            .requestMatchers(HttpMethod.POST, "/api/v1/coupons/validate").permitAll()
             
             // Public published templates
             .requestMatchers(HttpMethod.GET, "/api/templates/*").permitAll()
