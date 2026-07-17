@@ -1,0 +1,8 @@
+package org.sirantar.recadero.users.service.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * Request payload for POST /api/v1/auth/refresh-token.
+ */
+public record RefreshTokenRequest(@JsonProperty("refresh_token") String refreshToken) {}
