@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Authenticated user's own profile management.
  */
 @RestController
-@RequestMapping("/api/v1/users/me")
+@RequestMapping("/users/me")
 @RequiredArgsConstructor
 @Authenticated
 public class UserProfileController {

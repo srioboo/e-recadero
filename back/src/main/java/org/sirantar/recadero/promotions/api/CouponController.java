@@ -44,18 +44,18 @@ public class CouponController {
   private final CouponCodeRepository couponCodeRepository;
   private final PromotionAnalyticsService promotionAnalyticsService;
 
-  @PostMapping("/api/v1/coupons/validate")
+  @PostMapping("/coupons/validate")
   public ValidateCouponResponse validate(@RequestBody ValidateCouponRequest request) {
     return couponCodeService.validateCoupon(request);
   }
 
-  @PostMapping("/api/v1/coupons/{code}/apply")
+  @PostMapping("/coupons/{code}/apply")
   public ApplyCouponResponse apply(@PathVariable String code, @RequestBody ApplyCouponRequest request) {
     return couponCodeService.applyCoupon(code, request.orderId(), request.userId(), request.discountAmount());
   }
 
   @AdminOnly
-  @GetMapping("/api/v1/promotions/{id}/coupons")
+  @GetMapping("/promotions/{id}/coupons")
   public PaginationResponse<CouponSummary> listCoupons(
       @PathVariable Long id, @RequestParam(name = "is_active", required = false) Boolean isActive, Pageable pageable) {
     var page = couponCodeRepository.findByPromotionIdAndActive(id, isActive, pageable);
@@ -64,7 +64,7 @@ public class CouponController {
   }
 
   @AdminOnly
-  @PutMapping("/api/v1/promotions/{id}/coupons/{couponId}")
+  @PutMapping("/promotions/{id}/coupons/{couponId}")
   public CouponSummary updateCoupon(
       @PathVariable Long id, @PathVariable Long couponId, @RequestBody UpdateCouponRequest request) {
     CouponCode coupon = couponCodeRepository.findById(couponId)
@@ -78,13 +78,13 @@ public class CouponController {
   }
 
   @AdminOnly
-  @GetMapping("/api/v1/promotions/{id}/analytics")
+  @GetMapping("/promotions/{id}/analytics")
   public AnalyticsResponse analytics(@PathVariable Long id) {
     return promotionAnalyticsService.getAnalytics(id);
   }
 
   @AdminOnly
-  @GetMapping("/api/v1/promotions/{id}/usage")
+  @GetMapping("/promotions/{id}/usage")
   public PaginationResponse<UsageListItem> usage(@PathVariable Long id, Pageable pageable) {
     return promotionAnalyticsService.getUsageHistory(id, pageable);
   }

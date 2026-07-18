@@ -82,7 +82,7 @@ public class OpenApiConfig {
     return GroupedOpenApi.builder()
         .group("catalog")
         .displayName("Catalog Module")
-        .pathsToMatch("/api/v1/categories/**", "/api/v1/products/**", "/api/v1/inventory/**")
+        .pathsToMatch("/categories/**", "/products/**", "/inventory/**")
         .build();
   }
 
@@ -95,7 +95,7 @@ public class OpenApiConfig {
     return GroupedOpenApi.builder()
         .group("users")
         .displayName("Users & Authentication")
-        .pathsToMatch("/api/v1/auth/**", "/api/v1/users/**", "/api/v1/admin/users/**")
+        .pathsToMatch("/auth/**", "/users/**", "/admin/users/**")
         .build();
   }
 
@@ -108,7 +108,7 @@ public class OpenApiConfig {
     return GroupedOpenApi.builder()
         .group("cart")
         .displayName("Shopping Cart")
-        .pathsToMatch("/api/v1/cart/**")
+        .pathsToMatch("/cart/**")
         .build();
   }
 
@@ -121,7 +121,7 @@ public class OpenApiConfig {
     return GroupedOpenApi.builder()
         .group("orders")
         .displayName("Orders & Fulfillment")
-        .pathsToMatch("/api/v1/orders/**", "/api/v1/tracking/**", "/api/v1/admin/orders/**")
+        .pathsToMatch("/orders/**", "/tracking/**", "/admin/orders/**")
         .build();
   }
 
@@ -134,7 +134,7 @@ public class OpenApiConfig {
     return GroupedOpenApi.builder()
         .group("promotions")
         .displayName("Promotions & Discounts")
-        .pathsToMatch("/api/v1/promotions/**", "/api/v1/coupons/**")
+        .pathsToMatch("/promotions/**", "/coupons/**")
         .build();
   }
 
@@ -147,7 +147,7 @@ public class OpenApiConfig {
     return GroupedOpenApi.builder()
         .group("templates")
         .displayName("Page Templates")
-        .pathsToMatch("/api/v1/templates/**", "/api/templates/**")
+        .pathsToMatch("/templates/**")
         .build();
   }
 
@@ -160,7 +160,7 @@ public class OpenApiConfig {
     return GroupedOpenApi.builder()
         .group("admin")
         .displayName("Administration")
-        .pathsToMatch("/api/v1/admin/**")
+        .pathsToMatch("/admin/**")
         .build();
   }
 

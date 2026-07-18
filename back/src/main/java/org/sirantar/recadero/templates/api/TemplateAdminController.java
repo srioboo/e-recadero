@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
  * See specs/002-backend-ecommerce/contracts/templates-contract.md.
  */
 @RestController
-@RequestMapping("/api/v1/templates")
+@RequestMapping("/templates")
 @RequiredArgsConstructor
 @AdminOnly
 public class TemplateAdminController {

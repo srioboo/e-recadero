@@ -132,11 +132,15 @@ public class TemplateBlockService {
   }
 
   private BlockType parseBlockType(String value) {
+    if (value == null) {
+      throw new BusinessLogicException(
+          "INVALID_BLOCK_CONTENT", "Unknown block type: null", Map.of("block_type", "null"));
+    }
     try {
       return BlockType.valueOf(value);
-    } catch (IllegalArgumentException | NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       throw new BusinessLogicException(
-          "INVALID_BLOCK_CONTENT", "Unknown block type: " + value, Map.of("block_type", String.valueOf(value)));
+          "INVALID_BLOCK_CONTENT", "Unknown block type: " + value, Map.of("block_type", value));
     }
   }
 

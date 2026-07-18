@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Admin-only user account and role management.
  */
 @RestController
-@RequestMapping("/api/v1/admin/users")
+@RequestMapping("/admin/users")
 @RequiredArgsConstructor
 @AdminOnly
 public class AdminUserController {
