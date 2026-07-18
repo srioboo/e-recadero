@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  * and manual shipment creation.
  */
 @RestController
-@RequestMapping("/api/v1/admin/orders")
+@RequestMapping("/admin/orders")
 @RequiredArgsConstructor
 @AdminOnly
 public class AdminOrderController {

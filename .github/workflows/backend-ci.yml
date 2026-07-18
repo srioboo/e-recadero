@@ -1,0 +1,114 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths: ['back/**', '.github/workflows/backend-ci.yml']
+  pull_request:
+    branches: [main]
+    paths: ['back/**', '.github/workflows/backend-ci.yml']
+
+defaults:
+  run:
+    working-directory: back
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest --console=plain
+        continue-on-error: true # see specs/002-backend-ecommerce/quality-review.md: known backlog, not yet a hard gate
+      - name: SpotBugs
+        run: ./gradlew spotbugsMain --console=plain
+        continue-on-error: true
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: recadero
+          POSTGRES_USER: recadero
+          POSTGRES_PASSWORD: recadero123
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U recadero -d recadero"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Run tests
+        env:
+          DATABASE_URL: jdbc:postgresql://localhost:5432/recadero
+          DATABASE_USER: recadero
+          DATABASE_PASSWORD: recadero123
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+        run: ./gradlew test --console=plain
+      - name: Publish test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: back/build/reports/tests/test
+      - name: Coverage report
+        run: ./gradlew jacocoTestReport --console=plain
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: back/build/reports/jacoco/test
+
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Build jar
+        run: ./gradlew bootJar -x test -x checkstyleMain -x checkstyleTest -x spotbugsMain --console=plain
+      - name: Build Docker image
+        run: docker build -t recadero-backend:${{ github.sha }} .
+      # Push to a registry once one is configured (no registry/credentials
+      # exist yet for this project — see specs/002-backend-ecommerce/production-readiness.md).
+      # - name: Push image
+      #   run: |
+      #     echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ secrets.REGISTRY }} -u "${{ secrets.REGISTRY_USER }}" --password-stdin
+      #     docker tag recadero-backend:${{ github.sha }} ${{ secrets.REGISTRY }}/recadero-backend:${{ github.sha }}
+      #     docker push ${{ secrets.REGISTRY }}/recadero-backend:${{ github.sha }}
+
+  deploy-staging:
+    needs: [build]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy
+        run: |
+          echo "No staging environment/target is configured for this project yet."
+          echo "This job is a placeholder: wire it up once a deploy target"
+          echo "(e.g. a Kubernetes cluster, ECS service, or PaaS) exists, using"
+          echo "the 'staging' GitHub Environment for its secrets/approval gate."
+          exit 0

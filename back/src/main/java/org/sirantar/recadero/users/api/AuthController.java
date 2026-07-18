@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Public authentication endpoints (registration, login, token lifecycle).
  */
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

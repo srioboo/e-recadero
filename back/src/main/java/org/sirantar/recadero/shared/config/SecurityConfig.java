@@ -60,9 +60,11 @@ public class SecurityConfig {
    * - Stateless JWT-based authentication (no sessions)
    * - CORS enabled for specified origins
    * - CSRF protection disabled (stateless API; CORS handles cross-origin concerns)
-   * - Public endpoints: /api/v1/auth/*, /api/tracking/*, /api/templates/*, /swagger-ui/*, /v3/api-docs/*
-   * - Protected endpoints: All /api/v1/* endpoints (except public auth)
-   * - Admin only: /api/v1/admin/*
+   * - Public endpoints: /auth/*, /tracking/*, /templates/*, /swagger-ui/*, /v3/api-docs/*
+   *   (patterns here are relative to server.servlet.context-path=/api/v1, which Spring
+   *   Security strips before matching — so the full external URL is /api/v1/auth/* etc.)
+   * - Protected endpoints: everything else under the context path (except public auth)
+   * - Admin only: /admin/*
    */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -84,24 +86,24 @@ public class SecurityConfig {
         // HTTP security rules
         .authorizeHttpRequests(authz -> authz
             // Public authentication endpoints
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/verify-email").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/refresh-token").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/forgot-password").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/v1/auth/reset-password").permitAll()
-            
+            .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/verify-email").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/forgot-password").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/reset-password").permitAll()
+
             // Public webhooks (requires signature verification in controller)
-            .requestMatchers(HttpMethod.POST, "/api/webhooks/**").permitAll()
-            
+            .requestMatchers(HttpMethod.POST, "/webhooks/**").permitAll()
+
             // Public shipment tracking
-            .requestMatchers(HttpMethod.GET, "/api/tracking/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/tracking/**").permitAll()
 
             // Public coupon validation (rate-limited by IP at the gateway, not here)
-            .requestMatchers(HttpMethod.POST, "/api/v1/coupons/validate").permitAll()
-            
+            .requestMatchers(HttpMethod.POST, "/coupons/validate").permitAll()
+
             // Public published templates
-            .requestMatchers(HttpMethod.GET, "/api/templates/*").permitAll()
+            .requestMatchers(HttpMethod.GET, "/templates/*").permitAll()
             
             // Actuator endpoints (health checks, metrics)
             .requestMatchers("/actuator/**").permitAll()
@@ -117,11 +119,8 @@ public class SecurityConfig {
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
             
             // Admin-only endpoints
-            .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-            
-            // All other /api/v1/* endpoints require authentication
-            .requestMatchers("/api/v1/**").authenticated()
-            
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+
             // All other requests require authentication
             .anyRequest().authenticated()
         );

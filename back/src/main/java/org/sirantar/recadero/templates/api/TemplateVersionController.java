@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  * them, so they're implemented here alongside the closely related T171 work.)
  */
 @RestController
-@RequestMapping("/api/v1/templates/{id}")
+@RequestMapping("/templates/{id}")
 @RequiredArgsConstructor
 @AdminOnly
 public class TemplateVersionController {

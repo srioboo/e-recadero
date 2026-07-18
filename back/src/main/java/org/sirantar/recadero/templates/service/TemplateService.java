@@ -259,9 +259,12 @@ public class TemplateService {
   }
 
   private TemplateType parseType(String value) {
+    if (value == null) {
+      throw new BusinessLogicException("INVALID_TEMPLATE_TYPE", "Unknown template type: null");
+    }
     try {
       return TemplateType.valueOf(value);
-    } catch (IllegalArgumentException | NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       throw new BusinessLogicException("INVALID_TEMPLATE_TYPE", "Unknown template type: " + value);
     }
   }

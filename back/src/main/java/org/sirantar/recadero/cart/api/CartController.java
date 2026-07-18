@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.RestController;
  * See specs/002-backend-ecommerce/contracts/cart-contract.md.
  */
 @RestController
-@RequestMapping("/api/v1/cart")
+@RequestMapping("/cart")
 @RequiredArgsConstructor
 @Authenticated
 public class CartController {

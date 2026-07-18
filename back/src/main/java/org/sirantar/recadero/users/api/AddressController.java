@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Authenticated user's own address book management.
  */
 @RestController
-@RequestMapping("/api/v1/users/me/addresses")
+@RequestMapping("/users/me/addresses")
 @RequiredArgsConstructor
 @Authenticated
 public class AddressController {

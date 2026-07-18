@@ -48,47 +48,47 @@ public class OrderController {
   private final OrderReturnService orderReturnService;
 
   @Authenticated
-  @GetMapping("/api/v1/orders")
+  @GetMapping("/orders")
   public PaginationResponse<OrderListItem> listOrders(
       @AuthenticationPrincipal SecurityUser user, @RequestParam(required = false) String status, Pageable pageable) {
     return orderService.listOrders(userId(user), status != null ? OrderStatus.valueOf(status) : null, pageable);
   }
 
   @Authenticated
-  @GetMapping("/api/v1/orders/{id}")
+  @GetMapping("/orders/{id}")
   public OrderDetailResponse getOrder(@AuthenticationPrincipal SecurityUser user, @PathVariable Long id) {
     return orderService.getOrder(id, userId(user));
   }
 
   @Authenticated
-  @PatchMapping("/api/v1/orders/{id}/cancel")
+  @PatchMapping("/orders/{id}/cancel")
   public CancelOrderResponse cancelOrder(
       @AuthenticationPrincipal SecurityUser user, @PathVariable Long id, @RequestBody CancelOrderRequest request) {
     return orderService.cancelOrder(id, userId(user), request.reason());
   }
 
   @Authenticated
-  @PostMapping("/api/v1/orders/{id}/refund")
+  @PostMapping("/orders/{id}/refund")
   public RefundResponse refund(
       @AuthenticationPrincipal SecurityUser user, @PathVariable Long id, @RequestBody RefundRequest request) {
     return orderService.refundOrder(id, userId(user), request.amount(), request.reason());
   }
 
   @Authenticated
-  @GetMapping("/api/v1/orders/{id}/payment")
+  @GetMapping("/orders/{id}/payment")
   public PaymentDetailResponse getPayment(@AuthenticationPrincipal SecurityUser user, @PathVariable Long id) {
     return orderService.getPaymentDetail(id, userId(user));
   }
 
   @Authenticated
-  @GetMapping("/api/v1/orders/{id}/shipment")
+  @GetMapping("/orders/{id}/shipment")
   public ShipmentDetailResponse getShipment(@AuthenticationPrincipal SecurityUser user, @PathVariable Long id) {
     orderService.getOrder(id, userId(user));
     return orderShipmentService.getShipmentByOrder(id);
   }
 
   @Authenticated
-  @PostMapping("/api/v1/orders/{id}/return")
+  @PostMapping("/orders/{id}/return")
   @ResponseStatus(HttpStatus.CREATED)
   public InitiateReturnResponse initiateReturn(
       @AuthenticationPrincipal SecurityUser user, @PathVariable Long id, @RequestBody InitiateReturnRequest request) {
@@ -97,7 +97,7 @@ public class OrderController {
   }
 
   @Authenticated
-  @GetMapping("/api/v1/orders/{id}/returns")
+  @GetMapping("/orders/{id}/returns")
   public java.util.List<ReturnListItem> listReturns(@AuthenticationPrincipal SecurityUser user, @PathVariable Long id) {
     orderService.getOrder(id, userId(user));
     return orderReturnService.listReturns(id);
@@ -106,13 +106,13 @@ public class OrderController {
   // Carrier webhook: no end-user JWT available, so this endpoint is not
   // gated by @Authenticated. A production deployment needs a proper
   // carrier API-key/HMAC verification scheme here before going live.
-  @PostMapping("/api/v1/orders/{id}/shipment/webhook")
+  @PostMapping("/orders/{id}/shipment/webhook")
   public WebhookResponse shipmentWebhook(@PathVariable Long id, @RequestBody ShipmentWebhookRequest request) {
     orderShipmentService.updateShipmentStatus(request.trackingNumber(), request.status(), request.location());
     return new WebhookResponse(true, "Shipment update recorded");
   }
 
-  @GetMapping("/api/tracking/{trackingNumber}")
+  @GetMapping("/tracking/{trackingNumber}")
   public ShipmentDetailResponse publicTracking(@PathVariable String trackingNumber) {
     return orderShipmentService.getShipmentByTrackingNumber(trackingNumber);
   }

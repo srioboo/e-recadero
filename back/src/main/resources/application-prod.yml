@@ -5,7 +5,10 @@
 spring:
   application:
     name: recadero-backend
-  
+
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
   jpa:
     show-sql: false
     hibernate:
@@ -92,8 +95,24 @@ spring:
             security:
               protocol: ${KAFKA_SECURITY_PROTOCOL:SASL_SSL}
 
+app:
+  security:
+    cors:
+      # No localhost fallback in prod: an unset ALLOWED_ORIGINS must fail
+      # loudly rather than silently accepting requests from any origin.
+      allowed-origins: ${ALLOWED_ORIGINS}
+    jwt:
+      issuer: ${JWT_ISSUER}
+      # No default here (unlike application.yml's dev "changeme" placeholder):
+      # a production deployment must fail to start rather than sign tokens
+      # with a secret that's checked into a public repo.
+      secret: ${JWT_SECRET}
+      access-token-expiry: ${JWT_ACCESS_TOKEN_EXPIRY:900}
+      refresh-token-expiry: ${JWT_REFRESH_TOKEN_EXPIRY:604800}
+
 server:
   port: 8080
+  shutdown: graceful
   servlet:
     context-path: /api/v1
   compression:
