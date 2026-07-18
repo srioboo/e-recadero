@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * and SecurityConfig's public-endpoint matcher for GET /api/templates/*.
  */
 @RestController
-@RequestMapping("/api/templates")
+@RequestMapping("/templates")
 @RequiredArgsConstructor
 public class TemplatePublicController {
 

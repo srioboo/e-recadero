@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
  * See specs/002-backend-ecommerce/contracts/promotions-contract.md.
  */
 @RestController
-@RequestMapping("/api/v1/promotions")
+@RequestMapping("/promotions")
 @RequiredArgsConstructor
 @AdminOnly
 public class PromotionAdminController {

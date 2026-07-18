@@ -1,0 +1,4 @@
+build/
+.gradle/
+load-tests/
+*.md

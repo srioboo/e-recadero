@@ -99,11 +99,12 @@ public class GlobalExceptionHandler {
       HttpServletRequest request
   ) {
     String traceId = generateTraceId();
-    
+
+    Class<?> requiredType = ex.getRequiredType();
     String message = String.format(
         "Invalid value for parameter '%s': expected %s but got '%s'",
         ex.getName(),
-        ex.getRequiredType().getSimpleName(),
+        requiredType != null ? requiredType.getSimpleName() : "unknown type",
         ex.getValue()
     );
 

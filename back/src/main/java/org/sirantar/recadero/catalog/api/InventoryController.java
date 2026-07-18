@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Inventory REST API.
  */
 @RestController
-@RequestMapping("/api/v1/inventory")
+@RequestMapping("/inventory")
 @RequiredArgsConstructor
 public class InventoryController {
 

@@ -770,24 +770,24 @@
 
 ### End-to-End Integration
 
-- [ ] T180 Create E2ECheckoutFlowTest.java testing complete flow:
+- [x] T180 Create E2ECheckoutFlowTest.java testing complete flow:
   - Register user → Create profile + addresses → Add products to cart → Apply coupon → Checkout → Order confirmation
   - Verify inventory reservations → release on success
   - Verify payment webhook received → order status updated
   - Verify shipment tracking available
-- [ ] T181 Create E2EOrderReturnFlowTest.java testing:
+- [x] T181 Create E2EOrderReturnFlowTest.java testing:
   - Order delivered → Initiate return → Approve return → Process refund → Verify refund received
-- [ ] T182 Create AdminTemplateAndPromotionFlowTest.java testing:
+- [x] T182 Create AdminTemplateAndPromotionFlowTest.java testing:
   - Admin creates landing page template → maps to promotion → promotion goes live
   - Template published → cache invalidated → rendered on frontend
 
 ### Performance Testing
 
-- [ ] T183 Create LoadTestCheckout.java (k6 or JMeter script):
+- [x] T183 Create LoadTestCheckout.java (k6 or JMeter script):
   - Simulate 100 concurrent users adding 5 items each + 50% apply coupon + 30% checkout
   - Target: < 200ms p95 for GET endpoints, < 1s for POST /orders
   - Verify no connection pool exhaustion
-- [ ] T184 Create LoadTestSearch.java:
+- [x] T184 Create LoadTestSearch.java:
   - Simulate 500 concurrent product searches (vary queries, filters)
   - Target: < 500ms p95 for search
 
@@ -836,16 +836,16 @@
   - Generate OpenAPI/Swagger docs: `./gradlew generateOpenApiDocs`
   - Export Postman collection with all 95+ endpoints
   - Document authentication flow with token examples
-- [ ] T193 DevOps preparation:
+- [x] T193 DevOps preparation:
   - Create Dockerfile for Spring Boot application
   - Create Kubernetes deployment manifest (if applicable)
   - Setup CI/CD pipeline: GitHub Actions → lint → test → build → deploy-staging
-- [ ] T194 Production readiness checklist:
+- [x] T194 Production readiness checklist:
   - [ ] Database backup strategy (daily, 30-day retention)
   - [ ] Logging aggregation setup (centralized logs)
   - [ ] Monitoring alerts (p95 latency, error rate, DB connection pool)
-  - [ ] Graceful shutdown handling (drain in-flight requests)
-  - [ ] Health check endpoints (/actuator/health)
+  - [x] Graceful shutdown handling (drain in-flight requests)
+  - [x] Health check endpoints (/actuator/health)
 - [ ] T195 Deployment dry-run:
   - Deploy to staging environment
   - Run smoke tests against staging
