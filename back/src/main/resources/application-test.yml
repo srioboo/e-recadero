@@ -1,5 +1,9 @@
 # Test Profile Configuration
-# Used for integration and unit tests with in-memory H2 database
+# Used for integration and unit tests. The datasource is a real PostgreSQL
+# instance provisioned by Testcontainers (see TestcontainersConfiguration),
+# so tests run against the same database engine as production. The
+# spring.datasource.* values below are placeholders overridden at runtime
+# via @DynamicPropertySource.
 # Activate with: spring.profiles.active=test or @ActiveProfiles("test")
 
 spring:
@@ -28,21 +32,16 @@ spring:
         format_sql: false
         generate_statistics: false
   
-  # H2 In-Memory Database
+  # PostgreSQL via Testcontainers; overridden by TestcontainersConfiguration
   datasource:
-    url: jdbc:h2:mem:recadero-test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: 
+    url: jdbc:postgresql://localhost:5432/recadero_test
+    driver-class-name: org.postgresql.Driver
+    username: recadero
+    password: recadero123
     hikari:
       maximum-pool-size: 2
       minimum-idle: 1
-  
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  
+
   # Flyway enabled for tests to create schemas properly
   flyway:
     enabled: true

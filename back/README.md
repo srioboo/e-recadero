@@ -883,8 +883,8 @@ open build/reports/jacoco/test/html/index.html
 
 | Profile | Use Case | Key Settings |
 |---------|----------|--------------|
-| `local` | Local development | H2 in-memory DB, debug logging |
-| `test` | Automated tests | Test containers, reset DB per test |
+| `dev` | Local development | PostgreSQL (Docker Compose), debug logging |
+| `test` | Automated tests | PostgreSQL via Testcontainers, reset DB per test |
 | `prod` | Production | PostgreSQL, Redis, optimized settings |
 
 ### Environment Variables

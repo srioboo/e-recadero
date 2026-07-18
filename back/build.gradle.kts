@@ -83,7 +83,6 @@ dependencies {
 	testImplementation("org.mockito:mockito-core:5.7.0")
 	testImplementation("org.mockito:mockito-junit-jupiter:5.7.0")
 	testImplementation("org.assertj:assertj-core:3.24.1")
-	testImplementation("com.h2database:h2")
 	testImplementation("org.testcontainers:testcontainers:1.19.7")
 	testImplementation("org.testcontainers:junit-jupiter:1.19.7")
 	testImplementation("org.testcontainers:postgresql:1.19.7")
