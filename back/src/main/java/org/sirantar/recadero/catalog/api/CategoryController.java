@@ -7,6 +7,7 @@ import org.sirantar.recadero.catalog.service.dto.CategoryCreateRequest;
 import org.sirantar.recadero.catalog.service.dto.CategoryMoveRequest;
 import org.sirantar.recadero.catalog.service.dto.CategoryResponse;
 import org.sirantar.recadero.catalog.service.dto.CategoryUpdateRequest;
+import org.sirantar.recadero.shared.security.AdminOnly;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -41,17 +42,20 @@ public class CategoryController {
   }
 
   @PostMapping
+  @AdminOnly
   @ResponseStatus(HttpStatus.CREATED)
   public CategoryResponse createCategory(@RequestBody CategoryCreateRequest request) {
     return catalogService.createCategory(request);
   }
 
   @PutMapping("/{id}")
+  @AdminOnly
   public CategoryResponse updateCategory(@PathVariable Long id, @RequestBody CategoryUpdateRequest request) {
     return catalogService.updateCategory(id, request);
   }
 
   @DeleteMapping("/{id}")
+  @AdminOnly
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteCategory(@PathVariable Long id) {
     catalogService.deleteCategoryLogical(id);
@@ -63,6 +67,7 @@ public class CategoryController {
   }
 
   @PostMapping("/{id}/move")
+  @AdminOnly
   public CategoryResponse moveCategory(@PathVariable Long id, @RequestBody CategoryMoveRequest request) {
     return catalogService.moveCategory(id, request);
   }

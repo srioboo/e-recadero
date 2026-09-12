@@ -60,7 +60,8 @@ public class SecurityConfig {
    * - Stateless JWT-based authentication (no sessions)
    * - CORS enabled for specified origins
    * - CSRF protection disabled (stateless API; CORS handles cross-origin concerns)
-   * - Public endpoints: /auth/*, /tracking/*, /templates/*, /swagger-ui/*, /v3/api-docs/*
+   * - Public endpoints: /auth/*, /tracking/*, /templates/*, /categories/**, /products/**,
+   *   /inventory/* (except /inventory/low-stock), /swagger-ui/*, /v3/api-docs/*
    *   (patterns here are relative to server.servlet.context-path=/api/v1, which Spring
    *   Security strips before matching — so the full external URL is /api/v1/auth/* etc.)
    * - Protected endpoints: everything else under the context path (except public auth)
@@ -104,7 +105,20 @@ public class SecurityConfig {
 
             // Public published templates
             .requestMatchers(HttpMethod.GET, "/templates/*").permitAll()
-            
+
+            // Public catalog browsing (read-only). Mutations stay behind
+            // authentication + role checks: CategoryController and
+            // ProductController enforce ADMIN on every write endpoint via
+            // @AdminOnly, so opening these GETs does not expose writes.
+            .requestMatchers(HttpMethod.GET,
+                "/categories", "/categories/*", "/categories/*/children").permitAll()
+            .requestMatchers(HttpMethod.GET,
+                "/products", "/products/*", "/products/*/availability", "/products/*/variants").permitAll()
+            // More specific than the /inventory/* rule below, so it must come first:
+            // requestMatchers are matched in declaration order and the first match wins.
+            .requestMatchers(HttpMethod.GET, "/inventory/low-stock").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.GET, "/inventory/*").permitAll()
+
             // Actuator endpoints (health checks, metrics)
             .requestMatchers("/actuator/**").permitAll()
             
